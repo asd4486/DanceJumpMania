@@ -56,26 +56,20 @@ namespace RythmePingPong
             if (pickedRackets.Any(r => r.GetComponent<Throwable>().Attached) || startMenu.gameObject.activeSelf)
                 return;
 
-            var pongs = FindObjectsOfType<AIPingPong>();
-            foreach (var p in pongs)
-                Destroy(p.gameObject);
-
+            startMenu.gameObject.SetActive(true);
+            startMenu.Reset();
             spawner.ResetSpawnPong();
             uiMain.gameObject.SetActive(false);
             uiMain.Init();
-            startMenu.gameObject.SetActive(true);
-            startMenu.Reset();
+
+            var pongs = FindObjectsOfType<AIPingPong>();
+            foreach (var p in pongs)
+                Destroy(p.gameObject);
 
             //reset function for last picked object
             foreach (var r in pickedRackets)
                 r.OnReturnToMenu();
             pickedRackets.Clear();
-        }
-
-        public void AddMiss()
-        {
-            scoreMiss += 1;
-            uiMain.SetScoreMissText(scoreMiss);
         }
 
         public void AddScore()
@@ -84,15 +78,23 @@ namespace RythmePingPong
             score += 1;
             uiMain.SetScoreText(score);
 
-            if (score != 0 && score % 7 == 0)
+            if (score != 0 && score % 10 == 0)
                 spawner.LevelUp();
+        }
 
-            if (score >= 168)
+        public void AddMiss()
+        {
+            scoreMiss += 1;
+            uiMain.SetScoreMissText(scoreMiss);
+
+            if (scoreMiss >= 100)
             {
                 foreach (var r in pickedRackets)
                     r.FreezePositions(false);
+                
+                spawner.SetSpawnDelay(0);
+                uiMain.GameOver();
                 GameOver = true;
-                uiMain.Complete();
             }
         }
 
@@ -108,8 +110,10 @@ namespace RythmePingPong
             {
                 foreach (var r in pickedRackets)
                     r.FreezePositions(false);
-                GameOver = true;
+                
+                spawner.SetSpawnDelay(0);
                 uiMain.GameOver();
+                GameOver = true;
             }
         }
 

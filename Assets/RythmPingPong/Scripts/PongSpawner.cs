@@ -13,21 +13,23 @@ namespace RythmePingPong
 
         Coroutine spawnCoroutine;
         float SpawnMaxAngle;
-        [SerializeField] float defaultSpawntTime = 1.2f;
-        int nowLevel;
+
+        [SerializeField] float defaultSpawnDelay = 1.2f;
+        float spawnDelay;
 
         // Start is called before the first frame update
         void Start()
         {
             SpawnMaxAngle = Mathf.Abs(Mathf.Atan2(5.5f - 1.4f, 0 - 0.9f) * (180 / Mathf.PI));
             if (SpawnMaxAngle > 90) SpawnMaxAngle -= 90;
+            spawnDelay = defaultSpawnDelay;
         }
 
         public void ResetSpawnPong()
         {
             StopCoroutine(spawnCoroutine);
             spawnCoroutine = null;
-            nowLevel = 0;
+            spawnDelay = defaultSpawnDelay;
         }
 
         public void StartSpawnPong()
@@ -40,11 +42,12 @@ namespace RythmePingPong
         {
             while (true)
             {
-                yield return new WaitForSeconds(defaultSpawntTime - Mathf.Clamp(0.05f * nowLevel, 0, defaultSpawntTime));
+                yield return new WaitForSeconds(spawnDelay);
+
                 transform.eulerAngles = new Vector3(0, Random.Range(-SpawnMaxAngle, SpawnMaxAngle));
 
                 GameObject prefab = pingPongPrefab;
-                if (nowLevel >= 5)
+                if (spawnDelay <= 0.95f)
                 {
                     var rand = Random.Range(0, 6);
                     prefab = rand > 0 ? pingPongPrefab : grenadePrefab;
@@ -55,9 +58,24 @@ namespace RythmePingPong
             }
         }
 
+        public void SetSpawnDelay(float delay)
+        {
+            spawnDelay = delay;
+        }
+
+        //24
         public void LevelUp()
         {
-            nowLevel += 1;
+            if (spawnDelay <= 0.2f)
+                return;
+
+            float value = 0;
+            if (spawnDelay > 0.9f) value = 0.1f;
+            else if (spawnDelay <= 0.9f && spawnDelay > 0.5f) value = 0.05f;
+            else if (spawnDelay <= 0.5f) value = 0.03f;
+
+            spawnDelay -= value;
+            if (spawnDelay < 0.2f) spawnDelay = 0.2f;
         }
     }
 }

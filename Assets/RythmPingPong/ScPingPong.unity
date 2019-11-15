@@ -488,7 +488,6 @@ MonoBehaviour:
   hpObject: {fileID: 176750619}
   hpValue: {fileID: 1817215975}
   result: {fileID: 464922093}
-  gameCompleteText: {fileID: 1497752891}
   gameOverText: {fileID: 839624893}
 --- !u!1 &443983622
 GameObject:
@@ -1006,7 +1005,7 @@ MonoBehaviour:
     type: 3}
   grenadePrefab: {fileID: 6301140466580017301, guid: 9bdad19fd3c788b4c9c5794f6559a9e5,
     type: 3}
-  defaultSpawntTime: 1.2
+  defaultSpawnDelay: 1.2
 --- !u!1 &839624893
 GameObject:
   m_ObjectHideFlags: 0

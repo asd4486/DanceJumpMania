@@ -15,7 +15,6 @@ namespace RythmePingPong
         [SerializeField] Image hpValue;
 
         [SerializeField] GameObject result;
-        [SerializeField] GameObject gameCompleteText;
         [SerializeField] GameObject gameOverText;
         private void Awake()
         {
@@ -26,6 +25,7 @@ namespace RythmePingPong
         {
             result.SetActive(false);
             hpObject.SetActive(true);
+            gameOverText.SetActive(false);
 
             SetHpValue(1);
             SetScoreText(0);
@@ -47,19 +47,10 @@ namespace RythmePingPong
             hpValue.fillAmount = value;
         }
 
-        public void Complete()
-        {
-            result.SetActive(true);
-            hpObject.SetActive(false);
-            gameOverText.SetActive(false);
-            gameCompleteText.SetActive(true);
-        }
-
         internal void GameOver()
         {
             result.SetActive(true);
             hpObject.SetActive(false);
-            gameCompleteText.SetActive(false);
             gameOverText.SetActive(true);
         }
     }
