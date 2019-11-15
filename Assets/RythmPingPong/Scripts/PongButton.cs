@@ -14,13 +14,15 @@ namespace RythmePingPong
             main = FindObjectOfType<PingPongMain>();
         }
 
+        public void Reset()
+        {
+            transform.position = new Vector3(0, 1.1f, 1.3f);          
+        }
+
         private void OnCollisionEnter(Collision collision)
         {
             if (collision.gameObject.GetComponent<AIPingPongRacket>() != null && collision.gameObject.GetComponent<Throwable>().Attached)
-            {
-                GetComponent<MeshRenderer>().material.color = Color.green;
                 main.StartGame();
-            }
         }
     }
 }

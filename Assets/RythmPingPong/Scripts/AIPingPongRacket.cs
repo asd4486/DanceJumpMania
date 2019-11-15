@@ -29,15 +29,41 @@ namespace RythmePingPong
 
             menuPos = transform.position;
             menuRotation = transform.eulerAngles;
+            OnReturnToMenu();
+        }
+
+        private void Update()
+        {
+            //adjust position
+            if (!throwable.Attached &&
+                (Mathf.Abs(transform.position.x) > 4 || transform.position.y < -1 || Mathf.Abs(transform.position.z) > 2f))
+            {
+                //throw racket to return menu when game over
+                if (main.GameOver && main.GamePlaying)
+                    main.ReturnToMenu();
+            }
+        }
+
+        public void OnReturnToMenu()
+        {
+            OnDetachMoveToMenu();
+
+            throwable.onDetachFromHand.RemoveAllListeners();
             throwable.onPickUp.AddListener(OnAttached);
             throwable.onDetachFromHand.AddListener(OnDetachMoveToMenu);
         }
 
-        public void OnSelectFinished()
+        public void OnGameStart()
         {
+            FreezePositions(true);
             throwable.onPickUp.RemoveAllListeners();
             throwable.onDetachFromHand.RemoveAllListeners();
             throwable.onDetachFromHand.AddListener(() => SetKinematic(false));
+        }
+
+        public void FreezePositions(bool freeze)
+        {
+            rb.constraints = freeze ? RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ : RigidbodyConstraints.None;
         }
 
         void SetKinematic(bool kinematic)
@@ -45,7 +71,7 @@ namespace RythmePingPong
             rb.isKinematic = kinematic;
         }
 
-        public void OnAttached()
+        void OnAttached()
         {
             main.PickRacket(this);
         }

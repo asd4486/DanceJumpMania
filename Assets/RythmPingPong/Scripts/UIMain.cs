@@ -11,13 +11,25 @@ namespace RythmePingPong
         [SerializeField] Text textScore;
         [SerializeField] Text textMiss;
 
+        [SerializeField] GameObject hpObject;
         [SerializeField] Image hpValue;
+
+        [SerializeField] GameObject result;
         [SerializeField] GameObject gameCompleteText;
         [SerializeField] GameObject gameOverText;
         private void Awake()
         {
-            gameCompleteText.SetActive(false);
-            gameOverText.SetActive(false);
+            Init();
+        }
+
+        public void Init()
+        {
+            result.SetActive(false);
+            hpObject.SetActive(true);
+
+            SetHpValue(1);
+            SetScoreText(0);
+            SetScoreMissText(0);
         }
 
         public void SetScoreText(int score)
@@ -37,11 +49,17 @@ namespace RythmePingPong
 
         public void Complete()
         {
+            result.SetActive(true);
+            hpObject.SetActive(false);
+            gameOverText.SetActive(false);
             gameCompleteText.SetActive(true);
         }
 
         internal void GameOver()
         {
+            result.SetActive(true);
+            hpObject.SetActive(false);
+            gameCompleteText.SetActive(false);
             gameOverText.SetActive(true);
         }
     }

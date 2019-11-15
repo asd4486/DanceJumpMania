@@ -23,6 +23,13 @@ namespace RythmePingPong
             if (SpawnMaxAngle > 90) SpawnMaxAngle -= 90;
         }
 
+        public void ResetSpawnPong()
+        {
+            StopCoroutine(spawnCoroutine);
+            spawnCoroutine = null;
+            nowLevel = 0;
+        }
+
         public void StartSpawnPong()
         {
             if (spawnCoroutine != null) StopCoroutine(spawnCoroutine);
