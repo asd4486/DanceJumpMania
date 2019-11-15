@@ -50,7 +50,7 @@ namespace RythmePingPong
         {
             if (rb.position.y < -1)
             {
-                if (!touchedRacket) main.AddMiss();
+                if (pingPongType != PingPongTypes.Grenade && !touchedRacket) main.AddMiss();
                 Destroy(gameObject);
             }
         }
@@ -63,15 +63,10 @@ namespace RythmePingPong
                 myAudio.Play();
             }
 
-            if (gameObject.layer != 9)
-            {
-                //Debug.Log(touchTime);
-                gameObject.layer = 9;
-            }
-
-            if (touchedRacket) return;
+            if (touchedRacket || main.GameOver) return;
             if (collision.gameObject.GetComponent<AIPingPongRacket>() != null && collision.gameObject.GetComponent<Throwable>().Attached)
             {
+                gameObject.layer = 9;
                 switch (pingPongType)
                 {
                     case PingPongTypes.PingPong:

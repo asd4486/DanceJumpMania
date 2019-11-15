@@ -23,6 +23,7 @@ namespace RythmePingPong
             SpawnMaxAngle = Mathf.Abs(Mathf.Atan2(5.5f - 1.4f, 0 - 0.9f) * (180 / Mathf.PI));
             if (SpawnMaxAngle > 90) SpawnMaxAngle -= 90;
             spawnDelay = defaultSpawnDelay;
+
         }
 
         public void ResetSpawnPong()
@@ -42,6 +43,7 @@ namespace RythmePingPong
         {
             while (true)
             {
+                //Time.timeScale = 0.2f;
                 yield return new WaitForSeconds(spawnDelay);
 
                 transform.eulerAngles = new Vector3(0, Random.Range(-SpawnMaxAngle, SpawnMaxAngle));
@@ -63,19 +65,18 @@ namespace RythmePingPong
             spawnDelay = delay;
         }
 
-        //24
         public void LevelUp()
         {
-            if (spawnDelay <= 0.2f)
+            if (spawnDelay <= 0.25f)
                 return;
 
             float value = 0;
             if (spawnDelay > 0.9f) value = 0.1f;
-            else if (spawnDelay <= 0.9f && spawnDelay > 0.5f) value = 0.05f;
-            else if (spawnDelay <= 0.5f) value = 0.03f;
+            else if (spawnDelay <= 0.9f && spawnDelay > 0.6f) value = 0.05f;
+            else if (spawnDelay <= 0.6f) value = 0.025f;
 
             spawnDelay -= value;
-            if (spawnDelay < 0.2f) spawnDelay = 0.2f;
+            if (spawnDelay < 0.25f) spawnDelay = 0.25f;
         }
     }
 }

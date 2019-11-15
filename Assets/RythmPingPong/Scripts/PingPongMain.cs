@@ -69,6 +69,7 @@ namespace RythmePingPong
             //reset function for last picked object
             foreach (var r in pickedRackets)
                 r.OnReturnToMenu();
+
             pickedRackets.Clear();
         }
 

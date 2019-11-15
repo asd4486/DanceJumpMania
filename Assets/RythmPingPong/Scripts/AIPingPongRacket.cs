@@ -36,19 +36,26 @@ namespace RythmePingPong
         {
             //adjust position
             if (!throwable.Attached &&
-                (Mathf.Abs(transform.position.x) > 4 || transform.position.y < -1 || Mathf.Abs(transform.position.z) > 2f))
+                (Mathf.Abs(transform.position.x) > 3 || transform.position.y < -1 || Mathf.Abs(transform.position.z) > 2f))
             {
                 //throw racket to return menu when game over
                 if (main.GameOver && main.GamePlaying)
+                {
                     main.ReturnToMenu();
+                }
             }
         }
 
         public void OnReturnToMenu()
         {
-            OnDetachMoveToMenu();
+            SetKinematic(true);
+            transform.SetParent(racketMenu);
+            transform.DOMove(menuPos, 0.4f);
+            transform.DORotate(menuRotation, 0.4f);
 
+            throwable.onPickUp.RemoveAllListeners();
             throwable.onDetachFromHand.RemoveAllListeners();
+
             throwable.onPickUp.AddListener(OnAttached);
             throwable.onDetachFromHand.AddListener(OnDetachMoveToMenu);
         }
@@ -58,6 +65,7 @@ namespace RythmePingPong
             FreezePositions(true);
             throwable.onPickUp.RemoveAllListeners();
             throwable.onDetachFromHand.RemoveAllListeners();
+
             throwable.onDetachFromHand.AddListener(() => SetKinematic(false));
         }
 
@@ -88,10 +96,8 @@ namespace RythmePingPong
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.GetComponent<AIPingPong>() != null && !myAudio.isPlaying)
-            {
-                myAudio.Play();
-            }
+            if (collision.gameObject.GetComponent<AIPingPong>() != null && !myAudio.isPlaying)           
+                myAudio.Play();           
         }
     }
 }
