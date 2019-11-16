@@ -15,6 +15,7 @@ namespace RythmePingPong
         float SpawnMaxAngle;
 
         [SerializeField] float defaultSpawnDelay = 1.2f;
+        [SerializeField] float minimumSpawnDelay = 0.2f;
         float spawnDelay;
 
         // Start is called before the first frame update
@@ -49,9 +50,9 @@ namespace RythmePingPong
                 transform.eulerAngles = new Vector3(0, Random.Range(-SpawnMaxAngle, SpawnMaxAngle));
 
                 GameObject prefab = pingPongPrefab;
-                if (spawnDelay <= 0.95f)
+                if (spawnDelay <= 1f)
                 {
-                    var rand = Random.Range(0, 6);
+                    var rand = Random.Range(0, 10);
                     prefab = rand > 0 ? pingPongPrefab : grenadePrefab;
                 }
 
@@ -67,16 +68,16 @@ namespace RythmePingPong
 
         public void LevelUp()
         {
-            if (spawnDelay <= 0.25f)
+            if (spawnDelay <= minimumSpawnDelay)
                 return;
 
             float value = 0;
-            if (spawnDelay > 0.9f) value = 0.1f;
-            else if (spawnDelay <= 0.9f && spawnDelay > 0.6f) value = 0.05f;
+            if (spawnDelay > 0.9f) value = 0.15f;
+            else if (spawnDelay <= 0.9f && spawnDelay > 0.6f) value = 0.07f;
             else if (spawnDelay <= 0.6f) value = 0.025f;
 
             spawnDelay -= value;
-            if (spawnDelay < 0.25f) spawnDelay = 0.25f;
+            if (spawnDelay < minimumSpawnDelay) spawnDelay = minimumSpawnDelay;
         }
     }
 }

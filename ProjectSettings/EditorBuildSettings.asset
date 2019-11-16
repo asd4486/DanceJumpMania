@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/RythmPingPong/ScPingPong.unity
+    guid: ab63f1d701770514d9b87d352e8ccb03
   m_configObjects: {}
