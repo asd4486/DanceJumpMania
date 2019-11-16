@@ -50,7 +50,7 @@ namespace RythmePingPong
 
             if (!main.GamePlaying)
             {
-                transform.eulerAngles += new Vector3(0, 10 * Time.deltaTime, 0);
+                transform.eulerAngles += new Vector3(0, 20 * Time.deltaTime, 0);
             }
         }
 
@@ -60,6 +60,7 @@ namespace RythmePingPong
             transform.SetParent(racketMenu);
             transform.DOMove(menuPos, 0.4f);
             transform.DORotate(menuRotation, 0.4f);
+            transform.eulerAngles = new Vector3(-40, 0, 0);
 
             throwable.onPickUp.RemoveAllListeners();
             throwable.onDetachFromHand.RemoveAllListeners();

@@ -18,6 +18,8 @@ namespace RythmePingPong
         [SerializeField] float minimumSpawnDelay = 0.2f;
         float spawnDelay;
 
+        bool isBonusTime;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -44,10 +46,14 @@ namespace RythmePingPong
         {
             while (true)
             {
-                //Time.timeScale = 0.2f;
-                yield return new WaitForSeconds(spawnDelay);
+                if (isBonusTime)
+                    yield return new WaitForSeconds(spawnDelay);
+                else
+                    yield return new WaitForSeconds(spawnDelay);
 
                 transform.eulerAngles = new Vector3(0, Random.Range(-SpawnMaxAngle, SpawnMaxAngle));
+
+
 
                 GameObject prefab = pingPongPrefab;
                 if (spawnDelay <= 1f)
@@ -59,6 +65,11 @@ namespace RythmePingPong
                 var o = Instantiate(prefab, transform.position, transform.rotation);
                 o.GetComponent<AIPingPong>().SetUpZSpeed(-7f);
             }
+        }
+
+        public void BonusTime()
+        {
+
         }
 
         public void SetSpawnDelay(float delay)

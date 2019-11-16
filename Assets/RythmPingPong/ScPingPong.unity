@@ -648,7 +648,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 533577376}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1372666001}
@@ -1228,6 +1228,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3054438745639807563, guid: 76da84824e70fea4dacdd89cfad9782d,
+        type: 3}
+      propertyPath: racketMenu
+      value: 
+      objectReference: {fileID: 1372666001}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76da84824e70fea4dacdd89cfad9782d, type: 3}
 --- !u!4 &1080397964 stripped

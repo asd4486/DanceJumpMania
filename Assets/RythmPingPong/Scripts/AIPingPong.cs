@@ -50,7 +50,7 @@ namespace RythmePingPong
         {
             if (rb.position.y < -1)
             {
-                if (pingPongType != PingPongTypes.Grenade && !touchedRacket) main.AddMiss();
+                //if (pingPongType != PingPongTypes.Grenade && !touchedRacket) main.AddMiss();
                 Destroy(gameObject);
             }
         }
