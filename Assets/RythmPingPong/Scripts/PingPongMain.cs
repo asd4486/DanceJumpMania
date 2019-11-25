@@ -35,7 +35,7 @@ namespace RythmePingPong
             startMenu.gameObject.SetActive(true);
         }
 
-        internal void StartGame()
+		internal void StartGame()
         {
             foreach (var r in pickedRackets)
                 r.OnGameStart();
@@ -85,18 +85,18 @@ namespace RythmePingPong
 
         public void AddMiss()
         {
-            scoreMiss += 1;
-            uiMain.SetScoreMissText(scoreMiss);
+            //scoreMiss += 1;
+            //uiMain.SetScoreMissText(scoreMiss);
 
-            if (scoreMiss >= 100)
-            {
-                foreach (var r in pickedRackets)
-                    r.FreezePositions(false);
+            //if (scoreMiss >= 100)
+            //{
+            //    foreach (var r in pickedRackets)
+            //        r.FreezePositions(false);
                 
-                spawner.SetSpawnDelay(0);
-                uiMain.GameOver();
-                GameOver = true;
-            }
+            //    spawner.SetSpawnDelay(0);
+            //    uiMain.GameOver();
+            //    GameOver = true;
+            //}
         }
 
         public void Hurt()

@@ -23,9 +23,9 @@ namespace RythmePingPong
         Rigidbody rb;
         Vector3 moveVelocity;
 
-        //float touchTime;
+		float touchTime;
 
-        void Awake()
+		void Awake()
         {
             main = FindObjectOfType<PingPongMain>();
             myAudio = GetComponent<AudioSource>();
@@ -34,12 +34,13 @@ namespace RythmePingPong
             Physics.IgnoreLayerCollision(8, 9);
         }
 
-        //private void Update()
-        //{
-        //    touchTime += Time.deltaTime;
-        //}
+		private void Update()
+		{
+			touchTime += Time.deltaTime;
+			if (transform.position.z <= 0) Debug.Log(touchTime);
+		}
 
-        public void SetUpZSpeed(float speed)
+		public void SetUpZSpeed(float speed)
         {
             rb.velocity = Vector3.zero;
             rb.AddForce(transform.forward * speed, ForceMode.Impulse);
@@ -50,7 +51,7 @@ namespace RythmePingPong
         {
             if (rb.position.y < -1)
             {
-                if (pingPongType != PingPongTypes.Grenade && !touchedRacket) main.AddMiss();
+                //if (pingPongType != PingPongTypes.Grenade && !touchedRacket) main.AddMiss();
                 Destroy(gameObject);
             }
         }
