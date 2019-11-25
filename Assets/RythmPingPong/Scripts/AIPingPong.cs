@@ -67,7 +67,8 @@ namespace RythmePingPong
             if (touchedRacket || main.GameOver) return;
             if (collision.gameObject.GetComponent<AIPingPongRacket>() != null && collision.gameObject.GetComponent<Throwable>().Attached)
             {
-                gameObject.layer = 9;
+                foreach (Transform o in transform) o.gameObject.layer = 9;
+
                 switch (pingPongType)
                 {
                     case PingPongTypes.PingPong:

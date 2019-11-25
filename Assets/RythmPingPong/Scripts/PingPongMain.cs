@@ -76,28 +76,37 @@ namespace RythmePingPong
         public void AddScore()
         {
             if (GameOver) return;
-            score += 1;
+            score += 2;
             uiMain.SetScoreText(score);
 
-            if (score != 0 && score % 10 == 0)
+            if (score != 0 && score % 20 == 0)
                 spawner.LevelUp();
         }
 
-        public void AddMiss()
+        void BonusTime()
         {
-            //scoreMiss += 1;
-            //uiMain.SetScoreMissText(scoreMiss);
-
-            //if (scoreMiss >= 100)
-            //{
-            //    foreach (var r in pickedRackets)
-            //        r.FreezePositions(false);
-                
-            //    spawner.SetSpawnDelay(0);
-            //    uiMain.GameOver();
-            //    GameOver = true;
-            //}
+            
         }
+
+        void BonsuTimeFinish()
+        {
+        }
+
+        //public void AddMiss()
+        //{
+        //    scoreMiss += 1;
+        //    uiMain.SetScoreMissText(scoreMiss);
+
+        //    if (scoreMiss >= 100)
+        //    {
+        //        foreach (var r in pickedRackets)
+        //            r.FreezePositions(false);
+                
+        //        spawner.SetSpawnDelay(0);
+        //        uiMain.GameOver();
+        //        GameOver = true;
+        //    }
+        //}
 
         public void Hurt()
         {

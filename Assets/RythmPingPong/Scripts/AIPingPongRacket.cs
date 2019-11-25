@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Valve.VR.InteractionSystem;
+using System;
 
 namespace RythmePingPong
 {
@@ -30,6 +31,8 @@ namespace RythmePingPong
             menuPos = transform.position;
             menuRotation = transform.eulerAngles;
             OnReturnToMenu();
+
+            throwable.onHeldUpdate.AddListener(OnAttaching);
         }
 
         private void Update()
@@ -44,6 +47,11 @@ namespace RythmePingPong
                     main.ReturnToMenu();
                 }
             }
+
+            if (!main.GamePlaying)
+            {
+                transform.eulerAngles += new Vector3(0, 20 * Time.deltaTime, 0);
+            }
         }
 
         public void OnReturnToMenu()
@@ -52,6 +60,7 @@ namespace RythmePingPong
             transform.SetParent(racketMenu);
             transform.DOMove(menuPos, 0.4f);
             transform.DORotate(menuRotation, 0.4f);
+            transform.eulerAngles = new Vector3(-40, 0, 0);
 
             throwable.onPickUp.RemoveAllListeners();
             throwable.onDetachFromHand.RemoveAllListeners();
@@ -84,6 +93,11 @@ namespace RythmePingPong
             main.PickRacket(this);
         }
 
+        void OnAttaching(Hand hand)
+        {
+            transform.localEulerAngles = new Vector3(0, 0, 90);
+        }
+
         void OnDetachMoveToMenu()
         {
             main.DropRacket(this);
@@ -96,8 +110,8 @@ namespace RythmePingPong
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.GetComponent<AIPingPong>() != null && !myAudio.isPlaying)           
-                myAudio.Play();           
+            if (collision.gameObject.GetComponent<AIPingPong>() != null && !myAudio.isPlaying)
+                myAudio.Play();
         }
     }
 }
