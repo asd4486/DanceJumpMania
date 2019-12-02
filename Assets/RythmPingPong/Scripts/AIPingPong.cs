@@ -58,14 +58,14 @@ namespace RythmePingPong
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.GetComponent<AIPingPongRacket>() == null && rb.velocity.magnitude > 0.5f && !myAudio.isPlaying)
+            if (collision.gameObject.GetComponent<AIRacket>() == null && rb.velocity.magnitude > 0.5f && !myAudio.isPlaying)
             {
                 myAudio.volume = rb.velocity.magnitude / 10;
                 myAudio.Play();
             }
 
             if (touchedRacket || main.GameOver) return;
-            if (collision.gameObject.GetComponent<AIPingPongRacket>() != null && collision.gameObject.GetComponent<Throwable>().Attached)
+            if (collision.gameObject.GetComponent<AIRacket>() != null && collision.gameObject.GetComponent<Throwable>().Attached)
             {
                 foreach (Transform o in transform) o.gameObject.layer = 9;
 

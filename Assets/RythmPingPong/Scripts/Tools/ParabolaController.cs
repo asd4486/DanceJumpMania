@@ -12,12 +12,12 @@ namespace RythmePingPong.Tools
 		/// <summary>
 		/// duration for each parabola
 		/// </summary>
-		public float duration = 1;
+		public float totalDuration = 1;
 
 		/// <summary>
 		/// Start of Parabola
 		/// </summary>
-		public Transform[] ParabolaRoots;
+		[SerializeField] Transform[] ParabolaRoots;
 
 		/// <summary>
 		/// Autostart Animation
@@ -47,14 +47,15 @@ namespace RythmePingPong.Tools
 #if UNITY_EDITOR
 		void OnDrawGizmos()
 		{
-			if (ParabolaRoots == null) return;
+			if (ParabolaRoots == null || ParabolaRoots.Length < 1) return;
 
+			var dur = totalDuration / ParabolaRoots.Length;
 			foreach (var root in ParabolaRoots)
 			{
 				if (root != null)
 				{
 					var gizmo = new ParabolaFly(root);
-					gizmo.RefreshTransforms(duration);
+					gizmo.RefreshTransforms(dur);
 					if ((gizmo.Points.Length - 1) % 2 != 0)
 						return;
 
@@ -125,6 +126,7 @@ namespace RythmePingPong.Tools
 
 		public void StartParabola()
 		{
+			var duration = totalDuration / ParabolaRoots.Length;
 			flyStep = 0;
 			nowFly = ParabolaFlys[flyStep];
 
@@ -140,6 +142,7 @@ namespace RythmePingPong.Tools
 			if (step < ParabolaFlys.Count - 1)
 				flyStep = step;
 
+			var duration = totalDuration / ParabolaRoots.Length;
 			nowFly = ParabolaFlys[flyStep];
 			ParabolaFlys[flyStep].RefreshTransforms(duration);
 			animationTime = 0f;

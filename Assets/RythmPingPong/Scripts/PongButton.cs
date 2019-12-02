@@ -9,14 +9,14 @@ namespace RythmePingPong
     {
         Rigidbody rb;
         AudioSource myAudio;
-        PingPongMain main;
+        RythmPingPongMain main;
         // Start is called before the first frame update
         void Start()
         {
             myAudio = GetComponent<AudioSource>();
             rb = GetComponent<Rigidbody>();
 
-            main = FindObjectOfType<PingPongMain>();
+            main = FindObjectOfType<RythmPingPongMain>();
         }
 
         public void Reset()
@@ -32,7 +32,7 @@ namespace RythmePingPong
                 myAudio.Play();
             }
 
-            if (collision.gameObject.GetComponent<AIPingPongRacket>() != null && collision.gameObject.GetComponent<Throwable>().Attached)
+            if (collision.gameObject.GetComponent<AIRacket>() != null && collision.gameObject.GetComponent<Throwable>().Attached)
                 main.StartGame();
         }
     }

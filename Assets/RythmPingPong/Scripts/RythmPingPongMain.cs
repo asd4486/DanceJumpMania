@@ -18,30 +18,28 @@ namespace RythmePingPong
 		public bool GameOver { get; private set; }
 		public bool GamePlaying { get { return startMenu.gameObject.activeSelf == false; } }
 
-		List<AIPingPongRacket> pickedRackets = new List<AIPingPongRacket>();
+		List<AIRacket> pickedRackets = new List<AIRacket>();
 
-		public int numBeatsPerSegment = 16;
+		[SerializeField] int numBeatsPerSegment = 16;
 		private double nextEventTime;
 		[SerializeField] AudioSource mainAudio;
 		float bpm;
-		int beatCount;
 
+		[SerializeField] float adjustSpeed = 0.1f;
 		[SerializeField] AIParabolaPong pongPrefab;
+		[SerializeField] Transform pongParent;
 
 		// Start is called before the first frame update
 		void Start()
 		{
 			GameOver = true;
 			uiMain = FindObjectOfType<UIMain>();
-			//spawner = FindObjectOfType<PongSpawner>();
 
 			uiMain.gameObject.SetActive(false);
 			startMenu.gameObject.SetActive(true);
 
 			bpm = UniBpmAnalyzer.AnalyzeBpm(mainAudio.clip);
 			nextEventTime = AudioSettings.dspTime + 60.0f / bpm;
-
-			StartGame();
 		}
 
 		internal void StartGame()
@@ -56,7 +54,6 @@ namespace RythmePingPong
 
 			score = 0;
 
-			//spawner.StartSpawnPong();
 			uiMain.gameObject.SetActive(true);
 			startMenu.gameObject.SetActive(false);
 		}
@@ -79,20 +76,16 @@ namespace RythmePingPong
 
 				// Place the next event 16 beats from here at a rate of 140 beats per minute
 				nextEventTime += 60.0f / bpm * numBeatsPerSegment;
-
-				beatCount += 1;
-				Debug.Log(beatCount);
-
-				if (beatCount % 2 != 0)
-					SpawnPong();
+				SpawnPong();
 			}
 		}
 
 		void SpawnPong()
 		{
 			var o = Instantiate(pongPrefab.gameObject, Vector3.zero, Quaternion.identity);
+			o.transform.SetParent(pongParent, false);
 			var parabolaPong = o.GetComponent<AIParabolaPong>();
-			parabolaPong.Init(60.0f / bpm);
+			parabolaPong.Init(60.0f / bpm * numBeatsPerSegment + adjustSpeed);
 		}
 
 		internal void ReturnToMenu()
@@ -130,19 +123,18 @@ namespace RythmePingPong
 
 		void BonusTime()
 		{
-
 		}
 
 		void BonsuTimeFinish()
 		{
 		}
 
-		public void PickRacket(AIPingPongRacket racket)
+		public void PickRacket(AIRacket racket)
 		{
 			if (!pickedRackets.Contains(racket)) pickedRackets.Add(racket);
 		}
 
-		public void DropRacket(AIPingPongRacket racket)
+		public void DropRacket(AIRacket racket)
 		{
 			if (pickedRackets.Contains(racket)) pickedRackets.Remove(racket);
 		}

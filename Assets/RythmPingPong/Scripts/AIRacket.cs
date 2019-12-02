@@ -7,9 +7,9 @@ using System;
 
 namespace RythmePingPong
 {
-    public class AIPingPongRacket : MonoBehaviour
+    public class AIRacket : MonoBehaviour
     {
-        PingPongMain main;
+		RythmPingPongMain main;
 
         AudioSource myAudio;
         Throwable throwable;
@@ -21,7 +21,7 @@ namespace RythmePingPong
 
         private void Start()
         {
-            main = FindObjectOfType<PingPongMain>();
+            main = FindObjectOfType<RythmPingPongMain>();
 
             myAudio = GetComponent<AudioSource>();
             rb = GetComponent<Rigidbody>();
@@ -110,8 +110,10 @@ namespace RythmePingPong
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.GetComponent<AIPingPong>() != null && !myAudio.isPlaying)
-                myAudio.Play();
+   //         if (collision.gameObject.GetComponent<AIPingPong>() != null && !myAudio.isPlaying)
+			//{
+			//	myAudio.Play();
+			//}			
         }
     }
 }

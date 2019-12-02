@@ -22,7 +22,7 @@ namespace RythmePingPong
         public bool GameOver { get; private set; }
         public bool GamePlaying { get { return startMenu.gameObject.activeSelf == false; } }
 
-        List<AIPingPongRacket> pickedRackets = new List<AIPingPongRacket>();
+        List<AIRacket> pickedRackets = new List<AIRacket>();
 
         // Start is called before the first frame update
         void Start()
@@ -127,12 +127,12 @@ namespace RythmePingPong
             }
         }
 
-        public void PickRacket(AIPingPongRacket racket)
+        public void PickRacket(AIRacket racket)
         {
             if (!pickedRackets.Contains(racket)) pickedRackets.Add(racket);
         }
 
-        public void DropRacket(AIPingPongRacket racket)
+        public void DropRacket(AIRacket racket)
         {
             if (pickedRackets.Contains(racket)) pickedRackets.Remove(racket);
         }
