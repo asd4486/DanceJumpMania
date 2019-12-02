@@ -15,7 +15,7 @@ namespace RyhthmCircle
 
 		public void Init(float moveDuration)
 		{
-			transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, 5);
+			transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, 10);
 			transform.eulerAngles = new Vector3(0, 0, Random.Range(0, 361));
 			DOTween.To(() => transform.localPosition, x => transform.localPosition = x, new Vector3(transform.localPosition.x, transform.localPosition.y, 0),
 				moveDuration).SetEase(Ease.Linear);

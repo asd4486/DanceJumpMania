@@ -29,6 +29,8 @@ namespace RythmePingPong
 		[SerializeField] AIParabolaPong pongPrefab;
 		[SerializeField] Transform pongParent;
 
+        [SerializeField] Transform beatLine1;
+
 		// Start is called before the first frame update
 		void Start()
 		{
@@ -85,7 +87,7 @@ namespace RythmePingPong
 			var o = Instantiate(pongPrefab.gameObject, Vector3.zero, Quaternion.identity);
 			o.transform.SetParent(pongParent, false);
 			var parabolaPong = o.GetComponent<AIParabolaPong>();
-			parabolaPong.Init(60.0f / bpm * numBeatsPerSegment + adjustSpeed);
+            parabolaPong.Init(60.0f / bpm * numBeatsPerSegment + adjustSpeed, beatLine1.transform.position.y);
 		}
 
 		internal void ReturnToMenu()
