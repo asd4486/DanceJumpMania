@@ -19,17 +19,24 @@ public class MarkerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //var playerCenter = new Vector3(playerHead.transform.position.x, playerHead.transform.position.y * 0.8f, 0);
+        var playerCenter = new Vector3(playerHead.transform.position.x, playerHead.transform.position.y * 0.8f);
         //var handPos = new Vector3(currentHand.transform.position.x, currentHand.transform.position.y, 0);
-        float f_AngleBetween = Vector3.SignedAngle(playerHead.transform.position, currentHand.transform.position, Vector3.up); // Returns an angle between 0 and 180
-        Debug.Log(playerHead.transform.position + "  " + currentHand.transform.position);
+        float f_AngleBetween = AngleTo(playerCenter, currentHand.transform.position);
 
         var point = FindPoint(f_AngleBetween);
         myRect.anchoredPosition = new Vector2(point.x, point.y);
     }
 
+    float AngleTo(Vector2 this_, Vector2 to)
+    {
+        Vector2 direction = to - this_;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        if (angle < 0f) angle += 360f;
+        return angle;
+    }
+
     Vector3 FindPoint(float angle)
     {
-        return Quaternion.AngleAxis(angle, Vector3.forward) * (Vector3.right * circleRadius);
+        return new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad), 0) * circleRadius;
     }
 }
