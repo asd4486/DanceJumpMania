@@ -27,7 +27,7 @@ namespace RythmePingPong.Tools
 		/// <summary>
 		/// Animate
 		/// </summary>
-		public bool isAnimating = true;
+		public bool isAnimating { get; private set; }
 
 		//animation time
 		protected float animationTime = float.MaxValue;
@@ -40,6 +40,9 @@ namespace RythmePingPong.Tools
 		//draw
 		ParabolaFly nowFly;
 		protected List<ParabolaFly> ParabolaFlys = new List<ParabolaFly>();
+
+		public event System.Action onNextRoodAction;
+		public event System.Action onFinishedAction;
 
 #if UNITY_EDITOR
 		void OnDrawGizmos()
@@ -73,11 +76,13 @@ namespace RythmePingPong.Tools
 #endif
 
 		// Use this for initialization
-		void Start()
+		void Awake()
 		{
 			foreach (var root in ParabolaRoots)
 				ParabolaFlys.Add(new ParabolaFly(root));
-
+		}
+		private void Start()
+		{
 			if (autoStart)
 				StartParabola();
 		}
@@ -107,9 +112,14 @@ namespace RythmePingPong.Tools
 				{
 					flyStep += 1;
 					StartParabola(flyStep);
+					if (onNextRoodAction != null) onNextRoodAction();
 				}
 				else
+				{
 					isAnimating = false;
+					//auto destroy object when parabola end
+					if (onFinishedAction != null) onFinishedAction();	
+				}		
 			}
 		}
 
