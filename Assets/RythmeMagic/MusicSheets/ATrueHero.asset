@@ -15,20 +15,77 @@ MonoBehaviour:
   music: {fileID: 8300000, guid: 2501dd89745f8684e9fe9fc89b64ebed, type: 3}
   beatList:
   - time: 6.5
-    positions:
-    - {x: -0.5, y: 1}
-  - time: 8.1
-    positions:
-    - {x: -0.5, y: 1}
-  - time: 9.35
-    positions:
-    - {x: 0.5, y: 1}
-  - time: 11.3
-    positions:
-    - {x: -0.5, y: 1}
-  - time: 12.8
-    positions:
-    - {x: 0.5, y: 1}
-  - time: 12.9
-    positions:
-    - {x: -0.5, y: 1}
+    items:
+    - type: 0
+      startPos: {x: -0.5, y: 1}
+      holdingPos: []
+  - time: 8
+    items:
+    - type: 0
+      startPos: {x: -0.5, y: 1}
+      holdingPos: []
+  - time: 10
+    items:
+    - type: 0
+      startPos: {x: -0.5, y: 1}
+      holdingPos: []
+  - time: 12
+    items:
+    - type: 0
+      startPos: {x: -0.5, y: 1}
+      holdingPos: []
+  - time: 15
+    items:
+    - type: 0
+      startPos: {x: -0.5, y: 1}
+      holdingPos: []
+  - time: 17
+    items:
+    - type: 0
+      startPos: {x: -0.5, y: 1}
+      holdingPos: []
+  - time: 19
+    items:
+    - type: 0
+      startPos: {x: -0.5, y: 1}
+      holdingPos: []
+  - time: 20
+    items:
+    - type: 0
+      startPos: {x: -0.5, y: 1}
+      holdingPos: []
+  - time: 22
+    items:
+    - type: 0
+      startPos: {x: -0.5, y: 1}
+      holdingPos: []
+  - time: 24
+    items:
+    - type: 0
+      startPos: {x: -0.5, y: 1}
+      holdingPos: []
+  - time: 26
+    items:
+    - type: 0
+      startPos: {x: -0.5, y: 1}
+      holdingPos: []
+  - time: 28
+    items:
+    - type: 0
+      startPos: {x: -0.5, y: 1}
+      holdingPos: []
+  - time: 30
+    items:
+    - type: 0
+      startPos: {x: -0.5, y: 1}
+      holdingPos: []
+  - time: 32
+    items:
+    - type: 0
+      startPos: {x: -0.5, y: 1}
+      holdingPos: []
+  - time: 34
+    items:
+    - type: 0
+      startPos: {x: -0.5, y: 1}
+      holdingPos: []
