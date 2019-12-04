@@ -55,10 +55,8 @@ namespace RythhmMagic
 			Destroy(gameObject, 0.1f);
 		}
 
-
 		private void OnCollisionStay(Collision collision)
 		{
-			Debug.Log("touch");
 			if (collision.gameObject.GetComponent<MarkerController>() != null)
 			{
 				OnTouchMarker();
