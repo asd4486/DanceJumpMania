@@ -138,8 +138,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 34817721}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 1.6, y: 1.3, z: 0.1}
+  m_LocalPosition: {x: 0, y: 1.1, z: 0}
+  m_LocalScale: {x: 1.6, y: 1.2, z: 0.1}
   m_Children: []
   m_Father: {fileID: 677347543}
   m_RootOrder: 2
@@ -491,7 +491,7 @@ GameObject:
   m_Component:
   - component: {fileID: 677347543}
   m_Layer: 0
-  m_Name: controlGroup
+  m_Name: Game
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -505,7 +505,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 677347542}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 818093831}
@@ -729,6 +729,7 @@ GameObject:
   m_Component:
   - component: {fileID: 934654413}
   - component: {fileID: 934654412}
+  - component: {fileID: 934654414}
   m_Layer: 0
   m_Name: MAIN
   m_TagString: Untagged
@@ -755,9 +756,6 @@ MonoBehaviour:
   markerHoldPrefab: {fileID: 8246843744258768063, guid: 327cbd8fa169ce546a9e9f81de8004bf,
     type: 3}
   markerParent: {fileID: 677347543}
-  markerDistance: 40
-  markerSpeed: 2.5
-  AdjustmentSpeed: 0
 --- !u!4 &934654413
 Transform:
   m_ObjectHideFlags: 0
@@ -772,6 +770,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &934654414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 934654411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3aa60ac0a5fe224491d0eba71354ea8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  markerDistance: 40
+  basicSpeed: 9
+  AdjustmentSpeed: 0
 --- !u!1 &965994422
 GameObject:
   m_ObjectHideFlags: 0

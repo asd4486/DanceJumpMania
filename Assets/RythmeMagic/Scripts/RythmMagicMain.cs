@@ -21,11 +21,6 @@ namespace RythhmMagic
 
 		[SerializeField] Transform markerParent;
 
-		[SerializeField] float markerDistance = 40;
-		[SerializeField] float markerSpeed = 1;
-		//for adjust marker speed
-		[SerializeField] float AdjustmentSpeed;
-
 		//[SerializeField] int numBeatsPerSegment = 16;
 		double nextEventTime;
 		float bpm;
@@ -34,7 +29,7 @@ namespace RythhmMagic
 		void Start()
 		{
 			mainAudio.clip = musicSheet.music;
-			totalDuration = mainAudio.clip.length + markerSpeed;
+			totalDuration = mainAudio.clip.length + GameManager.Instance.MarkerSpeed;
 
 			GameOver = true;
 
@@ -56,7 +51,7 @@ namespace RythhmMagic
 			score = 0;
 
 			//for adjust speed
-			yield return new WaitForSeconds(markerSpeed);
+			yield return new WaitForSeconds(GameManager.Instance.MarkerSpeed);
 			mainAudio.Play();
 		}
 
@@ -65,7 +60,7 @@ namespace RythhmMagic
 			if (GameOver) return;
 
 			playingTimer += Time.fixedDeltaTime;
-			if (nowBeat < musicSheet.beatList.Length && musicSheet.beatList[nowBeat].time <= playingTimer + markerSpeed)
+			if (nowBeat < musicSheet.beatList.Length && musicSheet.beatList[nowBeat].time <= playingTimer + GameManager.Instance.MarkerSpeed)
 			{
 				Debug.Log(playingTimer);
 				SpawnNewMarkers(musicSheet.beatList[nowBeat]);
@@ -97,7 +92,7 @@ namespace RythhmMagic
 
 				var o = Instantiate(marker.gameObject);
 				o.transform.SetParent(markerParent, true);
-				o.GetComponent<MarkerBase>().Init(item, beat.time, markerDistance, markerSpeed + AdjustmentSpeed);
+				o.GetComponent<MarkerBase>().Init(item, beat.time);
 			}
 		}
 	}
