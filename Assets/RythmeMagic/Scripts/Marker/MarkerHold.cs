@@ -78,7 +78,7 @@ namespace RythhmMagic
             //transform.rotation = path.GetRotationAtDistance(distanceTravelled, endOfPathInstruction);
         }
 
-        protected override void OnTouchMarker()
+        protected override void OnHitMarker()
         {
             if (!fxTouch.isPlaying) fxTouch.Play();
         }

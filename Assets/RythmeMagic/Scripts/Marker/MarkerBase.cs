@@ -46,7 +46,7 @@ namespace RythhmMagic
             }
         }
 
-        protected virtual void OnTouchMarker()
+        protected virtual void OnHitMarker()
         {
             myCol.enabled = false;
             myCol.transform.DOScale(Vector3.zero, 0.1f);
@@ -58,7 +58,7 @@ namespace RythhmMagic
         {
             if (collision.gameObject.GetComponent<MarkerController>() != null)
             {
-                OnTouchMarker();
+                OnHitMarker();
             }
         }
     }

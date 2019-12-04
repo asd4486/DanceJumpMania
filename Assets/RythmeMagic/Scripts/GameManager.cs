@@ -1,27 +1,30 @@
 ﻿using UnityEngine;
 
-public class GameManager : MonoBehaviour
+namespace RythhmMagic
 {
-    private static GameManager instance = null;
-    private static readonly object padlock = new object();
-
-    public static GameManager Instance
+    public class GameManager : MonoBehaviour
     {
-        get
+        private static GameManager instance = null;
+        private static readonly object padlock = new object();
+
+        public static GameManager Instance
         {
-            lock (padlock)
+            get
             {
-                if (instance == null)
-                    instance = new GameManager();
-                return instance;
+                lock (padlock)
+                {
+                    if (instance == null)
+                        instance = new GameManager();
+                    return instance;
+                }
             }
         }
+
+        public float markerDistance = 40;
+        [SerializeField] float basicSpeed = 1;
+        //for adjust marker speed
+        [SerializeField] float AdjustmentSpeed;
+        public float MarkerSpeed { get { return basicSpeed + AdjustmentSpeed; } }
+
     }
-
-    public float markerDistance = 40;
-    [SerializeField] float basicSpeed = 1;
-    //for adjust marker speed
-    [SerializeField] float AdjustmentSpeed;
-    public float MarkerSpeed { get { return basicSpeed + AdjustmentSpeed; } }
-
 }
