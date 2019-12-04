@@ -15,15 +15,5 @@ namespace RythhmMagic
         {
             transform.position = new Vector3(currentHand.transform.position.x, currentHand.transform.position.y, transform.position.z);
         }
-
-        private void OnCollisionStay(Collision collision)
-        {
-            Debug.Log("touch");
-            if (collision.gameObject.GetComponent<AIMarker>() != null)
-            {
-                collision.gameObject.GetComponent<AIMarker>().OnTouchMarker();
-            }
-        }
-
     }
 }

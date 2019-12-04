@@ -4,90 +4,101 @@ using UnityEngine;
 
 namespace RythhmMagic
 {
-    public class RythmMagicMain : MonoBehaviour
-    {
-        int score;
-        public bool GameOver { get; private set; }
+	public class RythmMagicMain : MonoBehaviour
+	{
+		int score;
+		public bool GameOver { get; private set; }
 
-        [SerializeField] AudioSource mainAudio;
-        [SerializeField] MusicSheetObject musicSheet;
-        int nowBeat;
+		[SerializeField] AudioSource mainAudio;
+		[SerializeField] MusicSheetObject musicSheet;
+		int nowBeat;
 
-        float totalDuration;
-        float musicPlayDuration;
+		float totalDuration;
+		float playingTimer;
 
-        [SerializeField] AIMarker markerPrefab;
-        [SerializeField] Transform markerParent;
+		[SerializeField] MarkerBase markerPrefab;
+		[SerializeField] MarkerHold markerHoldPrefab;
 
-        //for adjust marker speed
-        [SerializeField] float AdjustmentSpeed;
-        [SerializeField] float markerSpeed = 1;
+		[SerializeField] Transform markerParent;
 
-        [SerializeField] int numBeatsPerSegment = 16;
-        double nextEventTime;
-        float bpm;
+		[SerializeField] float markerDistance = 40;
+		[SerializeField] float markerSpeed = 1;
+		//for adjust marker speed
+		[SerializeField] float AdjustmentSpeed;
 
-        // Start is called before the first frame update
-        void Start()
-        {
-            mainAudio.clip = musicSheet.music;
-            totalDuration = mainAudio.clip.length + markerSpeed;
+		//[SerializeField] int numBeatsPerSegment = 16;
+		double nextEventTime;
+		float bpm;
 
-            GameOver = true;
+		// Start is called before the first frame update
+		void Start()
+		{
+			mainAudio.clip = musicSheet.music;
+			totalDuration = mainAudio.clip.length + markerSpeed;
 
-            bpm = UniBpmAnalyzer.AnalyzeBpm(mainAudio.clip);
-            nextEventTime = AudioSettings.dspTime + 60.0f / bpm;
+			GameOver = true;
 
-            StartGame();
-        }
+			bpm = UniBpmAnalyzer.AnalyzeBpm(mainAudio.clip);
+			nextEventTime = AudioSettings.dspTime + 60.0f / bpm;
 
-        internal void StartGame()
-        {
-            StartCoroutine(StartGameCoroutine());
-        }
+			StartGame();
+		}
 
-        IEnumerator StartGameCoroutine()
-        {
-            //init all values
-            GameOver = false;
-            score = 0;
-            
-            //for adjust speed
-            yield return new WaitForSeconds(markerSpeed);
-            mainAudio.Play();
-        }
+		internal void StartGame()
+		{
+			StartCoroutine(StartGameCoroutine());
+		}
 
-        private void Update()
-        {
-            if (GameOver) return;
+		IEnumerator StartGameCoroutine()
+		{
+			//init all values
+			GameOver = false;
+			score = 0;
 
-            musicPlayDuration += Time.fixedDeltaTime;
-            if (musicSheet.beatList[nowBeat].time <= musicPlayDuration + markerSpeed)
-            {
-                Debug.Log(musicPlayDuration);
-                SpawnNewMarkers(musicSheet.beatList[nowBeat]);
-                nowBeat += 1;
-            }
+			//for adjust speed
+			yield return new WaitForSeconds(markerSpeed);
+			mainAudio.Play();
+		}
 
-            double time = AudioSettings.dspTime;
-            if (time + 1.0f > nextEventTime)
-            {
-                // Place the next event 16 beats from here at a rate of 140 beats per minute
-                nextEventTime += 60.0f / bpm * numBeatsPerSegment;
-            }
-        }
+		private void Update()
+		{
+			if (GameOver) return;
 
-        void SpawnNewMarkers(MusicSheetObject.Beat beat)
-        {
-            if (beat.items == null || beat.items.Length < 1) return;
+			playingTimer += Time.fixedDeltaTime;
+			if (nowBeat < musicSheet.beatList.Length && musicSheet.beatList[nowBeat].time <= playingTimer + markerSpeed)
+			{
+				Debug.Log(playingTimer);
+				SpawnNewMarkers(musicSheet.beatList[nowBeat]);
+				nowBeat += 1;
+			}
 
-            foreach (var item in beat.items)
-            {
-                var o = Instantiate(markerPrefab.gameObject);
-                o.transform.SetParent(markerParent, true);
-                var marker = o.GetComponent<AIMarker>();
-                marker.Init(item, markerSpeed + AdjustmentSpeed);
-            }
-        }
-    }
+			double time = AudioSettings.dspTime;
+			if (time + 1.0f > nextEventTime)
+			{
+				// Place the next event 16 beats from here at a rate of 140 beats per minute
+				nextEventTime += 60.0f / bpm /** numBeatsPerSegment*/;
+			}
+		}
+
+		void SpawnNewMarkers(MusicSheetObject.Beat beat)
+		{
+			if (beat.items == null || beat.items.Length < 1) return;
+
+			
+			foreach (var item in beat.items)
+			{
+				var marker = markerPrefab;
+				switch (item.type)
+				{
+					case BeatTypes.Holding:
+						marker = markerHoldPrefab;
+						break;
+				}
+
+				var o = Instantiate(marker.gameObject);
+				o.transform.SetParent(markerParent, true);
+				o.GetComponent<MarkerBase>().Init(item, beat.time, markerDistance, markerSpeed + AdjustmentSpeed);
+			}
+		}
+	}
 }

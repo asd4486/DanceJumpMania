@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MarkerEmissive
+  m_Name: M_markerHold
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 1
@@ -73,5 +73,5 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.8584906, g: 0.84704745, b: 0.01214843, a: 1}
-    - _EmissionColor: {r: 1.39772, g: 1.251362, b: 0, a: 1}
+    - _Color: {r: 0.011764713, g: 0.69122833, b: 0.85882354, a: 1}
+    - _EmissionColor: {r: 0, g: 0.24915634, b: 1.39772, a: 1}

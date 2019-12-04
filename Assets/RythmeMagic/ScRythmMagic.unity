@@ -237,7 +237,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 28c1e2a4ea809b04f90b36d1317a8e8e, type: 2}
+  - {fileID: 2100000, guid: d786fb7e7a391454ab9bfb3ca9e94ca8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -376,7 +376,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2014920, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: far clip plane
-      value: 1000
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 2014920, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: m_CullingMask.m_Bits
@@ -709,7 +709,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 4e21c6b9530ab9a418723bca153d3c6d, type: 3}
-  m_Color: {r: 1, g: 0.8954669, b: 0.035294116, a: 0.78431374}
+  m_Color: {r: 1, g: 0.8463809, b: 0.2028302, a: 0.78431374}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -752,10 +752,12 @@ MonoBehaviour:
   musicSheet: {fileID: 11400000, guid: ddc228c7ca7a91044836c24c71783364, type: 2}
   markerPrefab: {fileID: 2014714740851991277, guid: 10d2b2532ebef444e9ef248716f96ad8,
     type: 3}
+  markerHoldPrefab: {fileID: 8246843744258768063, guid: 327cbd8fa169ce546a9e9f81de8004bf,
+    type: 3}
   markerParent: {fileID: 677347543}
+  markerDistance: 40
+  markerSpeed: 2.5
   AdjustmentSpeed: 0
-  markerSpeed: 1.5
-  numBeatsPerSegment: 2
 --- !u!4 &934654413
 Transform:
   m_ObjectHideFlags: 0
@@ -884,7 +886,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 4e21c6b9530ab9a418723bca153d3c6d, type: 3}
-  m_Color: {r: 0.035294116, g: 0.6560357, b: 1, a: 0.78431374}
+  m_Color: {r: 1, g: 0.84705883, b: 0.20392157, a: 0.78431374}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1106,7 +1108,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2077526847}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.05, z: 0}
+  m_LocalPosition: {x: 0, y: 0.01, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
