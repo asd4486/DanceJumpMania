@@ -6,161 +6,173 @@ using UnityEngine.UI;
 
 namespace RythhmMagic.MusicEditor
 {
-    public class MusicEditorMain : MonoBehaviour
-    {
-        [SerializeField] MusicSheetObject musicSheet;
-        List<MusicEditorKey> keyList = new List<MusicEditorKey>();
+	public class MusicEditorMain : MonoBehaviour
+	{
+		float bpm;
 
-        [SerializeField] AudioSource myAudio;
+		[SerializeField] MusicSheetObject musicSheet;
 
-        [SerializeField] RawImage musicMapImage;
-        public float mapWidth { get; private set; }
+		[SerializeField] AudioSource myAudio;
+		float clipLenght;
 
-        [SerializeField] RectTransform musicProgressBtn;
+		[SerializeField] ScrollRect mapScrollRect;
+		[SerializeField] RectTransform musicMapContent;
+		float defaultMapWidth;
+		public float mapWidth { get; private set; }
+		float zoomStep = 1;
 
-        [SerializeField] Transform keyParent;
-        [SerializeField] MusicEditorKey keyPrefab;
+		[SerializeField] RawImage musicMapImage;
 
-        void Start()
-        {
-            UnityEngine.XR.XRSettings.enabled = false;
+		[SerializeField] RectTransform musicProgressBtn;
 
-            if (musicSheet == null) return;
+		//for dragging object in music map
+		public RectTransform RectRefPoint;
 
-            myAudio.clip = musicSheet.music;
+		[SerializeField] Button btnEditKey;
 
-            //draw music map
-            Texture2D map = musicSheet.music.PaintWaveformSpectrum(1280, 90, Color.green);
-            musicMapImage.texture = map;
-            mapWidth = musicMapImage.transform.parent.GetComponent<RectTransform>().sizeDelta.x;
-        }
+		[SerializeField] MusicEditor musicEditor;
+		[SerializeField] BeatInfoEditor beatInfoEditor;
+		IMusicEditor currentEditor;
 
-        private void Update()
-        {
-            if (myAudio.clip == null || !myAudio.isPlaying)
-                return;
+		void Start()
+		{
+			UnityEngine.XR.XRSettings.enabled = false;
 
-            var xPos = mapWidth * (myAudio.time / myAudio.clip.length);
-            musicProgressBtn.anchoredPosition = new Vector2(xPos, musicProgressBtn.anchoredPosition.y);
-        }
+			if (musicSheet == null || musicSheet.music == null) return;
 
-        public void OnClickStartMusic()
-        {
-            myAudio.time = GetProgressTime();
-            myAudio.Play();
-        }
+			myAudio.clip = musicSheet.music;
+			clipLenght = myAudio.clip.length;
 
-        public void OnClickPauseMusic()
-        {
-            myAudio.Pause();
-        }
+			bpm = UniBpmAnalyzer.AnalyzeBpm(musicSheet.music);
+			musicProgressBtn.GetComponent<BtnMusicProgress>().Init(Mathf.RoundToInt(clipLenght / 60 * bpm));
 
-        public void OnClickStopMusic()
-        {
-            myAudio.Stop();
-        }
+			//draw music map
+			Texture2D map = musicSheet.music.PaintWaveformSpectrum(4800, 90, Color.green);
+			musicMapImage.texture = map;
+			defaultMapWidth = mapWidth = musicMapContent.sizeDelta.x;
 
-        public void OnClickAddKey()
-        {
-            var time = GetProgressTime();
-            //don't create key when key existed
-            if (FindKeyByTime(time) != null)
-                return;
+			musicEditor.Init(musicSheet.beatList);
 
-            var o = Instantiate(keyPrefab.gameObject);
-            o.transform.SetParent(keyParent, false);
+			btnEditKey.onClick.AddListener(OnClickChangeEditMode);
+			currentEditor = musicEditor;
+			beatInfoEditor.gameObject.SetActive(false);
+		}
 
-            var key = o.GetComponent<MusicEditorKey>();
-            key.Init(musicProgressBtn.anchoredPosition.x, time);
+		private void Update()
+		{
+			if (myAudio.clip == null || !myAudio.isPlaying)
+				return;
 
-            AddKeyToList(key);
-        }
+			var xPos = mapWidth * (myAudio.time / clipLenght);
+			musicProgressBtn.anchoredPosition = new Vector2(xPos, musicProgressBtn.anchoredPosition.y);
 
-        void AddKeyToList(MusicEditorKey key)
-        {
-            if (keyList.Count < 1)
-            {
-                keyList.Add(key);
-                return;
-            }
+			//auto follow progress when play
+			if (mapScrollRect.horizontalScrollbar.value < (xPos - defaultMapWidth) / mapWidth)
+				mapScrollRect.horizontalScrollbar.value = xPos / mapWidth;
+		}
 
-            var index = 0;
-            var keyTime = key.Time;
+		public void OnClickSaveData()
+		{
+			musicSheet.beatList.Clear();
+			foreach (var beat in musicEditor.beatList)
+			{
+				if(beat.leftInfos.Count > 0 || beat.rightInfos.Count > 0)
+				{
+					var beatObj = new MusicSheetObject.Beat();
+					//if()
+					//beatObj.startTime
 
-            for (int i = 0; i < keyList.Count; i++)
-            {
-                if (keyTime < keyList[i].Time)
-                    index += 1;
-                else
-                    break;
-            }
+					//musicSheet.beatList.Add();
+				}
+			}
+		}
 
-            keyList.Insert(index, key);
-        }
+		public void OnClickStartMusic()
+		{
+			myAudio.time = GetTimeByPosition(musicProgressBtn.anchoredPosition.x);
+			myAudio.Play();
+		}
 
-        public void OnClickRemoveKey()
-        {
-            var time = GetProgressTime();
-            var key = FindKeyByTime(time);
-            //return when can't find key
-            if (key == null)
-                return;
+		public void OnClickPauseMusic()
+		{
+			myAudio.Pause();
+		}
 
-            keyList.Remove(key);
-            Destroy(key.gameObject);
-        }
+		public void OnClickStopMusic()
+		{
+			musicProgressBtn.anchoredPosition = Vector2.zero;
+			mapScrollRect.horizontalScrollbar.value = 0;
+			myAudio.Stop();
+		}
 
-        public void OnClickFindKey(bool findNext)
-        {
-            var key = FindClosestKey(findNext);
-            if (key != null)
-            {
-                myAudio.Pause();
-                musicProgressBtn.anchoredPosition = new Vector2(key.GetComponent<RectTransform>().anchoredPosition.x, 0);
-            }
-        }
+		public void OnClickAddKey()
+		{
+			currentEditor.OnClickAddBeat(GetTimeByPosition(musicProgressBtn.anchoredPosition.x));
+		}
 
-        MusicEditorKey FindKeyByTime(float time)
-        {
-            foreach (var k in keyList)
-            {
-                if (Mathf.Abs(k.Time - time) < .01) return k;
-            }
+		//call when move a key by hand
+		public void AdjustKeyInKeyList(EditorBeat beat)
+		{
+			currentEditor.AdjustBeatInBeatList(beat);
+		}
 
-            return null;
-        }
+		public void OnClickRemoveKey()
+		{
+			currentEditor.OnClickRemoveKey(GetTimeByPosition(musicProgressBtn.anchoredPosition.x));
+		}
 
-        MusicEditorKey FindClosestKey(bool findNext)
-        {
-            MusicEditorKey closestKey = null;
-            if (keyList.Count < 1) return closestKey;
+		public void OnClickFindKey(bool findNext)
+		{
+			var key = currentEditor.FindClosestBeat(GetTimeByPosition(musicProgressBtn.anchoredPosition.x), findNext);
+			if (key != null)
+			{
+				myAudio.Pause();
+				musicProgressBtn.anchoredPosition = new Vector2(key.GetComponent<RectTransform>().anchoredPosition.x, 0);
+			}
+		}
 
-            var progressTime = GetProgressTime();
+		public void OnClickZoom(bool zoomIn)
+		{
+			zoomStep += zoomIn ? 1f : -1f;
+			zoomStep = Mathf.Clamp(zoomStep, 1, 20);
 
-            List<MusicEditorKey> list = new List<MusicEditorKey>();
-            if (findNext) list = keyList.Where(k => k.Time > progressTime).ToList();
-            else list = keyList.Where(k => k.Time < progressTime).ToList();
+			mapWidth = defaultMapWidth * zoomStep;
+			musicMapContent.sizeDelta = new Vector2(mapWidth, musicMapContent.sizeDelta.y);
 
-            var closestTime = float.MaxValue;
+			//adjust all object
+			musicEditor.AdjustKeysPos();
+			if (currentEditor is BeatInfoEditor) beatInfoEditor.AdjustKeysPos();
+		}
 
-            foreach (var k in list)
-            {
-                var time = Mathf.Abs(k.Time - progressTime);
-                if (time < closestTime && time >= .01)
-                {
-                    closestTime = time;
-                    closestKey = k;
-                }
-            }
+		public float GetPositionByTime(float time)
+		{
+			return time / clipLenght * mapWidth;
+		}
 
-            return closestKey;
-        }
+		public float GetTimeByPosition(float xPos)
+		{
+			return xPos / mapWidth * clipLenght;
+		}
 
-        //get time by progress button position
-        float GetProgressTime()
-        {
-            var time = musicProgressBtn.anchoredPosition.x / mapWidth * myAudio.clip.length;
-            return time;
-        }
-    }
+		public void OnClickChangeEditMode()
+		{
+			if (currentEditor is BeatInfoEditor)
+			{
+				btnEditKey.GetComponent<Image>().color = Color.white;
+				currentEditor = musicEditor;
+				//save changes of one beat
+				beatInfoEditor.SaveChanges();
+				beatInfoEditor.gameObject.SetActive(false);
+				return;
+			}
+
+			var beat = musicEditor.FindBeatByTime(GetTimeByPosition(musicProgressBtn.anchoredPosition.x));
+			if (beat == null) return;
+
+			beatInfoEditor.Init(beat);
+			currentEditor = beatInfoEditor;
+			beatInfoEditor.gameObject.SetActive(true);
+			btnEditKey.GetComponent<Image>().color = Color.green;
+		}
+	}
 }

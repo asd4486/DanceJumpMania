@@ -14,29 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   music: {fileID: 8300000, guid: 2501dd89745f8684e9fe9fc89b64ebed, type: 3}
   beatList:
-  - time: 6.5
-    items:
+  - startTime: 5
+    infos:
+    - type: 0
+      posList: []
+  - startTime: 10
+    infos:
     - type: 1
-      startPos: {x: -0.5, y: 1}
-      holdingPos:
-      - time: 7
-        pos: {x: 0, y: 1}
-      - time: 8
-        pos: {x: 0.5, y: 1.3}
-      - time: 9
-        pos: {x: 0.6, y: 0.5}
-      - time: 13
-        pos: {x: 0, y: 1}
-  - time: 12
-    items:
-    - type: 0
-      startPos: {x: 0.5, y: 1.3}
-      holdingPos: []
-  - time: 20
-    items:
-    - type: 0
-      startPos: {x: -0.3, y: 1.3}
-      holdingPos: []
-    - type: 0
-      startPos: {x: 0.3, y: 0.9}
-      holdingPos: []
+      posList:
+      - time: 10
+        pos: {x: 0, y: 0}
+      - time: 11
+        pos: {x: 0, y: 0}
+      - time: 12
+        pos: {x: 0, y: 0}

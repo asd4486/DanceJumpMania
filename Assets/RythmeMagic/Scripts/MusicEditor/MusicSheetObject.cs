@@ -15,25 +15,24 @@ namespace RythhmMagic
     public class MusicSheetObject : ScriptableObject
 	{
 		public AudioClip music;
-		public Beat[] beatList;
+		public List<Beat> beatList = new List<Beat>();
 
         [Serializable]
         public class Beat
         {
-            public float time;
-            public BeatItem[] items;
-        }
+            public float startTime;
+            public List<BeatInfo> infos = new List<BeatInfo>();
+		}
 
 		[Serializable]
-		public class BeatItem
+		public class BeatInfo
 		{
             public BeatTypes type;
-			public Vector2 startPos;
-            public HoldingPos[] holdingPos;
+            public List<PosInfo> posList = new List<PosInfo>();
 		}
 
         [Serializable]
-        public class HoldingPos
+        public class PosInfo
         {
             public float time;
             public Vector2 pos;

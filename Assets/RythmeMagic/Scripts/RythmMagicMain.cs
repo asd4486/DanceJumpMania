@@ -60,7 +60,7 @@ namespace RythhmMagic
 			if (GameOver) return;
 
 			playingTimer += Time.fixedDeltaTime;
-			if (nowBeat < musicSheet.beatList.Length && musicSheet.beatList[nowBeat].time <= playingTimer + GameManager.Instance.MarkerSpeed)
+			if (nowBeat < musicSheet.beatList.Count && musicSheet.beatList[nowBeat].startTime <= playingTimer + GameManager.Instance.MarkerSpeed)
 			{
 				Debug.Log(playingTimer);
 				SpawnNewMarkers(musicSheet.beatList[nowBeat]);
@@ -77,10 +77,10 @@ namespace RythhmMagic
 
 		void SpawnNewMarkers(MusicSheetObject.Beat beat)
 		{
-			if (beat.items == null || beat.items.Length < 1) return;
+			if (beat.infos.Count < 1) return;
 
-			
-			foreach (var item in beat.items)
+
+			foreach (var item in beat.infos)
 			{
 				var marker = markerPrefab;
 				switch (item.type)
@@ -92,7 +92,7 @@ namespace RythhmMagic
 
 				var o = Instantiate(marker.gameObject);
 				o.transform.SetParent(markerParent, true);
-				o.GetComponent<MarkerBase>().Init(item, beat.time);
+				o.GetComponent<MarkerBase>().Init(item, beat.startTime);
 			}
 		}
 	}

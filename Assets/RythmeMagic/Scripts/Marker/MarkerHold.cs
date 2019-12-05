@@ -16,12 +16,12 @@ namespace RythhmMagic
         float oneSecSpeed;
         float markerDuration;
 
-        public override void Init(MusicSheetObject.BeatItem beat, float beatTime)
+        public override void Init(MusicSheetObject.BeatInfo beat, float beatTime)
         {
             markerLine = GetComponentInChildren<MarkerLine>();
 
             //create holding road
-            if (beat.holdingPos != null)
+            if (beat.posList != null)
             {
                 List<Vector3> posList = new List<Vector3>();
                 posList.Add(Vector3.zero);
@@ -29,13 +29,14 @@ namespace RythhmMagic
 
                 oneSecSpeed =  GameManager.Instance.markerDistance / GameManager.Instance.MarkerSpeed;
                 //get hold duration
-                markerDuration = beat.holdingPos[beat.holdingPos.Length - 1].time - beatTime;
+                markerDuration = beat.posList[beat.posList.Count - 1].time - beatTime;
 
-                foreach (var p in beat.holdingPos)
-                {
-                    //get holding road lenght
-                    var roadLenght = oneSecSpeed * (p.time - beatTime);
-                    var adjustPos = p.pos - beat.startPos;
+                for(int i=1; i < beat.posList.Count; i++)
+				{
+					var p = beat.posList[i];
+					//get holding road lenght
+					var roadLenght = oneSecSpeed * (p.time - beatTime);
+                    var adjustPos = p.pos - beat.posList[0].pos;
                     posList.Add(new Vector3(adjustPos.x, adjustPos.y, roadLenght));
                 }
 
