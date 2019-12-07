@@ -9,13 +9,15 @@ namespace RythhmMagic.MusicEditor
 	[RequireComponent(typeof(EventTrigger))]
 	public class EditorKeyBase : MonoBehaviour
 	{
+		public event System.Action onDragAction;
+
 		protected MusicEditorMain main;
-		protected RectTransform myRect;
+		public RectTransform rectTransfom { get; private set; }
 
 		private void Awake()
 		{
 			main = FindObjectOfType<MusicEditorMain>();
-			myRect = GetComponent<RectTransform>();
+			rectTransfom = GetComponent<RectTransform>();
 
 			EventTrigger trigger = GetComponent<EventTrigger>();
 			EventTrigger.Entry dragEntry = new EventTrigger.Entry();
@@ -31,12 +33,14 @@ namespace RythhmMagic.MusicEditor
 
 		public virtual void OnDragSetPos(BaseEventData arg0)
 		{
+			if (onDragAction != null) onDragAction();
+
 			Vector2 movePos;
 			RectTransformUtility.ScreenPointToLocalPointInRectangle(main.RectRefPoint, Input.mousePosition, main.GetComponent<Canvas>().worldCamera, out movePos);
 			//var xPos = moveMode == MoveModes.Free ? movePos.x : GetClosestBeatPos(movePos.x);
 			var xPos = movePos.x;
 			xPos = Mathf.Clamp(xPos, 0, main.mapWidth);
-			myRect.anchoredPosition = new Vector2(xPos, 0);
+			rectTransfom.anchoredPosition = new Vector2(xPos, 0);
 		}
 
 		protected virtual void OnDragEnd(BaseEventData arg0) { }

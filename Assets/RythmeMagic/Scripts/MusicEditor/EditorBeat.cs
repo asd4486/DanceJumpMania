@@ -16,8 +16,7 @@ namespace RythhmMagic.MusicEditor
 		[HideInInspector] public float time;
 		[HideInInspector] public Vector2 pos;
 
-		[HideInInspector] public List<BeatPosInfo> leftInfos = new List<BeatPosInfo>();
-		[HideInInspector] public List<BeatPosInfo> rightInfos = new List<BeatPosInfo>();
+		[HideInInspector] public List<List<BeatPosInfo>> beatInfoList = new List<List<BeatPosInfo>>();
 
 		public void Init(float _time)
 		{
@@ -30,15 +29,18 @@ namespace RythhmMagic.MusicEditor
 			main.AdjustKeyInKeyList(this);
 		}
 
-		public void SaveBeatInfos(List<EditorBeat> list0, List<EditorBeat> list1)
+		public void SaveBeatInfos(List<List<EditorBeat>> list)
 		{
-			leftInfos.Clear();
-			rightInfos.Clear();
+			beatInfoList.Clear();
 
-			foreach (var b in list0)
-				leftInfos.Add(new BeatPosInfo() { pos = b.pos, time = b.time });
-			foreach (var b in list1)
-				rightInfos.Add(new BeatPosInfo() { pos = b.pos, time = b.time });
+			for(int i=0; i< list.Count; i++)
+			{
+				beatInfoList.Add(new List<BeatPosInfo>());
+				foreach (var info in list[i])
+				{
+					beatInfoList[i].Add(new BeatPosInfo() { pos = info.pos, time = info.time });
+				}
+			}
 		}
 	}
 }

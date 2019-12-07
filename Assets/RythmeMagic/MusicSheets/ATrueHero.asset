@@ -15,9 +15,7 @@ MonoBehaviour:
   music: {fileID: 8300000, guid: 2501dd89745f8684e9fe9fc89b64ebed, type: 3}
   beatList:
   - startTime: 5
-    infos:
-    - type: 0
-      posList: []
+    infos: []
   - startTime: 10
     infos:
     - type: 1

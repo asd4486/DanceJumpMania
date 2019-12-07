@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,7 +25,8 @@ namespace RythhmMagic.MusicEditor
 
 		[SerializeField] RawImage musicMapImage;
 
-		[SerializeField] RectTransform musicProgressBtn;
+		[SerializeField] BtnMusicProgress progressBtn;
+		[SerializeField] Text textProgress;
 
 		//for dragging object in music map
 		public RectTransform RectRefPoint;
@@ -44,7 +47,7 @@ namespace RythhmMagic.MusicEditor
 			clipLenght = myAudio.clip.length;
 
 			bpm = UniBpmAnalyzer.AnalyzeBpm(musicSheet.music);
-			musicProgressBtn.GetComponent<BtnMusicProgress>().Init(Mathf.RoundToInt(clipLenght / 60 * bpm));
+			progressBtn.Init(Mathf.RoundToInt(clipLenght / 60 * bpm));
 
 			//draw music map
 			Texture2D map = musicSheet.music.PaintWaveformSpectrum(4800, 90, Color.green);
@@ -60,15 +63,26 @@ namespace RythhmMagic.MusicEditor
 
 		private void Update()
 		{
+			SetProgressText();
+
 			if (myAudio.clip == null || !myAudio.isPlaying)
 				return;
 
 			var xPos = mapWidth * (myAudio.time / clipLenght);
-			musicProgressBtn.anchoredPosition = new Vector2(xPos, musicProgressBtn.anchoredPosition.y);
+			progressBtn.rectTransfom.anchoredPosition = new Vector2(xPos, 0);
 
 			//auto follow progress when play
 			if (mapScrollRect.horizontalScrollbar.value < (xPos - defaultMapWidth) / mapWidth)
 				mapScrollRect.horizontalScrollbar.value = xPos / mapWidth;
+		}
+
+		private void SetProgressText()
+		{
+			var timeSpan = System.TimeSpan.FromMinutes(GetTimeByPosition(progressBtn.rectTransfom.anchoredPosition.x));
+			string hh = timeSpan.Hours.ToString("00");
+			string mm = timeSpan.Minutes.ToString("00");
+			string ss = timeSpan.Seconds.ToString("00");
+			textProgress.text = hh + ":" + mm + ":" + ss;
 		}
 
 		public void OnClickSaveData()
@@ -76,20 +90,35 @@ namespace RythhmMagic.MusicEditor
 			musicSheet.beatList.Clear();
 			foreach (var beat in musicEditor.beatList)
 			{
-				if(beat.leftInfos.Count > 0 || beat.rightInfos.Count > 0)
+				if (beat.beatInfoList.Count > 0)
 				{
 					var beatObj = new MusicSheetObject.Beat();
-					//if()
-					//beatObj.startTime
+					beatObj.infos = new List<MusicSheetObject.BeatInfo>(beat.beatInfoList.Count);
 
-					//musicSheet.beatList.Add();
+					for (int i = 0; i < beat.beatInfoList.Count; i++)
+					{
+						var infos = beat.beatInfoList[i];
+						beatObj.startTime = infos[0].time;
+
+						var newInfo = new MusicSheetObject.BeatInfo();
+						newInfo.type = infos.Count < 2 ? BeatTypes.Default : BeatTypes.Holding;
+						foreach (var detail in infos)
+							newInfo.posList.Add(new MusicSheetObject.PosInfo() { time = detail.time, pos = detail.pos });
+
+						beatObj.infos.Add(newInfo);
+					}
+					musicSheet.beatList.Add(beatObj);
 				}
 			}
+
+			musicSheet.SaveData(JsonUtility.ToJson(musicSheet));
+			EditorGUIUtility.PingObject(musicSheet);
+			Debug.Log("Data saved");
 		}
 
 		public void OnClickStartMusic()
 		{
-			myAudio.time = GetTimeByPosition(musicProgressBtn.anchoredPosition.x);
+			myAudio.time = GetTimeByPosition(progressBtn.rectTransfom.anchoredPosition.x);
 			myAudio.Play();
 		}
 
@@ -100,14 +129,16 @@ namespace RythhmMagic.MusicEditor
 
 		public void OnClickStopMusic()
 		{
-			musicProgressBtn.anchoredPosition = Vector2.zero;
+			progressBtn.rectTransfom.anchoredPosition = Vector2.zero;
 			mapScrollRect.horizontalScrollbar.value = 0;
 			myAudio.Stop();
 		}
 
 		public void OnClickAddKey()
 		{
-			currentEditor.OnClickAddBeat(GetTimeByPosition(musicProgressBtn.anchoredPosition.x));
+			currentEditor.OnClickAddBeat(GetTimeByPosition(progressBtn.rectTransfom.anchoredPosition.x));
+			//auto switch to beat info edit mode if create a new beat
+			if (currentEditor is MusicEditor) OnClickChangeEditMode();
 		}
 
 		//call when move a key by hand
@@ -118,26 +149,33 @@ namespace RythhmMagic.MusicEditor
 
 		public void OnClickRemoveKey()
 		{
-			currentEditor.OnClickRemoveKey(GetTimeByPosition(musicProgressBtn.anchoredPosition.x));
+			currentEditor.OnClickRemoveKey(GetTimeByPosition(progressBtn.rectTransfom.anchoredPosition.x));
 		}
 
 		public void OnClickFindKey(bool findNext)
 		{
-			var key = currentEditor.FindClosestBeat(GetTimeByPosition(musicProgressBtn.anchoredPosition.x), findNext);
-			if (key != null)
-			{
-				myAudio.Pause();
-				musicProgressBtn.anchoredPosition = new Vector2(key.GetComponent<RectTransform>().anchoredPosition.x, 0);
-			}
+			var beat = currentEditor.FindClosestBeat(GetTimeByPosition(progressBtn.rectTransfom.anchoredPosition.x), findNext);
+			if (beat == null)
+				return;
+
+			myAudio.Pause();
+			progressBtn.rectTransfom.anchoredPosition = new Vector2(beat.GetComponent<RectTransform>().anchoredPosition.x, 0);
+			//refresh markers info
+			if (currentEditor is BeatInfoEditor) beatInfoEditor.SetBeatInfoPosToMarker();
 		}
 
 		public void OnClickZoom(bool zoomIn)
 		{
 			zoomStep += zoomIn ? 1f : -1f;
-			zoomStep = Mathf.Clamp(zoomStep, 1, 20);
+			zoomStep = Mathf.Clamp(zoomStep, 1, 50);
+
+			var progressTime = GetTimeByPosition(progressBtn.rectTransfom.anchoredPosition.x);
 
 			mapWidth = defaultMapWidth * zoomStep;
 			musicMapContent.sizeDelta = new Vector2(mapWidth, musicMapContent.sizeDelta.y);
+
+			//adjust progress button
+			progressBtn.rectTransfom.anchoredPosition = new Vector2(GetPositionByTime(progressTime), 0);
 
 			//adjust all object
 			musicEditor.AdjustKeysPos();
@@ -161,12 +199,12 @@ namespace RythhmMagic.MusicEditor
 				btnEditKey.GetComponent<Image>().color = Color.white;
 				currentEditor = musicEditor;
 				//save changes of one beat
-				beatInfoEditor.SaveChanges();
+				beatInfoEditor.QuitAndSave();
 				beatInfoEditor.gameObject.SetActive(false);
 				return;
 			}
 
-			var beat = musicEditor.FindBeatByTime(GetTimeByPosition(musicProgressBtn.anchoredPosition.x));
+			var beat = musicEditor.FindBeatByTime(GetTimeByPosition(progressBtn.rectTransfom.anchoredPosition.x));
 			if (beat == null) return;
 
 			beatInfoEditor.Init(beat);

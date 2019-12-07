@@ -21,27 +21,23 @@ namespace RythhmMagic.MusicEditor
 		//load all beats
 		public void Init(List<MusicSheetObject.Beat> list)
 		{
-			foreach (var info in list)
+			foreach (var beatInfos in list)
 			{
 				var o = Instantiate(beatPrefab.gameObject);
 				o.transform.SetParent(transform, false);
 
-				var beat = o.GetComponent<EditorBeat>();
-				beat.Init(info.startTime);
-				for (int i = 0; i < info.infos.Count; i++)
+				var newBeat = o.GetComponent<EditorBeat>();
+				newBeat.Init(beatInfos.startTime);
+
+				foreach (var info in beatInfos.infos)
 				{
-					if (i == 0)
-					{
-						foreach (var p in info.infos[i].posList)
-							beat.leftInfos.Add(new BeatPosInfo() { pos = p.pos, time = p.time });
-					}
-					else if (i == 1)
-					{
-						foreach (var p in info.infos[i].posList)
-							beat.rightInfos.Add(new BeatPosInfo() { pos = p.pos, time = p.time });
-					}
+					var posInfos = new List<BeatPosInfo>();
+					foreach (var b in info.posList)
+						posInfos.Add(new BeatPosInfo() { time = b.time, pos = b.pos });
+					newBeat.beatInfoList.Add(posInfos);
 				}
-				AddBeatToList(beat);
+
+				AddBeatToList(newBeat);
 			}
 		}
 
