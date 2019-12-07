@@ -34,13 +34,6 @@ namespace RythhmMagic.MusicEditor
 		public virtual void OnDragSetPos(BaseEventData arg0)
 		{
 			if (onDragAction != null) onDragAction();
-
-			Vector2 movePos;
-			RectTransformUtility.ScreenPointToLocalPointInRectangle(main.RectRefPoint, Input.mousePosition, main.GetComponent<Canvas>().worldCamera, out movePos);
-			//var xPos = moveMode == MoveModes.Free ? movePos.x : GetClosestBeatPos(movePos.x);
-			var xPos = movePos.x;
-			xPos = Mathf.Clamp(xPos, 0, main.mapWidth);
-			rectTransfom.anchoredPosition = new Vector2(xPos, 0);
 		}
 
 		protected virtual void OnDragEnd(BaseEventData arg0) { }

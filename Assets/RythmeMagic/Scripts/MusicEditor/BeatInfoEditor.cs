@@ -153,7 +153,6 @@ namespace RythhmMagic.MusicEditor
 				beatRect.anchoredPosition = new Vector2(keyPosLine.anchoredPosition.x, 0);
 
 			beatList.Remove(key);
-			key.time = main.GetTimeByPosition(beatRect.anchoredPosition.x);
 
 			//overried old key if existe
 			var oldKey = FindBeatByTime(key.time);
@@ -237,7 +236,7 @@ namespace RythhmMagic.MusicEditor
 					b.GetComponent<RectTransform>().anchoredPosition = new Vector2(main.GetPositionByTime(b.time), 0);
 		}
 
-		EditorBeat FindBeatByTime(float time)
+		public EditorBeat FindBeatByTime(float time)
 		{
 			if (selectedLine == null) return null;
 			//top line or bottom line
@@ -249,30 +248,24 @@ namespace RythhmMagic.MusicEditor
 			return null;
 		}
 
+		public EditorBeat FindClosestBeat(float targetTime)
+		{
+			if (selectedLine == null) return null;
+			//top line or bottom line
+			var beatList = selectedLine == btnLines[0] ? beatInfoList[0] : beatInfoList[1];
+			return GetClosestBeat(targetTime, beatList);
+		}
+
 		public EditorBeat FindClosestBeat(float targetTime, bool findNext)
 		{
 			if (selectedLine == null) return null;
 			//top line or bottom line
 			var beatList = selectedLine == btnLines[0] ? beatInfoList[0] : beatInfoList[1];
 
-			EditorBeat closestKey = null;
-			if (beatList.Count < 1) return closestKey;
-
 			if (findNext) beatList = beatList.Where(k => k.time > targetTime).ToList();
 			else beatList = beatList.Where(k => k.time < targetTime).ToList();
 
-			var closestTime = float.MaxValue;
-
-			foreach (var k in beatList)
-			{
-				var time = Mathf.Abs(k.time - targetTime);
-				if (time < closestTime && time >= .02)
-				{
-					closestTime = time;
-					closestKey = k;
-				}
-			}
-			return closestKey;
+			return GetClosestBeat(targetTime, beatList);
 		}
 
 		//find current line closest beat
@@ -280,9 +273,13 @@ namespace RythhmMagic.MusicEditor
 		EditorBeat FindClosestBeat(float targetTime, int index)
 		{
 			var beatList = beatInfoList[index].Where(k => k.time <= targetTime).ToList();
+			return GetClosestBeat(targetTime, beatList);
+		}
 
-			EditorBeat closestKey = null;
-			if (beatList.Count < 1) return closestKey;
+		EditorBeat GetClosestBeat(float targetTime, List<EditorBeat> beatList)
+		{
+			EditorBeat closestBeat = null;
+			if (beatList.Count < 1) return closestBeat;
 
 			var closestTime = float.MaxValue;
 			foreach (var k in beatList)
@@ -291,10 +288,10 @@ namespace RythhmMagic.MusicEditor
 				if (time < closestTime)
 				{
 					closestTime = time;
-					closestKey = k;
+					closestBeat = k;
 				}
 			}
-			return closestKey;
+			return closestBeat;
 		}
 
 		public void QuitAndSave()

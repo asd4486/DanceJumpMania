@@ -8,6 +8,12 @@ using UnityEngine.UI;
 
 namespace RythhmMagic.MusicEditor
 {
+	public enum MoveModes
+	{
+		Free,
+		Magnet
+	}
+
 	public class MusicEditorMain : MonoBehaviour
 	{
 		float bpm;
@@ -17,13 +23,21 @@ namespace RythhmMagic.MusicEditor
 		[SerializeField] AudioSource myAudio;
 		float clipLenght;
 
+		[SerializeField] AudioSource metronomeAudio;
+
 		[SerializeField] ScrollRect mapScrollRect;
 		[SerializeField] RectTransform musicMapContent;
+
 		float defaultMapWidth;
 		public float mapWidth { get; private set; }
-		float zoomStep = 1;
+		[SerializeField] float mapWidthOffset;
+		int zoomStep = 1;
 
 		[SerializeField] RawImage musicMapImage;
+
+		[SerializeField] Transform timeLineParent;
+		[SerializeField] GameObject timeLineTextPrefab;
+		List<RectTransform> timeLineTexts = new List<RectTransform>();
 
 		[SerializeField] BtnMusicProgress progressBtn;
 		[SerializeField] Text textProgress;
@@ -35,11 +49,15 @@ namespace RythhmMagic.MusicEditor
 
 		[SerializeField] MusicEditor musicEditor;
 		[SerializeField] BeatInfoEditor beatInfoEditor;
-		IMusicEditor currentEditor;
+		public IMusicEditor currentEditor { get; private set; }
+
+		public MoveModes moveMode { get; private set; }
+		[SerializeField] Button btnMagnet;
 
 		void Start()
 		{
 			UnityEngine.XR.XRSettings.enabled = false;
+			progressBtn.onDragAction += OnClickPauseMusic;
 
 			if (musicSheet == null || musicSheet.music == null) return;
 
@@ -47,19 +65,38 @@ namespace RythhmMagic.MusicEditor
 			clipLenght = myAudio.clip.length;
 
 			bpm = UniBpmAnalyzer.AnalyzeBpm(musicSheet.music);
-			progressBtn.Init(Mathf.RoundToInt(clipLenght / 60 * bpm));
 
 			//draw music map
-			Texture2D map = musicSheet.music.PaintWaveformSpectrum(4800, 90, Color.green);
+			Texture2D map = musicSheet.music.PaintWaveformSpectrum(9600, 100, Color.green);
 			musicMapImage.texture = map;
-			defaultMapWidth = mapWidth = musicMapContent.sizeDelta.x;
+			defaultMapWidth = mapWidth = musicMapContent.sizeDelta.x - mapWidthOffset * 2;
+
+			//create time line text
+			var roundTime = clipLenght.RoundUp(5);
+			int count = Mathf.RoundToInt(roundTime / 5);
+			for (int i = 0; i < count; i++)
+			{
+				var o = Instantiate(timeLineTextPrefab);
+				o.transform.SetParent(timeLineParent, false);
+				var timeSpan = System.TimeSpan.FromMinutes(5 * i);
+				if (5 * i % 10 == 0)
+					o.GetComponent<Text>().text = timeSpan.Hours.ToString("00") + ":" + timeSpan.Minutes.ToString("00");
+				else
+					o.GetComponent<Text>().enabled = false;
+
+				timeLineTexts.Add(o.GetComponent<RectTransform>());
+			}
+			SetupTimeLineTexts();
 
 			musicEditor.Init(musicSheet.beatList);
 
 			btnEditKey.onClick.AddListener(OnClickChangeEditMode);
 			currentEditor = musicEditor;
 			beatInfoEditor.gameObject.SetActive(false);
+
+			btnMagnet.onClick.AddListener(OnClickActiveMagnet);
 		}
+
 
 		private void Update()
 		{
@@ -74,6 +111,21 @@ namespace RythhmMagic.MusicEditor
 			//auto follow progress when play
 			if (mapScrollRect.horizontalScrollbar.value < (xPos - defaultMapWidth) / mapWidth)
 				mapScrollRect.horizontalScrollbar.value = xPos / mapWidth;
+
+			PlayMetronome();
+		}
+
+		//for metronome 
+		EditorBeat nowBeat = new EditorBeat();
+		void PlayMetronome()
+		{
+			//play metronome
+			var currentBeat = currentEditor.FindBeatByTime(myAudio.time);
+			if (currentBeat != null && currentBeat.time != nowBeat.time)
+			{
+				metronomeAudio.Play();
+				nowBeat = currentBeat;
+			}
 		}
 
 		private void SetProgressText()
@@ -118,12 +170,17 @@ namespace RythhmMagic.MusicEditor
 
 		public void OnClickStartMusic()
 		{
-			myAudio.time = GetTimeByPosition(progressBtn.rectTransfom.anchoredPosition.x);
-			myAudio.Play();
+			if (myAudio.isPlaying) OnClickPauseMusic();
+			else
+			{
+				myAudio.time = GetTimeByPosition(progressBtn.rectTransfom.anchoredPosition.x);
+				myAudio.Play();
+			}
 		}
 
 		public void OnClickPauseMusic()
 		{
+			nowBeat = new EditorBeat();
 			myAudio.Pause();
 		}
 
@@ -142,7 +199,7 @@ namespace RythhmMagic.MusicEditor
 		}
 
 		//call when move a key by hand
-		public void AdjustKeyInKeyList(EditorBeat beat)
+		public void AdjustBeatInBeatList(EditorBeat beat)
 		{
 			currentEditor.AdjustBeatInBeatList(beat);
 		}
@@ -158,7 +215,7 @@ namespace RythhmMagic.MusicEditor
 			if (beat == null)
 				return;
 
-			myAudio.Pause();
+			OnClickPauseMusic();
 			progressBtn.rectTransfom.anchoredPosition = new Vector2(beat.GetComponent<RectTransform>().anchoredPosition.x, 0);
 			//refresh markers info
 			if (currentEditor is BeatInfoEditor) beatInfoEditor.SetBeatInfoPosToMarker();
@@ -166,16 +223,18 @@ namespace RythhmMagic.MusicEditor
 
 		public void OnClickZoom(bool zoomIn)
 		{
-			zoomStep += zoomIn ? 1f : -1f;
+			zoomStep += zoomIn ? 1 : -1;
 			zoomStep = Mathf.Clamp(zoomStep, 1, 50);
 
 			var progressTime = GetTimeByPosition(progressBtn.rectTransfom.anchoredPosition.x);
 
 			mapWidth = defaultMapWidth * zoomStep;
-			musicMapContent.sizeDelta = new Vector2(mapWidth, musicMapContent.sizeDelta.y);
+			musicMapContent.sizeDelta = new Vector2(mapWidth + mapWidthOffset * 2, musicMapContent.sizeDelta.y);
 
 			//adjust progress button
 			progressBtn.rectTransfom.anchoredPosition = new Vector2(GetPositionByTime(progressTime), 0);
+
+			SetupTimeLineTexts();
 
 			//adjust all object
 			musicEditor.AdjustKeysPos();
@@ -192,7 +251,7 @@ namespace RythhmMagic.MusicEditor
 			return xPos / mapWidth * clipLenght;
 		}
 
-		public void OnClickChangeEditMode()
+		void OnClickChangeEditMode()
 		{
 			if (currentEditor is BeatInfoEditor)
 			{
@@ -205,12 +264,32 @@ namespace RythhmMagic.MusicEditor
 			}
 
 			var beat = musicEditor.FindBeatByTime(GetTimeByPosition(progressBtn.rectTransfom.anchoredPosition.x));
-			if (beat == null) return;
+			//auto create new beat when pass to beat info mode
+			if (beat == null)
+			{
+				OnClickAddKey();
+				beat = musicEditor.FindBeatByTime(GetTimeByPosition(progressBtn.rectTransfom.anchoredPosition.x));
+			}
 
 			beatInfoEditor.Init(beat);
 			currentEditor = beatInfoEditor;
 			beatInfoEditor.gameObject.SetActive(true);
 			btnEditKey.GetComponent<Image>().color = Color.green;
+		}
+
+		void SetupTimeLineTexts()
+		{
+			var roundTime = clipLenght.RoundUp(5);
+			var roundWidth = roundTime / clipLenght * mapWidth;
+			var dist = roundWidth / timeLineTexts.Count;
+			for (int i = 0; i < timeLineTexts.Count; i++)
+				timeLineTexts[i].anchoredPosition = new Vector2(dist * i, 0);
+		}
+
+		void OnClickActiveMagnet()
+		{
+			moveMode = moveMode == MoveModes.Free ? MoveModes.Magnet : MoveModes.Free;
+			btnMagnet.GetComponent<Image>().color = moveMode == MoveModes.Free ? Color.white : Color.green;
 		}
 	}
 }

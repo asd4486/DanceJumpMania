@@ -14,15 +14,297 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   music: {fileID: 8300000, guid: 2501dd89745f8684e9fe9fc89b64ebed, type: 3}
   beatList:
-  - startTime: 5
-    infos: []
-  - startTime: 10
+  - startTime: 6.5401587
     infos:
-    - type: 1
+    - type: 0
       posList:
-      - time: 10
+      - time: 6.5401587
+        pos: {x: -0.44, y: 0}
+  - startTime: 8.141328
+    infos:
+    - type: 0
+      posList:
+      - time: 8.141328
+        pos: {x: -0.44, y: 0}
+  - startTime: 9.365289
+    infos:
+    - type: 0
+      posList:
+      - time: 9.365289
+        pos: {x: -0.21, y: -0.26}
+  - startTime: 9.814669
+    infos:
+    - type: 0
+      posList:
+      - time: 9.814669
+        pos: {x: -0.45, y: -0.04}
+  - startTime: 11.401625
+    infos:
+    - type: 0
+      posList:
+      - time: 11.401625
+        pos: {x: -0.48, y: 0.01}
+  - startTime: 12.22906
+    infos:
+    - type: 0
+      posList:
+      - time: 12.22906
+        pos: {x: 0.44, y: 0.36}
+  - startTime: 12.538079
+    infos:
+    - type: 0
+      posList:
+      - time: 12.538079
+        pos: {x: 0.38, y: -0.33}
+  - startTime: 13.002332
+    infos:
+    - type: 0
+      posList:
+      - time: 13.002332
+        pos: {x: -0.46, y: -0.08}
+  - startTime: 13.288359
+    infos:
+    - type: 0
+      posList:
+      - time: 13.288359
+        pos: {x: 0.43, y: 0.34}
+  - startTime: 13.548865
+    infos:
+    - type: 0
+      posList:
+      - time: 13.548865
+        pos: {x: -0.42, y: -0.3}
+  - startTime: 13.802674
+    infos:
+    - type: 0
+      posList:
+      - time: 13.802674
+        pos: {x: 0.43, y: 0.29}
+  - startTime: 14.056483
+    infos:
+    - type: 0
+      posList:
+      - time: 14.056483
+        pos: {x: -0.64, y: 0.02}
+  - startTime: 14.285828
+    infos:
+    - type: 0
+      posList:
+      - time: 14.285828
+        pos: {x: -0.13, y: -0.38}
+  - startTime: 14.585361
+    infos:
+    - type: 0
+      posList:
+      - time: 14.585361
+        pos: {x: -0.39, y: 0.25}
+  - startTime: 14.848428
+    infos:
+    - type: 0
+      posList:
+      - time: 14.848428
+        pos: {x: 0.45, y: -0.09}
+  - startTime: 15.155301
+    infos:
+    - type: 0
+      posList:
+      - time: 15.155301
+        pos: {x: -0.27, y: 0.25}
+  - startTime: 15.4342785
+    infos:
+    - type: 0
+      posList:
+      - time: 15.4342785
         pos: {x: 0, y: 0}
-      - time: 11
+  - startTime: 15.7225485
+    infos:
+    - type: 0
+      posList:
+      - time: 15.7225485
         pos: {x: 0, y: 0}
-      - time: 12
+  - startTime: 15.937284
+    infos:
+    - type: 0
+      posList:
+      - time: 15.937284
+        pos: {x: 0, y: 0}
+  - startTime: 16.13567
+    infos:
+    - type: 0
+      posList:
+      - time: 16.13567
+        pos: {x: 0, y: 0}
+  - startTime: 16.436455
+    infos:
+    - type: 0
+      posList:
+      - time: 16.436455
+        pos: {x: 0, y: 0}
+  - startTime: 16.741472
+    infos:
+    - type: 0
+      posList:
+      - time: 16.741472
+        pos: {x: 0, y: 0}
+  - startTime: 17.016726
+    infos:
+    - type: 0
+      posList:
+      - time: 17.016726
+        pos: {x: 0, y: 0}
+  - startTime: 17.277102
+    infos:
+    - type: 0
+      posList:
+      - time: 17.277102
+        pos: {x: 0, y: 0}
+  - startTime: 17.463081
+    infos:
+    - type: 0
+      posList:
+      - time: 17.463081
+        pos: {x: 0, y: 0}
+  - startTime: 17.753218
+    infos:
+    - type: 0
+      posList:
+      - time: 17.753218
+        pos: {x: 0, y: 0}
+  - startTime: 19.338356
+    infos:
+    - type: 0
+      posList:
+      - time: 19.338356
+        pos: {x: 0, y: 0}
+  - startTime: 19.637888
+    infos:
+    - type: 0
+      posList:
+      - time: 19.637888
+        pos: {x: 0, y: 0}
+  - startTime: 19.954138
+    infos:
+    - type: 0
+      posList:
+      - time: 19.954138
+        pos: {x: 0, y: 0}
+  - startTime: 20.239307
+    infos:
+    - type: 0
+      posList:
+      - time: 20.239307
+        pos: {x: 0, y: 0}
+  - startTime: 20.539022
+    infos:
+    - type: 0
+      posList:
+      - time: 20.539022
+        pos: {x: 0, y: 0}
+  - startTime: 20.7312
+    infos:
+    - type: 0
+      posList:
+      - time: 20.7312
+        pos: {x: 0, y: 0}
+  - startTime: 20.954382
+    infos:
+    - type: 0
+      posList:
+      - time: 20.954382
+        pos: {x: 0, y: 0}
+  - startTime: 21.27675
+    infos:
+    - type: 0
+      posList:
+      - time: 21.27675
+        pos: {x: 0, y: 0}
+  - startTime: 21.555723
+    infos:
+    - type: 0
+      posList:
+      - time: 21.555723
+        pos: {x: 0, y: 0}
+  - startTime: 21.871897
+    infos:
+    - type: 0
+      posList:
+      - time: 21.871897
+        pos: {x: 0, y: 0}
+  - startTime: 22.169472
+    infos:
+    - type: 0
+      posList:
+      - time: 22.169472
+        pos: {x: 0, y: 0}
+  - startTime: 22.382406
+    infos:
+    - type: 0
+      posList:
+      - time: 22.382406
+        pos: {x: 0, y: 0}
+  - startTime: 22.556969
+    infos:
+    - type: 0
+      posList:
+      - time: 22.556969
+        pos: {x: 0, y: 0}
+  - startTime: 22.830736
+    infos:
+    - type: 0
+      posList:
+      - time: 22.830736
+        pos: {x: 0, y: 0}
+  - startTime: 23.166548
+    infos:
+    - type: 0
+      posList:
+      - time: 23.166548
+        pos: {x: 0, y: 0}
+  - startTime: 23.440544
+    infos:
+    - type: 0
+      posList:
+      - time: 23.440544
+        pos: {x: 0, y: 0}
+  - startTime: 23.744593
+    infos:
+    - type: 0
+      posList:
+      - time: 23.744593
+        pos: {x: 0, y: 0}
+  - startTime: 23.951597
+    infos:
+    - type: 0
+      posList:
+      - time: 23.951597
+        pos: {x: 0, y: 0}
+  - startTime: 24.190947
+    infos:
+    - type: 0
+      posList:
+      - time: 24.190947
+        pos: {x: 0, y: 0}
+  - startTime: 24.449488
+    infos:
+    - type: 0
+      posList:
+      - time: 24.449488
+        pos: {x: 0, y: 0}
+  - startTime: 24.729202
+    infos:
+    - type: 0
+      posList:
+      - time: 24.729202
+        pos: {x: 0, y: 0}
+  - startTime: 25.050581
+    infos:
+    - type: 0
+      posList:
+      - time: 25.050581
+        pos: {x: 0, y: 0}
+  - startTime: 25.324348
+    infos:
+    - type: 0
+      posList:
+      - time: 25.324348
         pos: {x: 0, y: 0}

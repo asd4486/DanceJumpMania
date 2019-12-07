@@ -15,6 +15,8 @@ namespace RythhmMagic.MusicEditor
 
 		void AdjustKeysPos();
 
+		EditorBeat FindBeatByTime(float time);
+		EditorBeat FindClosestBeat(float targetTime);
 		EditorBeat FindClosestBeat(float targetTime, bool findNext);
 	}
 }

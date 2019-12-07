@@ -42,6 +42,7 @@ namespace RythhmMagic
 		public void SaveData(string data)
 		{
 			JsonUtility.FromJsonOverwrite(data, this);
+			EditorUtility.SetDirty(this);
 		}
 	}
 }
