@@ -1,92 +1,75 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MarkerEditor : MonoBehaviour
+namespace RythhmMagic.MusicEditor
 {
-	[SerializeField] Transform[] markers;
-	Transform dragMarker;
-	List<TextMeshPro> markerTexts = new List<TextMeshPro>();
-
-	public event System.Action onDragMarkerAction;
-
-	Vector3 screenPoint;
-
-	// Start is called before the first frame update
-	void Start()
+	public class MarkerEditor : MonoBehaviour
 	{
-		HideAllMarkers();
-		foreach (var m in markers)
-			markerTexts.Add(m.GetComponentInChildren<TextMeshPro>());
-	}
+		[SerializeField] EditorMarker[] markers;
+		EditorMarker dragMarker;
+		bool canEdit;
 
-	private void Update()
-	{
-		SetMarkerPosText();
-
-		if (Input.GetMouseButtonDown(0))
+		// Start is called before the first frame update
+		void Start()
 		{
-			RaycastHit hit;
-			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+			HideAllMarkers();
+		}
 
-			if (Physics.Raycast(ray, out hit))
+		private void Update()
+		{
+			if (!canEdit) return;
+
+			if (Input.GetMouseButtonDown(0))
 			{
-				if (hit.collider != null && markers.Contains(hit.collider.transform.parent))
+				RaycastHit hit;
+				Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+				if (Physics.Raycast(ray, out hit))
 				{
-					dragMarker = hit.collider.transform.parent;
-					screenPoint = Camera.main.WorldToScreenPoint(dragMarker.transform.position);
+					if (hit.collider != null && markers.Contains(hit.collider.transform.GetComponentInParent<EditorMarker>()))
+					{
+						dragMarker = hit.collider.transform.GetComponentInParent<EditorMarker>();
+					}
 				}
 			}
-		}
-		else if (Input.GetMouseButtonUp(0))
-		{
-			dragMarker = null;
-		}
-
-		if (dragMarker != null)
-		{
-			if (onDragMarkerAction != null) onDragMarkerAction();
-
-			Vector3 cursorPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
-			Vector3 pos = Camera.main.ScreenToWorldPoint(cursorPoint);
-			dragMarker.position = new Vector3(pos.x, pos.y, dragMarker.transform.position.z);
-		}
-	}
-
-	void SetMarkerPosText()
-	{
-		for(int i = 0; i < markers.Length; i++)
-		{
-			var marker = markers[i];
-			if (marker.gameObject.activeSelf)
+			else if (Input.GetMouseButtonUp(0))
 			{
-				var pos = marker.localPosition;
-				markerTexts[i].text = "X:" + pos.x.ToString("F2") + "  Y:" + pos.y.ToString("F2");
-			}			
-		}		
-	}
+				if (dragMarker != null)
+				{
+					dragMarker.DragEnd();
+					dragMarker = null;
+				}
+			}
 
-	public void HideAllMarkers()
-	{
-		foreach (var m in markers)
-			m.gameObject.SetActive(false);
-	}
+			if (dragMarker != null)
+			{
+				Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+				dragMarker.SetPosition(new Vector3(pos.x, pos.y, dragMarker.transform.position.z), false);
+			}
+		}
 
-	public void ActiveMarker(int index, bool active)
-	{
-		markers[index].gameObject.SetActive(active);
-	}
+		public void SetCanEdit(bool b)
+		{
+			canEdit = b;
+		}
 
-	public void SetMarkerPos(int index, Vector2 pos)
-	{
-		markers[index].transform.localPosition = pos;
-	}
+		public void HideAllMarkers()
+		{
+			foreach (var m in markers)
+				m.gameObject.SetActive(false);
+		}
 
-	public Vector2 GetMarkerPos(int index)
-	{
-		return markers[index].transform.localPosition;
+		public void ActiveMarker(int index, bool active)
+		{
+			markers[index].gameObject.SetActive(active);
+		}
+
+		public void SetMarkerBeat(int index, EditorBeat beat)
+		{
+			markers[index].SetCurrentBeat(beat);
+		}
 	}
 }

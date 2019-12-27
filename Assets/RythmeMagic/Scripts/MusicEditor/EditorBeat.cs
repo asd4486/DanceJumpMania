@@ -19,7 +19,8 @@ namespace RythhmMagic.MusicEditor
 		[HideInInspector] public float time;
 		[HideInInspector] public Vector2 pos;
 
-		[HideInInspector] public List<List<BeatPosInfo>> beatInfoList = new List<List<BeatPosInfo>>();
+		[HideInInspector] public List<BeatPosInfo> leftBeatInfos = new List<BeatPosInfo>();
+		[HideInInspector] public List<BeatPosInfo> rightBeatInfos = new List<BeatPosInfo>();
 
 		private void Start()
 		{
@@ -52,36 +53,41 @@ namespace RythhmMagic.MusicEditor
 		protected override void OnDragEnd(BaseEventData arg0)
 		{
 			var newTime = main.GetTimeByPosition(rectTransfom.anchoredPosition.x);
+
 			//update beat infos
-			if (beatInfoList.Count > 0)
-			{
-				var timeDifference = newTime - time;
-				for (int i = 0; i < beatInfoList.Count; i++)
-				{
-					foreach (var info in beatInfoList[i])
-						info.time = info.time + timeDifference;
-				}
-			}
+			var timeDifference = newTime - time;
+
+			foreach (var info in leftBeatInfos)
+				info.time += timeDifference;
+			foreach (var info in rightBeatInfos)
+				info.time += timeDifference;
+
 			//update time info
 			time = newTime;
 			main.AdjustBeatInBeatList(this);
 		}
 
-		public void SaveBeatInfos(List<List<EditorBeat>> list)
+		public void SaveBeatInfos(List<EditorBeat> leftList, List<EditorBeat> rightList)
 		{
-			beatInfoList.Clear();
+			leftBeatInfos.Clear();
+			rightBeatInfos.Clear();
 
-			for (int i = 0; i < list.Count; i++)
+			foreach (var info in leftList)
 			{
-				beatInfoList.Add(new List<BeatPosInfo>());
-				foreach (var info in list[i])
+				leftBeatInfos.Add(new BeatPosInfo()
 				{
-					beatInfoList[i].Add(new BeatPosInfo()
-					{
-						pos = new Vector2((float)Math.Round(info.pos.x, 2), (float)Math.Round(info.pos.y, 2)),
-						time = info.time
-					});
-				}
+					pos = new Vector2((float)Math.Round(info.pos.x, 2), (float)Math.Round(info.pos.y, 2)),
+					time = info.time
+				});
+			}
+
+			foreach (var info in rightList)
+			{
+				rightBeatInfos.Add(new BeatPosInfo()
+				{
+					pos = new Vector2((float)Math.Round(info.pos.x, 2), (float)Math.Round(info.pos.y, 2)),
+					time = info.time
+				});
 			}
 		}
 	}

@@ -16,6 +16,7 @@ namespace RythhmMagic.MusicEditor
 
 	public class MusicEditorMain : MonoBehaviour
 	{
+		MarkerEditor markerEditor;
 		float bpm;
 
 		[SerializeField] MusicSheetObject musicSheet;
@@ -58,6 +59,8 @@ namespace RythhmMagic.MusicEditor
 		{
 			UnityEngine.XR.XRSettings.enabled = false;
 			progressBtn.onDragAction += OnClickPauseMusic;
+
+			markerEditor = FindObjectOfType<MarkerEditor>();
 
 			if (musicSheet == null || musicSheet.music == null) return;
 
@@ -142,25 +145,33 @@ namespace RythhmMagic.MusicEditor
 			musicSheet.beatList.Clear();
 			foreach (var beat in musicEditor.beatList)
 			{
-				if (beat.beatInfoList.Count > 0)
+				var beatObj = new MusicSheetObject.Beat();
+
+				if (beat.leftBeatInfos.Count > 0)
 				{
-					var beatObj = new MusicSheetObject.Beat();
-					beatObj.infos = new List<MusicSheetObject.BeatInfo>(beat.beatInfoList.Count);
+					beatObj.startTime = beat.leftBeatInfos[0].time;
 
-					for (int i = 0; i < beat.beatInfoList.Count; i++)
-					{
-						var infos = beat.beatInfoList[i];
-						beatObj.startTime = infos[0].time;
+					var newInfo = new MusicSheetObject.BeatInfo();
+					newInfo.type = beat.leftBeatInfos.Count < 2 ? BeatTypes.Default : BeatTypes.Holding;
+					foreach (var detail in beat.leftBeatInfos)
+						newInfo.posList.Add(new MusicSheetObject.PosInfo() { time = detail.time, pos = detail.pos });
 
-						var newInfo = new MusicSheetObject.BeatInfo();
-						newInfo.type = infos.Count < 2 ? BeatTypes.Default : BeatTypes.Holding;
-						foreach (var detail in infos)
-							newInfo.posList.Add(new MusicSheetObject.PosInfo() { time = detail.time, pos = detail.pos });
-
-						beatObj.infos.Add(newInfo);
-					}
-					musicSheet.beatList.Add(beatObj);
+					beatObj.infos.Add(newInfo);
 				}
+				if(beat.rightBeatInfos.Count > 0)
+				{
+					if (beatObj.startTime > beat.rightBeatInfos[0].time)
+						beatObj.startTime = beat.rightBeatInfos[0].time;
+
+					var newInfo = new MusicSheetObject.BeatInfo();
+					newInfo.type = beat.rightBeatInfos.Count < 2 ? BeatTypes.Default : BeatTypes.Holding;
+					foreach (var detail in beat.rightBeatInfos)
+						newInfo.posList.Add(new MusicSheetObject.PosInfo() { time = detail.time, pos = detail.pos });
+
+					beatObj.infos.Add(newInfo);
+				}
+
+				musicSheet.beatList.Add(beatObj);
 			}
 
 			musicSheet.SaveData(JsonUtility.ToJson(musicSheet));
@@ -218,7 +229,7 @@ namespace RythhmMagic.MusicEditor
 			OnClickPauseMusic();
 			progressBtn.rectTransfom.anchoredPosition = new Vector2(beat.GetComponent<RectTransform>().anchoredPosition.x, 0);
 			//refresh markers info
-			if (currentEditor is BeatInfoEditor) beatInfoEditor.SetBeatInfoPosToMarker();
+			if (currentEditor is BeatInfoEditor) beatInfoEditor.SetBeatPosToMarker();
 		}
 
 		public void OnClickZoom(bool zoomIn)
@@ -253,6 +264,8 @@ namespace RythhmMagic.MusicEditor
 
 		void OnClickChangeEditMode()
 		{
+			markerEditor.SetCanEdit(currentEditor is MusicEditor);
+
 			if (currentEditor is BeatInfoEditor)
 			{
 				btnEditKey.GetComponent<Image>().color = Color.white;

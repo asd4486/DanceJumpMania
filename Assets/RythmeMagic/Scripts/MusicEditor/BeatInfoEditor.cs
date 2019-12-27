@@ -5,6 +5,12 @@ using UnityEngine.UI;
 
 namespace RythhmMagic.MusicEditor
 {
+	public enum BeatPiste
+	{
+		Left,
+		Right
+	}
+
 	public class BeatInfoEditor : MonoBehaviour, IMusicEditor
 	{
 		[SerializeField] BtnMusicProgress progressBtn;
@@ -12,8 +18,10 @@ namespace RythhmMagic.MusicEditor
 		MusicEditorMain main;
 		MarkerEditor markerEditor;
 
-		List<List<EditorBeat>> beatInfoList = new List<List<EditorBeat>>();
-		EditorBeat[] editBeatInfos = new EditorBeat[2];
+		List<EditorBeat> leftBeatInfos = new List<EditorBeat>();
+		List<EditorBeat> rightBeatInfos = new List<EditorBeat>();
+		EditorBeat editBeatL = new EditorBeat();
+		EditorBeat editBeatR = new EditorBeat();
 
 		[SerializeField] EditorBeat beatPrefab;
 
@@ -33,34 +41,54 @@ namespace RythhmMagic.MusicEditor
 		{
 			foreach (var btn in btnLines)
 				btn.onClick.AddListener(() => OnClickSelectLine(btn));
-			progressBtn.onDragAction += SetBeatInfoPosToMarker;
-			markerEditor.onDragMarkerAction += SetMarkerPosToBeatInfo;
+			progressBtn.onDragAction += SetBeatPosToMarker;
 
 			OnClickSelectLine(btnLines[0]);
 		}
 
-		public void SetBeatInfoPosToMarker()
+		public void SetBeatPosToMarker()
 		{
 			var time = main.GetTimeByPosition(progressBtn.rectTransfom.anchoredPosition.x);
-			for (int i = 0; i < beatInfoList.Count; i++)
-			{
-				var beat = FindClosestBeat(time, i);
-				if (beat != null && editBeatInfos[i] != beat)
-				{
-					editBeatInfos[i] = beat;
-					markerEditor.SetMarkerPos(i, beat.pos);
-				}
-			}
-		}
 
-		private void SetMarkerPosToBeatInfo()
-		{
-			for (int i = 0; i < editBeatInfos.Length; i++)
+			var beatL = FindClosestBeat(time, BeatPiste.Left);
+			if (beatL != null)
 			{
-				var info = editBeatInfos[i];
-				if (info != null)
-					info.pos = markerEditor.GetMarkerPos(i);
+				//show beat if pointer is in a holding beat
+				//if pointer is in the beat
+				if ((leftBeatInfos.IndexOf(beatL) < leftBeatInfos.Count - 1 || FindBeatByTime(time) == beatL))
+				{
+					if (editBeatL != beatL)
+					{
+						editBeatL = beatL;
+						markerEditor.SetMarkerBeat(0, beatL);
+						markerEditor.ActiveMarker(0, true);
+					}
+				}
+				else
+					markerEditor.ActiveMarker(0, false);
 			}
+			else
+				markerEditor.ActiveMarker(0, false);
+
+			var beatR = FindClosestBeat(time, BeatPiste.Right);
+			if (beatR != null)
+			{
+				//show beat if pointer is in a holding beat
+				//if pointer is in the beat
+				if ((rightBeatInfos.IndexOf(beatR) < rightBeatInfos.Count - 1 || FindBeatByTime(time) == beatR))
+				{
+					if (editBeatR != beatR)
+					{
+						editBeatR = beatR;
+						markerEditor.SetMarkerBeat(1, beatR);
+						markerEditor.ActiveMarker(1, true);
+					}
+				}
+				else
+					markerEditor.ActiveMarker(1, false);
+			}
+			else
+				markerEditor.ActiveMarker(1, false);
 		}
 
 		public void Init(EditorBeat _beat)
@@ -69,16 +97,16 @@ namespace RythhmMagic.MusicEditor
 			keyPosLine.anchoredPosition = new Vector2(selectedBeat.GetComponent<RectTransform>().anchoredPosition.x, 0);
 
 			//clear old beat list
-			foreach (var infos in beatInfoList)
-				foreach (var b in infos)
-					Destroy(b.gameObject);
+			foreach (var b in leftBeatInfos)
+				Destroy(b.gameObject);
+			foreach (var b in rightBeatInfos)
+				Destroy(b.gameObject);
 
-			beatInfoList.Clear();
-			beatInfoList.Add(new List<EditorBeat>());
-			beatInfoList.Add(new List<EditorBeat>());
+			leftBeatInfos.Clear();
+			rightBeatInfos.Clear();
 
 			// first set
-			if (selectedBeat.beatInfoList == null || selectedBeat.beatInfoList.Count < 1)
+			if (selectedBeat.leftBeatInfos.Count < 1 && selectedBeat.rightBeatInfos.Count < 1)
 			{
 				var o = Instantiate(beatPrefab.gameObject);
 				o.transform.SetParent(btnLines[0].transform, false);
@@ -86,36 +114,45 @@ namespace RythhmMagic.MusicEditor
 				var newBeat = o.GetComponent<EditorBeat>();
 				//set selected beat time if is start point
 				AddBeatToList(newBeat);
-
 				return;
 			}
 
 			//load beat infos
-			for (int i = 0; i < selectedBeat.beatInfoList.Count; i++)
+			if (selectedBeat.leftBeatInfos.Count > 0)
 			{
-				Vector2 startPos = Vector2.zero;
-				var infoList = selectedBeat.beatInfoList[i];
-
-				for (int j = 0; j < infoList.Count; j++)
+				for (int i = 0; i < selectedBeat.leftBeatInfos.Count; i++)
 				{
-					var info = infoList[j];
-					if (j == 0) startPos = info.pos;
+					var info = selectedBeat.leftBeatInfos[i];
 
 					var o = Instantiate(beatPrefab.gameObject);
-					o.transform.SetParent(btnLines[i].transform, false);
+					o.transform.SetParent(btnLines[0].transform, false);
 
 					var newBeat = o.GetComponent<EditorBeat>();
 					//set selected beat time if is start point
 					newBeat.Init(info.time);
 					newBeat.pos = info.pos;
-					beatInfoList[i].Add(newBeat);
-					SetBeatInfoPosToMarker();
+					leftBeatInfos.Add(newBeat);
+					SetBeatPosToMarker();
 				}
-
-				//start position for markers
-				markerEditor.ActiveMarker(i, true);
 			}
 
+			if (selectedBeat.rightBeatInfos.Count > 0)
+			{
+				for (int i = 0; i < selectedBeat.rightBeatInfos.Count; i++)
+				{
+					var info = selectedBeat.rightBeatInfos[i];
+
+					var o = Instantiate(beatPrefab.gameObject);
+					o.transform.SetParent(btnLines[1].transform, false);
+
+					var newBeat = o.GetComponent<EditorBeat>();
+					//set selected beat time if is start point
+					newBeat.Init(info.time);
+					newBeat.pos = info.pos;
+					rightBeatInfos.Add(newBeat);
+					SetBeatPosToMarker();
+				}
+			}
 		}
 
 		void OnClickSelectLine(Button line)
@@ -144,7 +181,7 @@ namespace RythhmMagic.MusicEditor
 		public void AdjustBeatInBeatList(EditorBeat key)
 		{
 			//top line or bottom line
-			var beatList = selectedLine == btnLines[0] ? beatInfoList[0] : beatInfoList[1];
+			var beatList = selectedLine == btnLines[0] ? leftBeatInfos : rightBeatInfos;
 
 			if (!beatList.Contains(key)) return;
 
@@ -168,20 +205,16 @@ namespace RythhmMagic.MusicEditor
 
 		void AddBeatToList(EditorBeat beat)
 		{
-			var lineIndex = selectedLine == btnLines[0] ? 0 : 1;
-
+			var piste = selectedLine == btnLines[0] ? BeatPiste.Left : BeatPiste.Right;
 			//top line or bottom line
-			var beatList = beatInfoList[lineIndex];
+			var beatList = piste == BeatPiste.Left ? leftBeatInfos : rightBeatInfos;
 
 			if (beatList.Count < 1)
 			{
-				//active marker if is first element
-				markerEditor.ActiveMarker(lineIndex, true);
-
 				beat.Init(selectedBeat.time);
 				beatList.Add(beat);
 				//refresh markers info
-				SetBeatInfoPosToMarker();
+				SetBeatPosToMarker();
 				return;
 			}
 
@@ -202,15 +235,15 @@ namespace RythhmMagic.MusicEditor
 				beatList.Insert(index, beat);
 
 			//refresh markers info
-			SetBeatInfoPosToMarker();
+			SetBeatPosToMarker();
 		}
 
 		public void OnClickRemoveKey(float time)
 		{
 			if (selectedLine == null) return;
-			var beatIndex = selectedLine == btnLines[0] ? 0 : 1;
+			var piste = selectedLine == btnLines[0] ? BeatPiste.Left : BeatPiste.Right;
 			//top line or bottom line
-			var beatList = beatInfoList[beatIndex];
+			var beatList = piste == BeatPiste.Left ? leftBeatInfos : rightBeatInfos;
 
 			var key = FindBeatByTime(time);
 			//return when can't find key
@@ -220,27 +253,25 @@ namespace RythhmMagic.MusicEditor
 			beatList.Remove(key);
 			Destroy(key.gameObject);
 
-			//disable marker when beat list is empty
-			if (beatList.Count < 1)
-				markerEditor.ActiveMarker(beatIndex, false);
 			//refresh markers info
-			SetBeatInfoPosToMarker();
+			SetBeatPosToMarker();
 		}
 
 		public void AdjustKeysPos()
 		{
 			keyPosLine.anchoredPosition = new Vector2(main.GetPositionByTime(selectedBeat.time), 0);
 			//adjust all object
-			foreach (var infos in beatInfoList)
-				foreach (var b in infos)
-					b.GetComponent<RectTransform>().anchoredPosition = new Vector2(main.GetPositionByTime(b.time), 0);
+			foreach (var b in leftBeatInfos)
+				b.GetComponent<RectTransform>().anchoredPosition = new Vector2(main.GetPositionByTime(b.time), 0);
+			foreach (var b in rightBeatInfos)
+				b.GetComponent<RectTransform>().anchoredPosition = new Vector2(main.GetPositionByTime(b.time), 0);
 		}
 
 		public EditorBeat FindBeatByTime(float time)
 		{
 			if (selectedLine == null) return null;
 			//top line or bottom line
-			var beatList = selectedLine == btnLines[0] ? beatInfoList[0] : beatInfoList[1];
+			var beatList = selectedLine == btnLines[0] ? leftBeatInfos : rightBeatInfos;
 
 			foreach (var k in beatList)
 				if (Mathf.Abs(k.time - time) < .02) return k;
@@ -252,7 +283,7 @@ namespace RythhmMagic.MusicEditor
 		{
 			if (selectedLine == null) return null;
 			//top line or bottom line
-			var beatList = selectedLine == btnLines[0] ? beatInfoList[0] : beatInfoList[1];
+			var beatList = selectedLine == btnLines[0] ? leftBeatInfos : rightBeatInfos;
 			return GetClosestBeat(targetTime, beatList);
 		}
 
@@ -260,7 +291,7 @@ namespace RythhmMagic.MusicEditor
 		{
 			if (selectedLine == null) return null;
 			//top line or bottom line
-			var beatList = selectedLine == btnLines[0] ? beatInfoList[0] : beatInfoList[1];
+			var beatList = selectedLine == btnLines[0] ? leftBeatInfos : rightBeatInfos;
 
 			if (findNext) beatList = beatList.Where(k => k.time > targetTime).ToList();
 			else beatList = beatList.Where(k => k.time < targetTime).ToList();
@@ -270,9 +301,10 @@ namespace RythhmMagic.MusicEditor
 
 		//find current line closest beat
 		//for showing marker editor infos
-		EditorBeat FindClosestBeat(float targetTime, int index)
+		EditorBeat FindClosestBeat(float targetTime, BeatPiste piste)
 		{
-			var beatList = beatInfoList[index].Where(k => k.time <= targetTime).ToList();
+			var beatList = piste == BeatPiste.Left ? leftBeatInfos : rightBeatInfos;
+			beatList = beatList.Where(k => k.time <= targetTime).ToList();
 			return GetClosestBeat(targetTime, beatList);
 		}
 
@@ -298,12 +330,8 @@ namespace RythhmMagic.MusicEditor
 		{
 			markerEditor.HideAllMarkers();
 
-			var list = new List<List<EditorBeat>>();
-			foreach (var info in beatInfoList)
-				if (info.Count > 0) list.Add(info);
-
 			if (selectedBeat == null) return;
-			selectedBeat.SaveBeatInfos(list);
+			selectedBeat.SaveBeatInfos(leftBeatInfos, rightBeatInfos);
 		}
 	}
 }
