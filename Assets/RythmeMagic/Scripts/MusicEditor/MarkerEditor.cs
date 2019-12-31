@@ -10,7 +10,7 @@ namespace RythhmMagic.MusicEditor
 	{
 		[SerializeField] EditorMarker[] markers;
 		EditorMarker dragMarker;
-		bool canEdit;
+		Vector3 dragOffset;
 
 		// Start is called before the first frame update
 		void Start()
@@ -20,8 +20,7 @@ namespace RythhmMagic.MusicEditor
 
 		private void Update()
 		{
-			if (!canEdit) return;
-
+			Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			if (Input.GetMouseButtonDown(0))
 			{
 				RaycastHit hit;
@@ -29,9 +28,14 @@ namespace RythhmMagic.MusicEditor
 
 				if (Physics.Raycast(ray, out hit))
 				{
-					if (hit.collider != null && markers.Contains(hit.collider.transform.GetComponentInParent<EditorMarker>()))
+					if (hit.collider != null && hit.collider.transform.GetComponentInParent<EditorMarker>() != null)
 					{
-						dragMarker = hit.collider.transform.GetComponentInParent<EditorMarker>();
+						var marker = hit.collider.transform.GetComponentInParent<EditorMarker>();
+						if (marker.currentBeat != null)
+						{
+							dragMarker = marker;
+							dragOffset = dragMarker.transform.position - mousePos;
+						}
 					}
 				}
 			}
@@ -46,14 +50,9 @@ namespace RythhmMagic.MusicEditor
 
 			if (dragMarker != null)
 			{
-				Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-				dragMarker.SetPosition(new Vector3(pos.x, pos.y, dragMarker.transform.position.z), false);
+				var pos = transform.InverseTransformPoint(mousePos + dragOffset);
+				dragMarker.SetPosition(pos);
 			}
-		}
-
-		public void SetCanEdit(bool b)
-		{
-			canEdit = b;
 		}
 
 		public void HideAllMarkers()
@@ -70,6 +69,11 @@ namespace RythhmMagic.MusicEditor
 		public void SetMarkerBeat(int index, EditorBeat beat)
 		{
 			markers[index].SetCurrentBeat(beat);
+		}
+
+		public void SetMarkerPos(int index, Vector3 pos)
+		{
+			markers[index].SetPosition(pos);
 		}
 	}
 }

@@ -35,6 +35,7 @@ namespace RythhmMagic.MusicEditor
 		int zoomStep = 1;
 
 		[SerializeField] RawImage musicMapImage;
+		[SerializeField] RawImage musicMapMiniImage;
 
 		[SerializeField] Transform timeLineParent;
 		[SerializeField] GameObject timeLineTextPrefab;
@@ -46,11 +47,7 @@ namespace RythhmMagic.MusicEditor
 		//for dragging object in music map
 		public RectTransform RectRefPoint;
 
-		[SerializeField] Button btnEditKey;
-
-		[SerializeField] MusicEditor musicEditor;
 		[SerializeField] BeatInfoEditor beatInfoEditor;
-		public IMusicEditor currentEditor { get; private set; }
 
 		public MoveModes moveMode { get; private set; }
 		[SerializeField] Button btnMagnet;
@@ -71,7 +68,7 @@ namespace RythhmMagic.MusicEditor
 
 			//draw music map
 			Texture2D map = musicSheet.music.PaintWaveformSpectrum(9600, 100, Color.green);
-			musicMapImage.texture = map;
+			musicMapImage.texture = musicMapMiniImage.texture = map;
 			defaultMapWidth = mapWidth = musicMapContent.sizeDelta.x - mapWidthOffset * 2;
 
 			//create time line text
@@ -91,11 +88,7 @@ namespace RythhmMagic.MusicEditor
 			}
 			SetupTimeLineTexts();
 
-			musicEditor.Init(musicSheet.beatList);
-
-			btnEditKey.onClick.AddListener(OnClickChangeEditMode);
-			currentEditor = musicEditor;
-			beatInfoEditor.gameObject.SetActive(false);
+			beatInfoEditor.Init(musicSheet.beatList);
 
 			btnMagnet.onClick.AddListener(OnClickActiveMagnet);
 		}
@@ -109,7 +102,7 @@ namespace RythhmMagic.MusicEditor
 				return;
 
 			var xPos = mapWidth * (myAudio.time / clipLenght);
-			progressBtn.rectTransfom.anchoredPosition = new Vector2(xPos, 0);
+			progressBtn.SetXPos(xPos);
 
 			//auto follow progress when play
 			if (mapScrollRect.horizontalScrollbar.value < (xPos - defaultMapWidth) / mapWidth)
@@ -119,15 +112,15 @@ namespace RythhmMagic.MusicEditor
 		}
 
 		//for metronome 
-		EditorBeat nowBeat = new EditorBeat();
+		float nowBeatTime = -1;
 		void PlayMetronome()
 		{
 			//play metronome
-			var currentBeat = currentEditor.FindBeatByTime(myAudio.time);
-			if (currentBeat != null && currentBeat.time != nowBeat.time)
+			var currentBeat = beatInfoEditor.FindBeatByTimeInAllPiste(myAudio.time);
+			if (currentBeat != null && currentBeat.time != nowBeatTime)
 			{
 				metronomeAudio.Play();
-				nowBeat = currentBeat;
+				nowBeatTime = currentBeat.time;
 			}
 		}
 
@@ -143,35 +136,48 @@ namespace RythhmMagic.MusicEditor
 		public void OnClickSaveData()
 		{
 			musicSheet.beatList.Clear();
-			foreach (var beat in musicEditor.beatList)
+
+			foreach (var group in beatInfoEditor.beatGroupsL)
 			{
 				var beatObj = new MusicSheetObject.Beat();
 
-				if (beat.leftBeatInfos.Count > 0)
-				{
-					beatObj.startTime = beat.leftBeatInfos[0].time;
+				beatObj.startTime = group.beatList[0].time;
 
-					var newInfo = new MusicSheetObject.BeatInfo();
-					newInfo.type = beat.leftBeatInfos.Count < 2 ? BeatTypes.Default : BeatTypes.Holding;
-					foreach (var detail in beat.leftBeatInfos)
-						newInfo.posList.Add(new MusicSheetObject.PosInfo() { time = detail.time, pos = detail.pos });
+				var newInfo = new MusicSheetObject.BeatInfo();
+				newInfo.type = group.beatList.Count < 2 ? BeatTypes.Default : BeatTypes.Holding;
+				foreach (var beat in group.beatList)
+					newInfo.posList.Add(new MusicSheetObject.PosInfo() { time = beat.time, pos = beat.pos });
 
-					beatObj.infos.Add(newInfo);
-				}
-				if(beat.rightBeatInfos.Count > 0)
-				{
-					if (beatObj.startTime > beat.rightBeatInfos[0].time)
-						beatObj.startTime = beat.rightBeatInfos[0].time;
-
-					var newInfo = new MusicSheetObject.BeatInfo();
-					newInfo.type = beat.rightBeatInfos.Count < 2 ? BeatTypes.Default : BeatTypes.Holding;
-					foreach (var detail in beat.rightBeatInfos)
-						newInfo.posList.Add(new MusicSheetObject.PosInfo() { time = detail.time, pos = detail.pos });
-
-					beatObj.infos.Add(newInfo);
-				}
-
+				beatObj.infos.Add(newInfo);
 				musicSheet.beatList.Add(beatObj);
+			}
+
+			foreach (var group in beatInfoEditor.beatGroupsR)
+			{
+				var beatObj = musicSheet.beatList.Where(b => Mathf.Abs(b.startTime - group.beatList[0].time) < 0.02f).FirstOrDefault();
+				if (beatObj != null)
+				{
+					var newInfo = new MusicSheetObject.BeatInfo();
+					newInfo.type = group.beatList.Count < 2 ? BeatTypes.Default : BeatTypes.Holding;
+					foreach (var beat in group.beatList)
+						newInfo.posList.Add(new MusicSheetObject.PosInfo() { time = beat.time, pos = beat.pos });
+
+					beatObj.infos.Add(newInfo);
+				}
+				else
+				{
+					beatObj = new MusicSheetObject.Beat();
+
+					beatObj.startTime = group.beatList[0].time;
+
+					var newInfo = new MusicSheetObject.BeatInfo();
+					newInfo.type = group.beatList.Count < 2 ? BeatTypes.Default : BeatTypes.Holding;
+					foreach (var beat in group.beatList)
+						newInfo.posList.Add(new MusicSheetObject.PosInfo() { time = beat.time, pos = beat.pos });
+
+					beatObj.infos.Add(newInfo);
+					musicSheet.beatList.Add(beatObj);
+				}
 			}
 
 			musicSheet.SaveData(JsonUtility.ToJson(musicSheet));
@@ -191,45 +197,37 @@ namespace RythhmMagic.MusicEditor
 
 		public void OnClickPauseMusic()
 		{
-			nowBeat = new EditorBeat();
+			nowBeatTime = -1;
 			myAudio.Pause();
 		}
 
 		public void OnClickStopMusic()
 		{
-			progressBtn.rectTransfom.anchoredPosition = Vector2.zero;
+			progressBtn.SetXPos(0);
 			mapScrollRect.horizontalScrollbar.value = 0;
 			myAudio.Stop();
 		}
 
 		public void OnClickAddKey()
 		{
-			currentEditor.OnClickAddBeat(GetTimeByPosition(progressBtn.rectTransfom.anchoredPosition.x));
-			//auto switch to beat info edit mode if create a new beat
-			if (currentEditor is MusicEditor) OnClickChangeEditMode();
-		}
-
-		//call when move a key by hand
-		public void AdjustBeatInBeatList(EditorBeat beat)
-		{
-			currentEditor.AdjustBeatInBeatList(beat);
+			beatInfoEditor.OnClickAddBeat(GetTimeByPosition(progressBtn.rectTransfom.anchoredPosition.x));
 		}
 
 		public void OnClickRemoveKey()
 		{
-			currentEditor.OnClickRemoveKey(GetTimeByPosition(progressBtn.rectTransfom.anchoredPosition.x));
+			beatInfoEditor.OnClickRemoveKey(GetTimeByPosition(progressBtn.rectTransfom.anchoredPosition.x));
 		}
 
 		public void OnClickFindKey(bool findNext)
 		{
-			var beat = currentEditor.FindClosestBeat(GetTimeByPosition(progressBtn.rectTransfom.anchoredPosition.x), findNext);
-			if (beat == null)
-				return;
+			var piste = beatInfoEditor.GetSelectedPiste();
+			if (piste == null) return;
+
+			var beat = beatInfoEditor.FindClosestBeat(GetTimeByPosition(progressBtn.rectTransfom.anchoredPosition.x), piste.Value, findNext);
+			if (beat == null) return;
 
 			OnClickPauseMusic();
-			progressBtn.rectTransfom.anchoredPosition = new Vector2(beat.GetComponent<RectTransform>().anchoredPosition.x, 0);
-			//refresh markers info
-			if (currentEditor is BeatInfoEditor) beatInfoEditor.SetBeatPosToMarker();
+			progressBtn.SetXPos(beat.rectTransfom.anchoredPosition.x);
 		}
 
 		public void OnClickZoom(bool zoomIn)
@@ -243,13 +241,12 @@ namespace RythhmMagic.MusicEditor
 			musicMapContent.sizeDelta = new Vector2(mapWidth + mapWidthOffset * 2, musicMapContent.sizeDelta.y);
 
 			//adjust progress button
-			progressBtn.rectTransfom.anchoredPosition = new Vector2(GetPositionByTime(progressTime), 0);
+			progressBtn.SetXPos(GetPositionByTime(progressTime));
 
 			SetupTimeLineTexts();
 
 			//adjust all object
-			musicEditor.AdjustKeysPos();
-			if (currentEditor is BeatInfoEditor) beatInfoEditor.AdjustKeysPos();
+			beatInfoEditor.AdjustBeatPos();
 		}
 
 		public float GetPositionByTime(float time)
@@ -260,34 +257,6 @@ namespace RythhmMagic.MusicEditor
 		public float GetTimeByPosition(float xPos)
 		{
 			return xPos / mapWidth * clipLenght;
-		}
-
-		void OnClickChangeEditMode()
-		{
-			markerEditor.SetCanEdit(currentEditor is MusicEditor);
-
-			if (currentEditor is BeatInfoEditor)
-			{
-				btnEditKey.GetComponent<Image>().color = Color.white;
-				currentEditor = musicEditor;
-				//save changes of one beat
-				beatInfoEditor.QuitAndSave();
-				beatInfoEditor.gameObject.SetActive(false);
-				return;
-			}
-
-			var beat = musicEditor.FindBeatByTime(GetTimeByPosition(progressBtn.rectTransfom.anchoredPosition.x));
-			//auto create new beat when pass to beat info mode
-			if (beat == null)
-			{
-				OnClickAddKey();
-				beat = musicEditor.FindBeatByTime(GetTimeByPosition(progressBtn.rectTransfom.anchoredPosition.x));
-			}
-
-			beatInfoEditor.Init(beat);
-			currentEditor = beatInfoEditor;
-			beatInfoEditor.gameObject.SetActive(true);
-			btnEditKey.GetComponent<Image>().color = Color.green;
 		}
 
 		void SetupTimeLineTexts()
@@ -303,6 +272,28 @@ namespace RythhmMagic.MusicEditor
 		{
 			moveMode = moveMode == MoveModes.Free ? MoveModes.Magnet : MoveModes.Free;
 			btnMagnet.GetComponent<Image>().color = moveMode == MoveModes.Free ? Color.white : Color.green;
+		}
+
+		//magnet mode
+		public EditorBeat AttractToBeat(float xPos)
+		{
+			var closestBeat = new EditorBeat();
+			var piste = beatInfoEditor.GetSelectedPiste();
+			var time = GetTimeByPosition(xPos);
+			if (piste == null)
+			{
+				closestBeat = beatInfoEditor.FindClosestBeat(time, BeatPiste.Left);
+				if (closestBeat == null)
+					closestBeat = beatInfoEditor.FindClosestBeat(time, BeatPiste.Right);
+			}
+			else
+				closestBeat = beatInfoEditor.FindClosestBeat(time, piste.Value);
+
+			if (closestBeat == null) return null;
+			if (Mathf.Abs(xPos - closestBeat.rectTransfom.anchoredPosition.x) < 10)
+				return closestBeat;
+
+			return null;
 		}
 	}
 }

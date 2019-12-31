@@ -7,7 +7,7 @@ namespace RythhmMagic.MusicEditor
 {
 	public class EditorMarker : MonoBehaviour
 	{
-		EditorBeat currentBeat;
+		public EditorBeat currentBeat { get; private set; }
 
 		TextMeshPro textPos;
 		// Start is called before the first frame update
@@ -19,14 +19,11 @@ namespace RythhmMagic.MusicEditor
 		public void SetCurrentBeat(EditorBeat beat)
 		{
 			currentBeat = beat;
-			SetPosition(beat.pos);
 		}
 
-		public void SetPosition(Vector3 pos, bool isLocal = true)
+		public void SetPosition(Vector3 pos)
 		{
-			if (!isLocal) transform.position = pos;
-			else transform.localPosition = pos;
-
+			transform.localPosition = new Vector3(pos.x, pos.y);
 			textPos.text = "X:" + transform.localPosition.x.ToString("F2") + "  Y:" + transform.localPosition.y.ToString("F2");
 		}
 
