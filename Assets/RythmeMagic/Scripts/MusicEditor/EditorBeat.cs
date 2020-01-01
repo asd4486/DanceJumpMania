@@ -29,11 +29,8 @@ namespace RythhmMagic.MusicEditor
 			rectTransfom.anchoredPosition = new Vector2(main.GetPositionByTime(time), 0);
 		}
 
-		public override void OnDragSetPos(BaseEventData arg0)
+		public override void OnDragSetPos(float xPos)
 		{
-			Vector2 movePos;
-			RectTransformUtility.ScreenPointToLocalPointInRectangle(main.RectRefPoint, Input.mousePosition, main.GetComponent<Canvas>().worldCamera, out movePos);
-			var xPos = Mathf.Clamp(movePos.x, 0, main.mapWidth);
 			//magnet mode set position to progress button when close 
 			if (main.moveMode == MoveModes.Magnet)
 			{
@@ -42,16 +39,16 @@ namespace RythhmMagic.MusicEditor
 			}
 
 			rectTransfom.anchoredPosition = new Vector2(xPos, 0);
-			base.OnDragSetPos(arg0);
+			base.OnDragSetPos(xPos);
 		}
 
-		protected override void OnDragEnd(BaseEventData arg0)
+		public override void OnDragEnd()
 		{
-			if (onDragEndAction != null) onDragEndAction(this);
-
 			var newTime = main.GetTimeByPosition(rectTransfom.anchoredPosition.x);
 			//update time info
 			time = newTime;
+
+			if (onDragEndAction != null) onDragEndAction(this);
 		}
 	}
 }

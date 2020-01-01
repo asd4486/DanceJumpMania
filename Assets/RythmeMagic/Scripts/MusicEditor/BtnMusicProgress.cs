@@ -10,11 +10,8 @@ namespace RythhmMagic.MusicEditor
 	public class BtnMusicProgress : EditorKeyBase
 	{
 		public event System.Action onSetPosAction;
-		public override void OnDragSetPos(BaseEventData arg0)
+		public override void OnDragSetPos(float xPos)
 		{
-			Vector2 movePos;
-			RectTransformUtility.ScreenPointToLocalPointInRectangle(main.RectRefPoint, Input.mousePosition, main.GetComponent<Canvas>().worldCamera, out movePos);
-			var xPos = Mathf.Clamp(movePos.x, 0, main.mapWidth);
 			//magnet mode set position to closest beat 
 			if (main.moveMode == MoveModes.Magnet)
 			{
@@ -23,7 +20,7 @@ namespace RythhmMagic.MusicEditor
 			}
 
 			SetXPos(xPos);
-			base.OnDragSetPos(arg0);
+			base.OnDragSetPos(xPos);
 		}
 
 		public void SetXPos(float xPos)

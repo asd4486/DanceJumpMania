@@ -7,8 +7,11 @@ namespace RythhmMagic.MusicEditor
 	public class EditorBeatGroup : MonoBehaviour
 	{
 		[HideInInspector] public List<EditorBeat> beatList = new List<EditorBeat>();
+		public BeatPiste CurrentPiste { get; private set; }
 		RectTransform myRect;
 
+		public event System.Action<EditorBeatGroup> onAddBeatAction;
+		public event System.Action<EditorBeatGroup> onRemoveBeatAction;
 		public event System.Action<EditorBeatGroup> onDestroyAction;
 
 		private void Awake()
@@ -16,23 +19,32 @@ namespace RythhmMagic.MusicEditor
 			myRect = GetComponent<RectTransform>();
 		}
 
-		public void Init(List<EditorBeat> beats)
+		public void Init(List<EditorBeat> beats, BeatPiste piste)
 		{
 			foreach (var b in beats)
-			{
 				beatList.Add(b);
-			}
 
-			if (beatList.Count > 1)
-			{
-				beatList[0].onDragAction += SetGroupLenght;
-				beatList[beatList.Count - 1].onDragAction += SetGroupLenght;
-			}
+			beatList[0].onDragAction += SetGroupLenght;
+			if (beatList.Count > 1) beatList[beatList.Count - 1].onDragAction += SetGroupLenght;
+			SetGroupLenght();
+
+			CurrentPiste = piste;
 		}
 
 		public void SetGroupLenght()
 		{
+			var startBeat = beatList[0];
+			myRect.anchoredPosition = startBeat.rectTransfom.anchoredPosition;
 
+			if (beatList.Count < 2)
+			{
+				myRect.sizeDelta = Vector2.zero;
+				return;
+			}
+
+			var endBeat = beatList[beatList.Count - 1];
+			var beatLenght = endBeat.rectTransfom.anchoredPosition.x - startBeat.rectTransfom.anchoredPosition.x;
+			myRect.sizeDelta = new Vector2(beatLenght, myRect.sizeDelta.y);
 		}
 
 		public void AdjustBeatInList(EditorBeat beat)
@@ -42,14 +54,6 @@ namespace RythhmMagic.MusicEditor
 			var beatRect = beat.rectTransfom;
 
 			beatList.Remove(beat);
-
-			//overried old key if existe
-			var oldBeat = FindBeatByTime(beat.time);
-			if (oldBeat != null && oldBeat != beat)
-			{
-				beatList.Remove(oldBeat);
-				Destroy(oldBeat.gameObject);
-			}
 
 			//readd key in key list
 			AddBeat(beat);
@@ -62,36 +66,46 @@ namespace RythhmMagic.MusicEditor
 			if (oldBeat != null)
 			{
 				beatList.Remove(oldBeat);
-				Destroy(oldBeat);
+				Destroy(oldBeat.gameObject);
 			}
 
-			var index = 0;
-			var time = beat.time;
-
-			for (int i = 0; i < beatList.Count; i++)
+			if (beatList.Count < 1)
 			{
-				if (time > beatList[i].time)
-					index += 1;
-				else
-					break;
-			}
-
-			if (index >= beatList.Count)
-			{
-				beatList[beatList.Count - 1].onDragAction -= SetGroupLenght;
 				beatList.Add(beat);
-				beat.onDragAction += SetGroupLenght;
+				beatList[0].onDragAction += SetGroupLenght;
+				SetGroupLenght();
 			}
 			else
 			{
-				beatList.Insert(index, beat);
-				if (index == 0)
+				beatList[0].onDragAction -= SetGroupLenght;
+				beatList[beatList.Count - 1].onDragAction -= SetGroupLenght;
+
+				var index = 0;
+				var time = beat.time;
+				for (int i = 0; i < beatList.Count; i++)
 				{
-					//remove old zero index
-					beatList[1].onDragAction -= SetGroupLenght;
-					beat.onDragAction += SetGroupLenght;
+					if (time > beatList[i].time)
+						index += 1;
+					else
+						break;
 				}
+
+				if (index >= beatList.Count)
+				{
+					beatList.Add(beat);
+					SetGroupLenght();
+				}
+				else
+				{
+					beatList.Insert(index, beat);
+					if (index == 0) SetGroupLenght();
+				}
+
+				beatList[0].onDragAction += SetGroupLenght;
+				beatList[beatList.Count - 1].onDragAction += SetGroupLenght;
 			}
+
+			if (onAddBeatAction != null) onAddBeatAction(this);
 		}
 
 		public void RemoveBeat(EditorBeat beat)
@@ -100,12 +114,17 @@ namespace RythhmMagic.MusicEditor
 				return;
 
 			beatList.Remove(beat);
-			Destroy(beat);
+			Destroy(beat.gameObject);
 
 			if (beatList.Count < 1)
 			{
 				if (onDestroyAction != null) onDestroyAction(this);
-				Destroy(this);
+				Destroy(gameObject, 0.1f);
+			}
+			else
+			{
+				SetGroupLenght();
+				if (onRemoveBeatAction != null) onRemoveBeatAction(this);
 			}
 		}
 
@@ -129,6 +148,9 @@ namespace RythhmMagic.MusicEditor
 			var startTime = float.MaxValue;
 			var endTime = float.MaxValue;
 
+			var startTimeDist = float.MaxValue;
+			var endTimeDist = float.MaxValue;
+
 			foreach (var b in beatList)
 			{
 				//return beat pos if can directly find beat by time
@@ -138,23 +160,28 @@ namespace RythhmMagic.MusicEditor
 					return b.pos;
 				}
 
-				if (b.time < _time && b.time < startTime)
+				var timeDist = Mathf.Abs(_time - b.time);
+				if (b.time < _time && timeDist < startTimeDist)
 				{
 					startPos = b.pos;
 					startTime = b.time;
+					startTimeDist = timeDist;
 				}
-				else if (b.time > _time && b.time < endTime)
+				else if (b.time > _time && timeDist < endTimeDist)
 				{
 					endPos = b.pos;
 					endTime = b.time;
+					endTimeDist = timeDist;
 				}
 			}
 
 			_currentBeat = null;
-			var dist = new Vector2(startPos.x + endPos.x, startPos.y + endPos.y);
-			var precent = (_time - startTime) / (endTime - startTime);
+			if (startPos == endPos)
+				return startPos;
 
-			return startPos + dist * precent;
+			var posDist = endPos - startPos;
+			var precent = 1 - (_time - startTime) / (endTime - startTime);
+			return endPos - posDist * precent;
 		}
 
 		public bool CheckTimeInRange(float time)
