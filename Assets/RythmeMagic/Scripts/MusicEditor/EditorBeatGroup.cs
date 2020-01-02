@@ -4,6 +4,17 @@ using System.Collections.Generic;
 
 namespace RythhmMagic.MusicEditor
 {
+	//for copy paste
+	public class BeatGroupInfo
+	{
+		public List<BeatInfo> beatInfoList = new List<BeatInfo>();
+
+		public BeatGroupInfo(List<BeatInfo> infos)
+		{
+			beatInfoList = infos;
+		}
+	}
+
 	public class EditorBeatGroup : MonoBehaviour
 	{
 		[HideInInspector] public List<EditorBeat> beatList = new List<EditorBeat>();
@@ -62,7 +73,7 @@ namespace RythhmMagic.MusicEditor
 		public void AddBeat(EditorBeat beat)
 		{
 			//replace oldbeat by new beat
-			var oldBeat = FindBeatByTime(beat.time);
+			var oldBeat = FindBeatByTime(beat.info.time);
 			if (oldBeat != null)
 			{
 				beatList.Remove(oldBeat);
@@ -81,10 +92,10 @@ namespace RythhmMagic.MusicEditor
 				beatList[beatList.Count - 1].onDragAction -= SetGroupLenght;
 
 				var index = 0;
-				var time = beat.time;
+				var time = beat.info.time;
 				for (int i = 0; i < beatList.Count; i++)
 				{
-					if (time > beatList[i].time)
+					if (time > beatList[i].info.time)
 						index += 1;
 					else
 						break;
@@ -131,7 +142,7 @@ namespace RythhmMagic.MusicEditor
 		EditorBeat FindBeatByTime(float time)
 		{
 			foreach (var b in beatList)
-				if (Mathf.Abs(b.time - time) < .02) return b;
+				if (Mathf.Abs(b.info.time - time) < .02) return b;
 			return null;
 		}
 
@@ -140,7 +151,7 @@ namespace RythhmMagic.MusicEditor
 			if (beatList.Count < 2)
 			{
 				_currentBeat = beatList[0];
-				return beatList[0].pos;
+				return beatList[0].info.pos;
 			}
 
 			var startPos = Vector2.zero;
@@ -154,23 +165,23 @@ namespace RythhmMagic.MusicEditor
 			foreach (var b in beatList)
 			{
 				//return beat pos if can directly find beat by time
-				if (Mathf.Abs(b.time - _time) < .02)
+				if (Mathf.Abs(b.info.time - _time) < .02)
 				{
 					_currentBeat = b;
-					return b.pos;
+					return b.info.pos;
 				}
 
-				var timeDist = Mathf.Abs(_time - b.time);
-				if (b.time < _time && timeDist < startTimeDist)
+				var timeDist = Mathf.Abs(_time - b.info.time);
+				if (b.info.time < _time && timeDist < startTimeDist)
 				{
-					startPos = b.pos;
-					startTime = b.time;
+					startPos = b.info.pos;
+					startTime = b.info.time;
 					startTimeDist = timeDist;
 				}
-				else if (b.time > _time && timeDist < endTimeDist)
+				else if (b.info.time > _time && timeDist < endTimeDist)
 				{
-					endPos = b.pos;
-					endTime = b.time;
+					endPos = b.info.pos;
+					endTime = b.info.time;
 					endTimeDist = timeDist;
 				}
 			}
@@ -187,8 +198,8 @@ namespace RythhmMagic.MusicEditor
 		public bool CheckTimeInRange(float time)
 		{
 			if (beatList.Count < 2)
-				return Mathf.Abs(time - beatList[0].time) < 0.02f;
-			return beatList[0].time <= time && beatList[beatList.Count - 1].time >= time;
+				return Mathf.Abs(time - beatList[0].info.time) < 0.02f;
+			return beatList[0].info.time <= time && beatList[beatList.Count - 1].info.time >= time;
 		}
 	}
 }

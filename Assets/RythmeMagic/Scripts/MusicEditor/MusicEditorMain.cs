@@ -24,6 +24,7 @@ namespace RythhmMagic.MusicEditor
 		[SerializeField] AudioSource myAudio;
 		float clipLenght;
 
+		[SerializeField] Button btnMetronome;
 		[SerializeField] AudioSource metronomeAudio;
 
 		[SerializeField] ScrollRect mapScrollRect;
@@ -88,6 +89,7 @@ namespace RythhmMagic.MusicEditor
 
 			beatInfoEditor.Init(musicSheet.beatList);
 
+			btnMetronome.onClick.AddListener(OnClickActiveMetronome);
 			btnMagnet.onClick.AddListener(OnClickActiveMagnet);
 		}
 
@@ -109,22 +111,31 @@ namespace RythhmMagic.MusicEditor
 			PlayMetronome();
 		}
 
+
+		void OnClickActiveMetronome()
+		{
+			metronomeAudio.enabled = !metronomeAudio.enabled;
+			btnMetronome.image.color = metronomeAudio.enabled ? Color.white : new Color(1, 1, 1, 0.5f);
+		}
+
 		//for metronome 
 		float nowBeatTime = -1;
 		void PlayMetronome()
 		{
+			if (!metronomeAudio.enabled) return;
+
 			//play metronome
 			var currentBeat = beatInfoEditor.FindBeatByTimeInAllPiste(myAudio.time);
-			if (currentBeat != null && currentBeat.time != nowBeatTime)
+			if (currentBeat != null && currentBeat.info.time != nowBeatTime)
 			{
 				metronomeAudio.Play();
-				nowBeatTime = currentBeat.time;
+				nowBeatTime = currentBeat.info.time;
 			}
 		}
 
 		private void SetProgressText()
 		{
-			var timeSpan = System.TimeSpan.FromMinutes(GetTimeByPosition(progressBtn.rectTransfom.anchoredPosition.x));
+			var timeSpan = System.TimeSpan.FromMinutes(GetProgressTime());
 			string hh = timeSpan.Hours.ToString("00");
 			string mm = timeSpan.Minutes.ToString("00");
 			string ss = timeSpan.Seconds.ToString("00");
@@ -135,20 +146,20 @@ namespace RythhmMagic.MusicEditor
 		{
 			musicSheet.beatList.Clear();
 
-			for(int i=0; i< beatInfoEditor.beatGroupsList.Count; i++)
+			for (int i = 0; i < beatInfoEditor.beatGroupsList.Count; i++)
 			{
 				foreach (var group in beatInfoEditor.beatGroupsList[i])
 				{
 					var newInfo = new MusicSheetObject.BeatInfo();
 					newInfo.type = group.beatList.Count < 2 ? BeatTypes.Default : BeatTypes.Holding;
 					foreach (var beat in group.beatList)
-						newInfo.posList.Add(new MusicSheetObject.PosInfo() { time = beat.time, pos = beat.pos });
+						newInfo.posList.Add(new MusicSheetObject.PosInfo() { time = beat.info.time, pos = beat.info.pos });
 
-					var beatObj = musicSheet.beatList.Where(b => Mathf.Abs(b.startTime - group.beatList[0].time) < 0.02f).FirstOrDefault();
+					var beatObj = musicSheet.beatList.Where(b => Mathf.Abs(b.startTime - group.beatList[0].info.time) < 0.02f).FirstOrDefault();
 					if (beatObj == null)
 					{
 						beatObj = new MusicSheetObject.Beat();
-						beatObj.startTime = group.beatList[0].time;
+						beatObj.startTime = group.beatList[0].info.time;
 
 						musicSheet.beatList.Add(beatObj);
 					}
@@ -161,12 +172,12 @@ namespace RythhmMagic.MusicEditor
 			Debug.Log("Data saved");
 		}
 
-		public void OnClickStartMusic()
+		public void OnClickPlayMusic()
 		{
 			if (myAudio.isPlaying) PauseMusic();
 			else
 			{
-				myAudio.time = GetTimeByPosition(progressBtn.rectTransfom.anchoredPosition.x);
+				myAudio.time = GetProgressTime();
 				myAudio.Play();
 			}
 		}
@@ -186,17 +197,17 @@ namespace RythhmMagic.MusicEditor
 
 		public void OnClickAddKey()
 		{
-			beatInfoEditor.OnClickAddBeat(GetTimeByPosition(progressBtn.rectTransfom.anchoredPosition.x));
+			beatInfoEditor.OnClickAddBeat(GetProgressTime());
 		}
 
 		public void OnClickAddBeatInGroup()
 		{
-			beatInfoEditor.OnClickAddBeatInGroup(GetTimeByPosition(progressBtn.rectTransfom.anchoredPosition.x));
+			beatInfoEditor.OnClickAddBeatInGroup(GetProgressTime());
 		}
 
 		public void OnClickRemoveKey()
 		{
-			beatInfoEditor.OnClickRemoveBeat(GetTimeByPosition(progressBtn.rectTransfom.anchoredPosition.x));
+			beatInfoEditor.OnClickRemoveBeat(GetProgressTime());
 		}
 
 		public void OnClickFindKey(bool findNext)
@@ -204,7 +215,7 @@ namespace RythhmMagic.MusicEditor
 			var piste = beatInfoEditor.GetSelectedPiste();
 			if (piste == null) return;
 
-			var beat = beatInfoEditor.FindClosestBeat(GetTimeByPosition(progressBtn.rectTransfom.anchoredPosition.x), piste.Value, findNext);
+			var beat = beatInfoEditor.FindClosestBeat(GetProgressTime(), piste.Value, findNext);
 			if (beat == null) return;
 
 			PauseMusic();
@@ -216,7 +227,7 @@ namespace RythhmMagic.MusicEditor
 			zoomStep += zoomIn ? 1 : -1;
 			zoomStep = Mathf.Clamp(zoomStep, 1, 50);
 
-			var progressTime = GetTimeByPosition(progressBtn.rectTransfom.anchoredPosition.x);
+			var progressTime = GetProgressTime();
 
 			mapWidth = defaultMapWidth * zoomStep;
 			musicMapContent.sizeDelta = new Vector2(mapWidth + mapWidthOffset * 2, musicMapContent.sizeDelta.y);
@@ -240,6 +251,11 @@ namespace RythhmMagic.MusicEditor
 			return xPos / mapWidth * clipLenght;
 		}
 
+		float GetProgressTime()
+		{
+			return GetTimeByPosition(progressBtn.rectTransfom.anchoredPosition.x);
+		}
+
 		void SetupTimeLineTexts()
 		{
 			var roundTime = clipLenght.RoundUp(5);
@@ -249,7 +265,7 @@ namespace RythhmMagic.MusicEditor
 				timeLineTexts[i].anchoredPosition = new Vector2(dist * i, 0);
 		}
 
-		void OnClickActiveMagnet()
+		public void OnClickActiveMagnet()
 		{
 			moveMode = moveMode == MoveModes.Free ? MoveModes.Magnet : MoveModes.Free;
 			btnMagnet.GetComponent<Image>().color = moveMode == MoveModes.Free ? Color.white : Color.green;
@@ -269,7 +285,7 @@ namespace RythhmMagic.MusicEditor
 
 		public void ShowBeatMarkerPos()
 		{
-			var time = GetTimeByPosition(progressBtn.rectTransfom.anchoredPosition.x);
+			var time = GetProgressTime();
 
 			for (int i = 0; i < beatInfoEditor.beatGroupsList.Count; i++)
 			{
@@ -287,5 +303,30 @@ namespace RythhmMagic.MusicEditor
 					markerEditor.ActiveMarker(i, false);
 			}
 		}
+
+		#region copy paste func
+		BeatGroupInfo copiedGroupInfo;
+
+		public void OnClickCopyBeat()
+		{
+			var piste = beatInfoEditor.GetSelectedPiste();
+			if (piste == null) return;
+			var group = beatInfoEditor.FindBeatGroupByTime(GetProgressTime(), piste.Value);
+			if (group == null) return;
+
+			var beatInfos = new List<BeatInfo>();
+			foreach (var b in group.beatList)
+				beatInfos.Add(b.info);
+
+			copiedGroupInfo = new BeatGroupInfo(beatInfos);
+			Debug.Log("copied");
+		}
+
+		public void OnClickPasteBeat()
+		{
+			if (copiedGroupInfo == null) return;
+			beatInfoEditor.OnClickPasteBeatGroup(copiedGroupInfo, GetProgressTime());
+		}
+		#endregion
 	}
 }

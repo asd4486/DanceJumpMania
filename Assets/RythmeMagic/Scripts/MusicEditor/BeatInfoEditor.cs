@@ -120,19 +120,45 @@ namespace RythhmMagic.MusicEditor
 
 			var beat = CreateBeat(selectedBtnPiste.transform);
 
+			var previousBeat = FindClosestBeat(time, piste.Value, false);
+			//auto set beat pos to previous beat pos if existe
+			var beatPos = previousBeat != null ? previousBeat.info.pos : Vector2.zero;
+
 			var currentGroup = FindBeatGroupByTime(time, piste.Value);
 			if (currentGroup == null)
 			{
 				currentGroup = CreateBeatGroup(selectedBtnPiste.transform);
+				beat.Init(time, beatPos, currentGroup);
 				currentGroup.Init(new List<EditorBeat>() { beat }, piste.Value);
 				AddBeatGroup(currentGroup);
 			}
 			else
 			{
+				beat.Init(time, beatPos, currentGroup);
 				currentGroup.AddBeat(beat);
 			}
+		}
 
-			beat.Init(time, Vector2.zero, currentGroup);
+		public void OnClickPasteBeatGroup(BeatGroupInfo groupInfo, float startTime)
+		{
+			//don't create key when key existed
+			var piste = GetSelectedPiste();
+			if (piste == null || FindBeatGroupByTime(startTime, piste.Value) != null) return;
+
+			var group = CreateBeatGroup(selectedBtnPiste.transform);
+			var beatList = new List<EditorBeat>();
+			var oldStartTime = groupInfo.beatInfoList[0].time;
+			foreach (var info in groupInfo.beatInfoList)
+			{
+				var beat = CreateBeat(selectedBtnPiste.transform);
+				//set beat time by new start time
+				var beatTime = startTime + (info.time - oldStartTime);
+				beat.Init(beatTime, info.pos, group);
+				beatList.Add(beat);
+			}
+
+			group.Init(beatList, piste.Value);
+			AddBeatGroup(group);
 		}
 
 		void AdjustBeatInList(EditorBeat _beat)
@@ -161,11 +187,11 @@ namespace RythhmMagic.MusicEditor
 			}
 
 			var index = 0;
-			var groupStartTime = group.beatList[0].time;
+			var groupStartTime = group.beatList[0].info.time;
 
 			for (int i = 0; i < beatGroups.Count; i++)
 			{
-				if (groupStartTime > beatGroups[i].beatList[0].time)
+				if (groupStartTime > beatGroups[i].beatList[0].info.time)
 					index += 1;
 				else
 					break;
@@ -211,7 +237,7 @@ namespace RythhmMagic.MusicEditor
 				foreach (var group in beatGroupsList[i])
 				{
 					foreach (var b in group.beatList)
-						b.rectTransfom.anchoredPosition = new Vector2(main.GetPositionByTime(b.time), 0);
+						b.rectTransfom.anchoredPosition = new Vector2(main.GetPositionByTime(b.info.time), 0);
 
 					//refresh group lenght
 					group.SetGroupLenght();
@@ -239,7 +265,7 @@ namespace RythhmMagic.MusicEditor
 			foreach (var group in groups)
 			{
 				foreach (var b in group.beatList)
-					if (Mathf.Abs(b.time - time) < .02) return b;
+					if (Mathf.Abs(b.info.time - time) < .02) return b;
 			}
 			return null;
 		}
@@ -251,7 +277,7 @@ namespace RythhmMagic.MusicEditor
 				foreach (var group in beatGroupsList[i])
 				{
 					foreach (var b in group.beatList)
-						if (Mathf.Abs(b.time - time) < .02) return b;
+						if (Mathf.Abs(b.info.time - time) < .02) return b;
 				}
 			}
 			return null;
@@ -268,9 +294,9 @@ namespace RythhmMagic.MusicEditor
 					beatList.Add(b);
 
 			if (findNext)
-				beatList = beatList.Where(b => b.time > targetTime).ToList();
+				beatList = beatList.Where(b => b.info.time > targetTime).ToList();
 			else
-				beatList = beatList.Where(b => b.time < targetTime).ToList();
+				beatList = beatList.Where(b => b.info.time < targetTime).ToList();
 
 			return GetClosestBeat(targetTime, beatList);
 		}
@@ -297,7 +323,7 @@ namespace RythhmMagic.MusicEditor
 			var closestTime = float.MaxValue;
 			foreach (var b in beatList)
 			{
-				var time = Mathf.Abs(b.time - targetTime);
+				var time = Mathf.Abs(b.info.time - targetTime);
 				if (time < closestTime)
 				{
 					closestTime = time;

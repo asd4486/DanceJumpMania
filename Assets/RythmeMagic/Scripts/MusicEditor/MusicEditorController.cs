@@ -53,6 +53,15 @@ namespace RythhmMagic.MusicEditor
 
 			if (Input.GetKeyDown(KeyCode.Delete))
 				main.OnClickRemoveKey();
+			if (Input.GetKeyDown(KeyCode.M))
+				main.OnClickActiveMagnet();
+
+			if (Input.GetKeyDown(KeyCode.Space))
+				main.OnClickPlayMusic();
+			if (Input.GetKeyDown(KeyCode.LeftArrow))
+				main.OnClickFindKey(false);
+			else if (Input.GetKeyDown(KeyCode.RightArrow))
+				main.OnClickFindKey(true);
 		}
 
 		void TouchDragCollider()

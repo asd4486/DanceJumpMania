@@ -55,7 +55,7 @@ namespace RythhmMagic.MusicEditor
 		public void DragEnd()
 		{
 			//auto refresh beat postion
-			if (currentBeat != null) currentBeat.pos = transform.localPosition;
+			if (currentBeat != null) currentBeat.info.pos = transform.localPosition;
 		}
 
 		void EnterXPos(string value)
@@ -83,7 +83,7 @@ namespace RythhmMagic.MusicEditor
 			var strX = transform.localPosition.x.ToString("F2").Replace(',', '.');
 			var strY = transform.localPosition.y.ToString("F2").Replace(',', '.');
 			textPos.text = "X:" + strX + "  Y:" + strY;
-			currentBeat.pos = transform.localPosition;
+			currentBeat.info.pos = transform.localPosition;
 		}
 	}
 }

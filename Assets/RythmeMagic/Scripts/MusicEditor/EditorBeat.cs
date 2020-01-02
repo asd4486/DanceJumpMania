@@ -6,12 +6,16 @@ using UnityEngine.EventSystems;
 
 namespace RythhmMagic.MusicEditor
 {
+	public class BeatInfo
+	{
+		public float time;
+		public Vector2 pos;
+	}
 
 	public class EditorBeat : EditorKeyBase
 	{
 		BtnMusicProgress progressBtn;
-		[HideInInspector] public float time;
-		[HideInInspector] public Vector2 pos;
+		public BeatInfo info = new BeatInfo();
 
 		public EditorBeatGroup currentGroup { get; private set; }
 		public event System.Action<EditorBeat> onDragEndAction;
@@ -23,10 +27,10 @@ namespace RythhmMagic.MusicEditor
 
 		public void Init(float _time, Vector2 _pos, EditorBeatGroup _group)
 		{
-			time = _time;
-			pos = _pos;
+			info.time = _time;
+			info.pos = _pos;
 			currentGroup = _group;
-			rectTransfom.anchoredPosition = new Vector2(main.GetPositionByTime(time), 0);
+			rectTransfom.anchoredPosition = new Vector2(main.GetPositionByTime(info.time), 0);
 		}
 
 		public override void OnDragSetPos(float xPos)
@@ -46,7 +50,7 @@ namespace RythhmMagic.MusicEditor
 		{
 			var newTime = main.GetTimeByPosition(rectTransfom.anchoredPosition.x);
 			//update time info
-			time = newTime;
+			info.time = newTime;
 
 			if (onDragEndAction != null) onDragEndAction(this);
 		}
