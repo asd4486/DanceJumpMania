@@ -13,7 +13,6 @@ namespace RythhmMagic
         //for moving Marker
         float movePathSpeed;
 
-        float oneSecSpeed;
         float markerDuration;
 
         public override void Init(MusicSheetObject.BeatInfo beat, float beatTime)
@@ -27,15 +26,14 @@ namespace RythhmMagic
                 posList.Add(Vector3.zero);
                 posList.Add(new Vector3(0, 0, 0.01f));
 
-                oneSecSpeed =  GameManager.Instance.markerDistance / GameManager.Instance.MarkerSpeed;
                 //get hold duration
                 markerDuration = beat.posList[beat.posList.Count - 1].time - beatTime;
 
-                for(int i=1; i < beat.posList.Count; i++)
-				{
-					var p = beat.posList[i];
-					//get holding road lenght
-					var roadLenght = oneSecSpeed * (p.time - beatTime);
+                for (int i = 1; i < beat.posList.Count; i++)
+                {
+                    var p = beat.posList[i];
+                    //get holding road lenght
+                    var roadLenght = markerSpeed * (p.time - beatTime);
                     var adjustPos = p.pos - beat.posList[0].pos;
                     posList.Add(new Vector3(adjustPos.x, adjustPos.y, roadLenght));
                 }
@@ -49,12 +47,10 @@ namespace RythhmMagic
 
         protected override void Update()
         {
-            if (!startMove || !myCol.enabled) return;
+            if (!startMove) return;
 
-            if (transform.localPosition.z <= 0)
-            {
-                FollowRoadPath();
-            }
+            if (transform.localPosition.z > 0) transform.position -= transform.forward * markerSpeed * Time.deltaTime;
+            else FollowRoadPath();
         }
 
         //timer for follow path (0 to 1)
@@ -63,14 +59,14 @@ namespace RythhmMagic
         {
             if (pathTimer >= 1)
             {
-                myCol.enabled = false;
+                startMove = myCol.enabled = false;
                 myCol.transform.DOScale(Vector3.zero, 0.1f);
-                if(fxTouch.isPlaying) fxTouch.Stop();
+                if (fxTouch.isPlaying) fxTouch.Stop();
                 Destroy(gameObject, 0.2f);
                 return;
             }
 
-            markerLine.transform.position -= transform.forward * oneSecSpeed * Time.deltaTime;
+            markerLine.transform.position -= transform.forward * markerSpeed * Time.deltaTime;
 
             pathTimer += Time.deltaTime / markerDuration;
             var pathPos = markerLine.vectexPath.GetPointAtTime(pathTimer, EndOfPathInstruction.Stop);

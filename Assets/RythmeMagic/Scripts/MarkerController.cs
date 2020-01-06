@@ -10,6 +10,7 @@ namespace RythhmMagic
     {
         Collider myCol;
         [SerializeField] Hand currentHand;
+        public Hand CurrentHand { get { return currentHand; } }
 
         private void Awake()
         {
@@ -21,7 +22,7 @@ namespace RythhmMagic
         {
             transform.position = new Vector3(currentHand.transform.position.x, currentHand.transform.position.y, transform.position.z);
 
-            myCol.enabled = currentHand.IsGrabbingWithType(GrabTypes.Pinch);
+            //myCol.enabled = currentHand.IsGrabbingWithType(GrabTypes.Pinch);
         }
     }
 }

@@ -14,523 +14,523 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   music: {fileID: 8300000, guid: 2faa42913bcc3b3449ac067e7d3f419d, type: 3}
   beatList:
-  - startTime: 2.4963918
+  - startTime: 2.5
     infos:
     - type: 0
       posList:
-      - time: 2.4963918
+      - time: 2.5
         pos: {x: 0, y: 0.19558382}
-  - startTime: 2.7275171
+  - startTime: 2.73
     infos:
     - type: 0
       posList:
-      - time: 2.7275171
+      - time: 2.73
         pos: {x: 0, y: 0.2}
-  - startTime: 2.9964933
+  - startTime: 3
     infos:
     - type: 0
       posList:
-      - time: 2.9964933
+      - time: 3
         pos: {x: 0, y: 0.2}
-  - startTime: 4.462939
+  - startTime: 4.46
     infos:
     - type: 0
       posList:
-      - time: 4.462939
+      - time: 4.46
         pos: {x: -0.40063095, y: 0.2}
-  - startTime: 4.6798625
+  - startTime: 4.68
     infos:
     - type: 0
       posList:
-      - time: 4.6798625
+      - time: 4.68
         pos: {x: -0.4, y: 0.2}
-  - startTime: 4.8967867
+  - startTime: 4.9
     infos:
     - type: 0
       posList:
-      - time: 4.8967867
+      - time: 4.9
         pos: {x: -0.4, y: 0.2}
-  - startTime: 6.337191
+  - startTime: 6.34
     infos:
     - type: 0
       posList:
-      - time: 6.337191
+      - time: 6.34
         pos: {x: 0.4, y: 0.2}
-  - startTime: 6.588826
+  - startTime: 6.59
     infos:
     - type: 0
       posList:
-      - time: 6.588826
+      - time: 6.59
         pos: {x: 0.4, y: 0.2}
-  - startTime: 6.823106
+  - startTime: 6.82
     infos:
     - type: 0
       posList:
-      - time: 6.823106
+      - time: 6.82
         pos: {x: 0.4, y: 0.2}
-  - startTime: 8.255081
+  - startTime: 8.26
     infos:
     - type: 0
       posList:
-      - time: 8.255081
+      - time: 8.26
         pos: {x: -0.4, y: -0.15}
-  - startTime: 8.507555
+  - startTime: 8.51
     infos:
     - type: 0
       posList:
-      - time: 8.507555
+      - time: 8.51
         pos: {x: -0.4, y: -0.15}
-  - startTime: 8.749121
+  - startTime: 8.75
     infos:
     - type: 0
       posList:
-      - time: 8.749121
+      - time: 8.75
         pos: {x: -0.4, y: -0.15}
-  - startTime: 10.226212
+  - startTime: 10.23
     infos:
     - type: 0
       posList:
-      - time: 10.226212
+      - time: 10.23
         pos: {x: 0.4, y: -0.15}
-  - startTime: 10.459502
+  - startTime: 10.46
     infos:
     - type: 0
       posList:
-      - time: 10.459502
+      - time: 10.46
         pos: {x: 0.4, y: -0.15}
-  - startTime: 10.6809435
+  - startTime: 10.68
     infos:
     - type: 0
       posList:
-      - time: 10.6809435
+      - time: 10.68
         pos: {x: 0.4, y: -0.15}
-  - startTime: 12.1081915
+  - startTime: 12.11
     infos:
     - type: 1
       posList:
-      - time: 12.1081915
+      - time: 12.11
         pos: {x: -0.1, y: 0.054574132}
-      - time: 12.452966
+      - time: 12.45
         pos: {x: -0.45, y: 0.3}
-      - time: 12.64169
+      - time: 12.64
         pos: {x: -0.45, y: 0.3042587}
-      - time: 12.94575
+      - time: 12.95
         pos: {x: -0.1, y: 0.05}
     - type: 1
       posList:
-      - time: 12.1081915
+      - time: 12.11
         pos: {x: 0.1, y: -0.05}
-      - time: 12.452966
+      - time: 12.45
         pos: {x: 0.45, y: -0.3}
-      - time: 12.64169
+      - time: 12.64
         pos: {x: 0.45, y: -0.3}
-      - time: 12.94575
+      - time: 12.95
         pos: {x: 0.1, y: -0.05}
-  - startTime: 13.082056
+  - startTime: 13.08
     infos:
     - type: 1
       posList:
-      - time: 13.082056
+      - time: 13.08
         pos: {x: -0.1, y: 0.05}
-      - time: 13.407086
+      - time: 13.41
         pos: {x: -0.45, y: -0.3}
-      - time: 13.595812
+      - time: 13.6
         pos: {x: -0.45, y: -0.3}
-      - time: 13.9103565
+      - time: 13.91
         pos: {x: -0.1, y: 0.05}
     - type: 1
       posList:
-      - time: 13.082056
+      - time: 13.08
         pos: {x: 0.1, y: -0.05}
-      - time: 13.407086
+      - time: 13.41
         pos: {x: 0.45, y: 0.3}
-      - time: 13.595812
+      - time: 13.6
         pos: {x: 0.45, y: 0.3}
-      - time: 13.9103565
+      - time: 13.91
         pos: {x: 0.1, y: -0.05}
-  - startTime: 14.067625
+  - startTime: 14.07
     infos:
     - type: 1
       posList:
-      - time: 14.067625
+      - time: 14.07
         pos: {x: -0.1, y: 0.05}
-      - time: 14.392655
+      - time: 14.39
         pos: {x: -0.45, y: 0.3}
-      - time: 14.602362
+      - time: 14.6
         pos: {x: -0.45, y: 0.3}
-      - time: 14.885449
+      - time: 14.89
         pos: {x: -0.1, y: 0.05}
     - type: 1
       posList:
-      - time: 14.067625
+      - time: 14.07
         pos: {x: 0.1, y: -0.05}
-      - time: 14.392655
+      - time: 14.39
         pos: {x: 0.45, y: -0.3}
-      - time: 14.602362
+      - time: 14.6
         pos: {x: 0.45, y: -0.3}
-      - time: 14.885449
+      - time: 14.89
         pos: {x: 0.1, y: -0.05}
-  - startTime: 15.032241
+  - startTime: 15.03
     infos:
     - type: 1
       posList:
-      - time: 15.032241
+      - time: 15.03
         pos: {x: -0.1, y: 0.05}
-      - time: 15.325814
+      - time: 15.33
         pos: {x: -0.45, y: -0.3}
-      - time: 15.478358
+      - time: 15.48
         pos: {x: -0.45, y: -0.3}
-      - time: 15.64768
+      - time: 15.65
         pos: {x: -0.3, y: -0.1}
     - type: 1
       posList:
-      - time: 15.032241
+      - time: 15.03
         pos: {x: 0.1, y: -0.05}
-      - time: 15.325814
+      - time: 15.33
         pos: {x: 0.45, y: 0.3}
-      - time: 15.478358
+      - time: 15.48
         pos: {x: 0.45, y: 0.3}
-      - time: 15.64768
+      - time: 15.65
         pos: {x: 0.3, y: 0.1}
-  - startTime: 15.808541
+  - startTime: 15.81
     infos:
     - type: 0
       posList:
-      - time: 15.808541
+      - time: 15.81
         pos: {x: 0.0025237016, y: -0.042744517}
-  - startTime: 16.017025
+  - startTime: 16.02
     infos:
     - type: 1
       posList:
-      - time: 16.017025
+      - time: 16.02
         pos: {x: 0.2, y: -0.1}
-      - time: 16.262146
+      - time: 16.26
         pos: {x: 0.45, y: 0.04709196}
-      - time: 16.497547
+      - time: 16.5
         pos: {x: 0.74889576, y: -0.1}
-      - time: 16.749184
+      - time: 16.75
         pos: {x: 0.45, y: 0.05}
-      - time: 16.968348
+      - time: 16.97
         pos: {x: 0.2, y: -0.1}
-  - startTime: 17.065758
+  - startTime: 17.07
     infos:
     - type: 1
       posList:
-      - time: 17.065758
+      - time: 17.07
         pos: {x: -0.2, y: -0.1}
-      - time: 17.271025
+      - time: 17.27
         pos: {x: -0.45, y: 0.05}
-      - time: 17.464254
+      - time: 17.46
         pos: {x: -0.75, y: -0.1}
-      - time: 17.67017
+      - time: 17.67
         pos: {x: -0.45, y: 0.05}
-      - time: 17.858482
+      - time: 17.86
         pos: {x: -0.2, y: -0.1}
-  - startTime: 17.959139
+  - startTime: 17.96
     infos:
     - type: 1
       posList:
-      - time: 17.959139
+      - time: 17.96
         pos: {x: 0.2, y: -0.1}
-      - time: 18.153477
+      - time: 18.15
         pos: {x: 0.45, y: 0.05}
-      - time: 18.370144
+      - time: 18.37
         pos: {x: 0.75, y: -0.1}
-      - time: 18.599932
+      - time: 18.6
         pos: {x: 0.45, y: 0.05}
-      - time: 18.831472
+      - time: 18.83
         pos: {x: 0.2, y: -0.1}
-  - startTime: 18.94104
+  - startTime: 18.94
     infos:
     - type: 1
       posList:
-      - time: 18.94104
+      - time: 18.94
         pos: {x: -0.2, y: -0.1}
-      - time: 19.146307
+      - time: 19.15
         pos: {x: -0.45, y: 0.05}
-      - time: 19.339537
+      - time: 19.34
         pos: {x: -0.75, y: -0.1}
-      - time: 19.545452
+      - time: 19.55
         pos: {x: -0.45, y: 0.05}
-      - time: 19.733765
+      - time: 19.73
         pos: {x: -0.2, y: -0.1}
-  - startTime: 19.859919
+  - startTime: 19.86
     infos:
     - type: 0
       posList:
-      - time: 19.859919
+      - time: 19.86
         pos: {x: 0.016939085, y: -0.22580475}
-  - startTime: 19.965176
+  - startTime: 19.97
     infos:
     - type: 1
       posList:
-      - time: 19.965176
+      - time: 19.97
         pos: {x: -0.1, y: -0.05}
-      - time: 20.30995
+      - time: 20.31
         pos: {x: -0.45, y: 0.3}
-      - time: 20.498674
+      - time: 20.5
         pos: {x: -0.45, y: 0.3042587}
-      - time: 20.857006
+      - time: 20.86
         pos: {x: -0.1, y: -0.05}
-      - time: 21.195566
+      - time: 21.2
         pos: {x: -0.45, y: 0.3}
-      - time: 21.418522
+      - time: 21.42
         pos: {x: -0.45, y: 0.3}
-      - time: 21.775019
+      - time: 21.78
         pos: {x: -0.1, y: -0.05}
     - type: 1
       posList:
-      - time: 19.965176
+      - time: 19.97
         pos: {x: 0.1, y: -0.20289856}
-      - time: 20.252193
+      - time: 20.25
         pos: {x: 0.5, y: -0.25}
-      - time: 20.499352
+      - time: 20.5
         pos: {x: 0.5, y: -0.25}
-      - time: 20.850166
+      - time: 20.85
         pos: {x: 0.1, y: -0.2}
-      - time: 21.208942
+      - time: 21.21
         pos: {x: 0.5, y: -0.25}
-      - time: 21.432188
+      - time: 21.43
         pos: {x: 0.5, y: -0.25}
-      - time: 21.775019
+      - time: 21.78
         pos: {x: 0.1, y: -0.2}
-  - startTime: 21.915722
+  - startTime: 21.92
     infos:
     - type: 1
       posList:
-      - time: 21.915722
+      - time: 21.92
         pos: {x: -0.1, y: -0.20289856}
-      - time: 22.20274
+      - time: 22.2
         pos: {x: -0.5, y: -0.25}
-      - time: 22.449898
+      - time: 22.45
         pos: {x: -0.5, y: -0.25}
-      - time: 22.800713
+      - time: 22.8
         pos: {x: -0.1, y: -0.2}
-      - time: 23.159489
+      - time: 23.16
         pos: {x: -0.5, y: -0.25}
-      - time: 23.382734
+      - time: 23.38
         pos: {x: -0.5, y: -0.25}
-      - time: 23.608768
+      - time: 23.61
         pos: {x: -0.21, y: -0.22}
     - type: 1
       posList:
-      - time: 21.915722
+      - time: 21.92
         pos: {x: 0.1, y: -0.05}
-      - time: 22.260496
+      - time: 22.26
         pos: {x: 0.45, y: 0.3}
-      - time: 22.44922
+      - time: 22.45
         pos: {x: 0.45, y: 0.3042587}
-      - time: 22.807552
+      - time: 22.81
         pos: {x: 0.1, y: -0.05}
-      - time: 23.146112
+      - time: 23.15
         pos: {x: 0.45, y: 0.3}
-      - time: 23.369068
+      - time: 23.37
         pos: {x: 0.45, y: 0.3}
-      - time: 23.608768
+      - time: 23.61
         pos: {x: 0.19, y: 0.05}
-  - startTime: 23.760254
+  - startTime: 23.76
     infos:
     - type: 0
       posList:
-      - time: 23.760254
+      - time: 23.76
         pos: {x: -0.004852143, y: 0.16153097}
-  - startTime: 23.879848
+  - startTime: 23.88
     infos:
     - type: 1
       posList:
-      - time: 23.879848
+      - time: 23.88
         pos: {x: -0.1, y: -0.20289856}
-      - time: 24.166866
+      - time: 24.17
         pos: {x: -0.5, y: -0.25}
-      - time: 24.414024
+      - time: 24.41
         pos: {x: -0.5, y: -0.25}
-      - time: 24.76484
+      - time: 24.76
         pos: {x: -0.1, y: -0.2}
-      - time: 25.123615
+      - time: 25.12
         pos: {x: -0.5, y: -0.25}
-      - time: 25.34686
+      - time: 25.35
         pos: {x: -0.5, y: -0.25}
-      - time: 25.604794
+      - time: 25.6
         pos: {x: -0.1, y: -0.2}
     - type: 1
       posList:
-      - time: 23.879848
+      - time: 23.88
         pos: {x: 0.1, y: -0.05}
-      - time: 24.224623
+      - time: 24.22
         pos: {x: 0.45, y: 0.3}
-      - time: 24.413347
+      - time: 24.41
         pos: {x: 0.45, y: 0.3042587}
-      - time: 24.771679
+      - time: 24.77
         pos: {x: 0.1, y: -0.05}
-      - time: 25.110239
+      - time: 25.11
         pos: {x: 0.45, y: 0.3}
-      - time: 25.333195
+      - time: 25.33
         pos: {x: 0.45, y: 0.3}
-      - time: 25.604794
+      - time: 25.6
         pos: {x: 0.1, y: 0.05}
-  - startTime: 25.737528
+  - startTime: 25.74
     infos:
     - type: 1
       posList:
-      - time: 25.737528
+      - time: 25.74
         pos: {x: -0.1, y: -0.05}
-      - time: 26.082302
+      - time: 26.08
         pos: {x: -0.45, y: 0.3}
-      - time: 26.271027
+      - time: 26.27
         pos: {x: -0.45, y: 0.3042587}
-      - time: 26.629358
+      - time: 26.63
         pos: {x: -0.1, y: -0.05}
-      - time: 26.967918
+      - time: 26.97
         pos: {x: -0.45, y: 0.3}
-      - time: 27.190874
+      - time: 27.19
         pos: {x: -0.45, y: 0.3}
-      - time: 27.54737
+      - time: 27.55
         pos: {x: -0.1, y: -0.05}
     - type: 1
       posList:
-      - time: 25.737528
+      - time: 25.74
         pos: {x: 0.1, y: -0.20289856}
-      - time: 26.024546
+      - time: 26.02
         pos: {x: 0.5, y: -0.25}
-      - time: 26.271704
+      - time: 26.27
         pos: {x: 0.5, y: -0.25}
-      - time: 26.622519
+      - time: 26.62
         pos: {x: 0.1, y: -0.2}
-      - time: 26.981295
+      - time: 26.98
         pos: {x: 0.5, y: -0.25}
-      - time: 27.20454
+      - time: 27.2
         pos: {x: 0.5, y: -0.25}
-      - time: 27.54737
+      - time: 27.55
         pos: {x: 0.1, y: -0.2}
-  - startTime: 27.704483
+  - startTime: 27.7
     infos:
     - type: 0
       posList:
-      - time: 27.704483
+      - time: 27.7
         pos: {x: -0.3463767, y: 0.33260894}
-  - startTime: 28.182863
+  - startTime: 28.18
     infos:
     - type: 0
       posList:
-      - time: 28.182863
+      - time: 28.18
         pos: {x: -0.3463767, y: 0.33260894}
-  - startTime: 28.60522
+  - startTime: 28.61
     infos:
     - type: 0
       posList:
-      - time: 28.60522
+      - time: 28.61
         pos: {x: -0.2217392, y: 0.094928026}
-  - startTime: 28.736567
+  - startTime: 28.74
     infos:
     - type: 0
       posList:
-      - time: 28.736567
+      - time: 28.74
         pos: {x: 0.12029007, y: -0.2760868}
-  - startTime: 28.867914
+  - startTime: 28.87
     infos:
     - type: 0
       posList:
-      - time: 28.867914
+      - time: 28.87
         pos: {x: -0.11449278, y: 0.07753658}
-  - startTime: 29.008013
+  - startTime: 29.01
     infos:
     - type: 0
       posList:
-      - time: 29.008013
+      - time: 29.01
         pos: {x: 0.36086968, y: -0.23840559}
-  - startTime: 29.165619
+  - startTime: 29.17
     infos:
     - type: 0
       posList:
-      - time: 29.165619
+      - time: 29.17
         pos: {x: 0.013043655, y: -0.064492345}
-  - startTime: 29.663338
+  - startTime: 29.66
     infos:
     - type: 0
       posList:
-      - time: 29.663338
+      - time: 29.66
         pos: {x: 0.35, y: 0.33}
-  - startTime: 30.133219
+  - startTime: 30.13
     infos:
     - type: 0
       posList:
-      - time: 30.133219
+      - time: 30.13
         pos: {x: 0.35, y: 0.33}
-  - startTime: 30.631857
+  - startTime: 30.63
     infos:
     - type: 0
       posList:
-      - time: 30.631857
+      - time: 30.63
         pos: {x: 0.23364428, y: 0.09070289}
-  - startTime: 30.776758
+  - startTime: 30.762
     infos:
     - type: 0
       posList:
-      - time: 30.776758
+      - time: 30.762
         pos: {x: -0.20323846, y: -0.30007684}
-  - startTime: 30.908094
+  - startTime: 30.893
     infos:
     - type: 0
       posList:
-      - time: 30.908094
+      - time: 30.893
         pos: {x: 0.108507305, y: 0.1038748}
-  - startTime: 31.048204
+  - startTime: 31.024
     infos:
     - type: 0
       posList:
-      - time: 31.048204
+      - time: 31.024
         pos: {x: -0.365697, y: -0.33300745}
-  - startTime: 31.170788
+  - startTime: 31.145
     infos:
     - type: 0
       posList:
-      - time: 31.170788
+      - time: 31.145
         pos: {x: 0.011910167, y: -0.036630034}
-  - startTime: 31.582335
+  - startTime: 31.58
     infos:
     - type: 0
       posList:
-      - time: 31.582335
+      - time: 31.58
         pos: {x: -0.5830404, y: 0.16095507}
-  - startTime: 32.08143
+  - startTime: 32.08
     infos:
     - type: 0
       posList:
-      - time: 32.08143
+      - time: 32.08
         pos: {x: -0.28666282, y: 0.34317267}
-  - startTime: 32.554268
+  - startTime: 32.55
     infos:
     - type: 0
       posList:
-      - time: 32.554268
+      - time: 32.55
         pos: {x: 0.21169071, y: 0.35195434}
-  - startTime: 33.035847
+  - startTime: 33.04
     infos:
     - type: 0
       posList:
-      - time: 33.035847
+      - time: 33.04
         pos: {x: 0.62881446, y: 0.16754115}
-  - startTime: 33.5262
+  - startTime: 33.53
     infos:
     - type: 0
       posList:
-      - time: 33.5262
+      - time: 33.53
         pos: {x: -0.5830404, y: 0.16095507}
-  - startTime: 34.051567
+  - startTime: 34.05
     infos:
     - type: 0
       posList:
-      - time: 34.051567
+      - time: 34.05
         pos: {x: -0.28666282, y: 0.34317267}
-  - startTime: 34.498135
+  - startTime: 34.5
     infos:
     - type: 0
       posList:
-      - time: 34.498135
+      - time: 34.5
         pos: {x: 0.21169071, y: 0.35195434}
-  - startTime: 34.962208
+  - startTime: 34.96
     infos:
     - type: 0
       posList:
-      - time: 34.962208
+      - time: 34.96
         pos: {x: 0.62881446, y: 0.16754115}

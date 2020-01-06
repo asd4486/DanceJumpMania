@@ -153,13 +153,13 @@ namespace RythhmMagic.MusicEditor
 					var newInfo = new MusicSheetObject.BeatInfo();
 					newInfo.type = group.beatList.Count < 2 ? BeatTypes.Default : BeatTypes.Holding;
 					foreach (var beat in group.beatList)
-						newInfo.posList.Add(new MusicSheetObject.PosInfo() { time = beat.info.time, pos = beat.info.pos });
+						newInfo.posList.Add(new MusicSheetObject.PosInfo() { time = beat.info.time.Round3Decimal(), pos = beat.info.pos });
 
-					var beatObj = musicSheet.beatList.Where(b => Mathf.Abs(b.startTime - group.beatList[0].info.time) < 0.02f).FirstOrDefault();
+					var beatObj = musicSheet.beatList.Where(b => Mathf.Abs(b.startTime - group.beatList[0].info.time.Round3Decimal()) < 0.02f).FirstOrDefault();
 					if (beatObj == null)
 					{
 						beatObj = new MusicSheetObject.Beat();
-						beatObj.startTime = group.beatList[0].info.time;
+						beatObj.startTime = group.beatList[0].info.time.Round3Decimal();
 
 						musicSheet.beatList.Add(beatObj);
 					}
