@@ -6,337 +6,338 @@ using UnityEngine.UI;
 
 namespace RythhmMagic.MusicEditor
 {
-	public enum BeatPiste
-	{
-		Left,
-		Right
-	}
+    public enum BeatPiste
+    {
+        Left,
+        Right
+    }
 
-	public class BeatInfoEditor : MonoBehaviour
-	{
-		[SerializeField] EditorBeat beatPrefab;
-		[SerializeField] EditorBeatGroup beatGroupPrefab;
+    public class BeatInfoEditor : MonoBehaviour
+    {
+        [SerializeField] EditorBeat beatPrefab;
+        [SerializeField] EditorBeatGroup beatGroupPrefab;
 
-		MusicEditorMain main;
+        MusicEditorMain main;
 
-		public List<List<EditorBeatGroup>> beatGroupsList { get; private set; }
+        public List<List<EditorBeatGroup>> beatGroupsList { get; private set; }
 
-		[SerializeField] Button[] btnBeatPiste;
-		Button selectedBtnPiste;
+        [SerializeField] Button[] btnBeatPiste;
+        Button selectedBtnPiste;
 
-		private void Awake()
-		{
-			main = FindObjectOfType<MusicEditorMain>();
-		}
+        private void Awake()
+        {
+            main = FindObjectOfType<MusicEditorMain>();
+        }
 
-		private void Start()
-		{
-			foreach (var btn in btnBeatPiste)
-				btn.onClick.AddListener(() => OnClickSelectPiste(btn));
+        private void Start()
+        {
+            foreach (var btn in btnBeatPiste)
+                btn.onClick.AddListener(() => OnClickSelectPiste(btn));
 
-			OnClickSelectPiste(btnBeatPiste[0]);
-		}
+            OnClickSelectPiste(btnBeatPiste[0]);
+        }
 
-		public void Init(List<MusicSheetObject.Beat> list)
-		{
-			beatGroupsList = new List<List<EditorBeatGroup>>();
-			beatGroupsList.Add(new List<EditorBeatGroup>());
-			beatGroupsList.Add(new List<EditorBeatGroup>());
+        public void Init(List<MusicSheetObject.Beat> list)
+        {
+            beatGroupsList = new List<List<EditorBeatGroup>>();
+            beatGroupsList.Add(new List<EditorBeatGroup>());
+            beatGroupsList.Add(new List<EditorBeatGroup>());
 
-			foreach (var beatInfos in list)
-			{
-				for (int i = 0; i < beatInfos.infos.Count; i++)
-				{
-					var newGroup = CreateBeatGroup(btnBeatPiste[i].transform);
+            foreach (var beatInfos in list)
+            {
+                for (int i = 0; i < beatInfos.infos.Count; i++)
+                {
+                    var info = beatInfos.infos[i];
+                    var newGroup = CreateBeatGroup(btnBeatPiste[i].transform);
 
-					var groupBeats = new List<EditorBeat>();
-					foreach (var info in beatInfos.infos[i].posList)
-					{
-						var beat = CreateBeat(btnBeatPiste[i].transform);
-						beat.Init(info.time, info.pos, newGroup);
-						groupBeats.Add(beat);
-					}
+                    var groupBeats = new List<EditorBeat>();
+                    foreach (var posInfo in info.posList)
+                    {
+                        var beat = CreateBeat(btnBeatPiste[i].transform);
+                        beat.Init(posInfo.time, posInfo.pos, newGroup);
+                        groupBeats.Add(beat);
+                    }
 
-					var piste = i == 0 ? BeatPiste.Left : BeatPiste.Right;
-					newGroup.Init(groupBeats, piste);
-					AddBeatGroup(newGroup);
-				}
-			}
-		}
+                    var piste = i == 0 ? BeatPiste.Left : BeatPiste.Right;
+                    newGroup.Init(groupBeats, piste, info.markerType);
+                    AddBeatGroup(newGroup);
+                }
+            }
+        }
 
-		EditorBeat CreateBeat(Transform parent)
-		{
-			var beat = Instantiate(beatPrefab.gameObject).GetComponent<EditorBeat>();
-			beat.transform.SetParent(parent, false);
+        EditorBeat CreateBeat(Transform parent)
+        {
+            var beat = Instantiate(beatPrefab.gameObject).GetComponent<EditorBeat>();
+            beat.transform.SetParent(parent, false);
 
-			beat.onDragEndAction += AdjustBeatInList;
-			return beat;
-		}
+            beat.onDragEndAction += AdjustBeatInList;
+            return beat;
+        }
 
-		EditorBeatGroup CreateBeatGroup(Transform parent)
-		{
-			var newGroup = Instantiate(beatGroupPrefab.gameObject).GetComponent<EditorBeatGroup>();
-			newGroup.transform.SetParent(parent, false);
+        EditorBeatGroup CreateBeatGroup(Transform parent)
+        {
+            var newGroup = Instantiate(beatGroupPrefab.gameObject).GetComponent<EditorBeatGroup>();
+            newGroup.transform.SetParent(parent, false);
 
-			newGroup.onAddBeatAction += SetBeatMarkerPos;
-			newGroup.onRemoveBeatAction += SetBeatMarkerPos;
-			newGroup.onDestroyAction += RemoveBeatGroup;
-			return newGroup;
-		}
+            newGroup.onAddBeatAction += SetBeatMarkerPos;
+            newGroup.onRemoveBeatAction += SetBeatMarkerPos;
+            newGroup.onDestroyAction += RemoveBeatGroup;
+            return newGroup;
+        }
 
-		private void SetBeatMarkerPos(EditorBeatGroup obj)
-		{
-			main.ShowBeatMarkerPos();
-		}
+        private void SetBeatMarkerPos(EditorBeatGroup obj)
+        {
+            main.ShowBeatMarkerPos();
+        }
 
-		void OnClickSelectPiste(Button piste)
-		{
-			selectedBtnPiste = piste;
-			foreach (var p in btnBeatPiste)
-				p.GetComponent<Image>().color = p == selectedBtnPiste ? new Color(1, 1, 0, 0.7f) : new Color(0, 0, 0, 0.8f);
-		}
+        void OnClickSelectPiste(Button piste)
+        {
+            selectedBtnPiste = piste;
+            foreach (var p in btnBeatPiste)
+                p.GetComponent<Image>().color = p == selectedBtnPiste ? new Color(1, 1, 0, 0.7f) : new Color(0, 0, 0, 0.8f);
+        }
 
-		public void OnClickAddBeatInGroup(float time)
-		{
-			var piste = GetSelectedPiste();
-			if (piste == null || FindBeatByTime(time, piste.Value) != null)
-				return;
+        public void OnClickAddBeatInGroup(float time)
+        {
+            var piste = GetSelectedPiste();
+            if (piste == null || FindBeatByTime(time, piste.Value) != null)
+                return;
 
-			var previousBeat = FindClosestBeat(time, piste.Value, false);
-			if (previousBeat == null) return;
+            var previousBeat = FindClosestBeat(time, piste.Value, false);
+            if (previousBeat == null) return;
 
-			var beat = CreateBeat(selectedBtnPiste.transform);
-			EditorBeat outBeat;
-			var pos = previousBeat.currentGroup.GetTimeCurrentPos(time, out outBeat);
-			beat.Init(time, pos, previousBeat.currentGroup);
-			previousBeat.currentGroup.AddBeat(beat);
-		}
+            var beat = CreateBeat(selectedBtnPiste.transform);
+            EditorBeat outBeat;
+            var pos = previousBeat.currentGroup.GetTimeCurrentPos(time, out outBeat);
+            beat.Init(time, pos, previousBeat.currentGroup);
+            previousBeat.currentGroup.AddBeat(beat);
+        }
 
-		public void OnClickAddBeat(float time)
-		{
-			//don't create key when key existed
-			var piste = GetSelectedPiste();
-			if (piste == null || FindBeatByTime(time, piste.Value) != null) return;
+        public void OnClickAddBeat(float time)
+        {
+            //don't create key when key existed
+            var piste = GetSelectedPiste();
+            if (piste == null || FindBeatByTime(time, piste.Value) != null) return;
 
-			var beat = CreateBeat(selectedBtnPiste.transform);
+            var beat = CreateBeat(selectedBtnPiste.transform);
 
-			var previousBeat = FindClosestBeat(time, piste.Value, false);
-			//auto set beat pos to previous beat pos if existe
-			var beatPos = previousBeat != null ? previousBeat.info.pos : Vector2.zero;
+            var previousBeat = FindClosestBeat(time, piste.Value, false);
+            //auto set beat pos to previous beat pos if existe
+            var beatPos = previousBeat != null ? previousBeat.info.pos : Vector2.zero;
 
-			var currentGroup = FindBeatGroupByTime(time, piste.Value);
-			if (currentGroup == null)
-			{
-				currentGroup = CreateBeatGroup(selectedBtnPiste.transform);
-				beat.Init(time, beatPos, currentGroup);
-				currentGroup.Init(new List<EditorBeat>() { beat }, piste.Value);
-				AddBeatGroup(currentGroup);
-			}
-			else
-			{
-				beat.Init(time, beatPos, currentGroup);
-				currentGroup.AddBeat(beat);
-			}
-		}
+            var currentGroup = FindBeatGroupByTime(time, piste.Value);
+            if (currentGroup == null)
+            {
+                currentGroup = CreateBeatGroup(selectedBtnPiste.transform);
+                beat.Init(time, beatPos, currentGroup);
+                currentGroup.Init(new List<EditorBeat>() { beat }, piste.Value);
+                AddBeatGroup(currentGroup);
+            }
+            else
+            {
+                beat.Init(time, beatPos, currentGroup);
+                currentGroup.AddBeat(beat);
+            }
+        }
 
-		public void OnClickPasteBeatGroup(BeatGroupInfo groupInfo, float startTime)
-		{
-			//don't create key when key existed
-			var piste = GetSelectedPiste();
-			if (piste == null || FindBeatGroupByTime(startTime, piste.Value) != null) return;
+        public void OnClickPasteBeatGroup(BeatGroupInfo groupInfo, float startTime)
+        {
+            //don't create key when key existed
+            var piste = GetSelectedPiste();
+            if (piste == null || FindBeatGroupByTime(startTime, piste.Value) != null) return;
 
-			var group = CreateBeatGroup(selectedBtnPiste.transform);
-			var beatList = new List<EditorBeat>();
-			var oldStartTime = groupInfo.beatInfoList[0].time;
-			foreach (var info in groupInfo.beatInfoList)
-			{
-				var beat = CreateBeat(selectedBtnPiste.transform);
-				//set beat time by new start time
-				var beatTime = startTime + (info.time - oldStartTime);
-				beat.Init(beatTime, info.pos, group);
-				beatList.Add(beat);
-			}
+            var group = CreateBeatGroup(selectedBtnPiste.transform);
+            var beatList = new List<EditorBeat>();
+            var oldStartTime = groupInfo.beatInfoList[0].time;
+            foreach (var info in groupInfo.beatInfoList)
+            {
+                var beat = CreateBeat(selectedBtnPiste.transform);
+                //set beat time by new start time
+                var beatTime = startTime + (info.time - oldStartTime);
+                beat.Init(beatTime, info.pos, group);
+                beatList.Add(beat);
+            }
 
-			group.Init(beatList, piste.Value);
-			AddBeatGroup(group);
-		}
+            group.Init(beatList, piste.Value, groupInfo.markerType);
+            AddBeatGroup(group);
+        }
 
-		void AdjustBeatInList(EditorBeat _beat)
-		{
-			var group = _beat.currentGroup;
-			if (group == null) return;
+        void AdjustBeatInList(EditorBeat _beat)
+        {
+            var group = _beat.currentGroup;
+            if (group == null) return;
 
-			group.AdjustBeatInList(_beat);
+            group.AdjustBeatInList(_beat);
 
-			var groups = group.CurrentPiste == BeatPiste.Left ? beatGroupsList[0] : beatGroupsList[1];
-			groups.Remove(group);
+            var groups = group.CurrentPiste == BeatPiste.Left ? beatGroupsList[0] : beatGroupsList[1];
+            groups.Remove(group);
 
-			//readd group in list
-			AddBeatGroup(group);
-		}
+            //readd group in list
+            AddBeatGroup(group);
+        }
 
-		void AddBeatGroup(EditorBeatGroup group)
-		{
-			//top line or bottom line
-			var beatGroups = group.CurrentPiste == BeatPiste.Left ? beatGroupsList[0] : beatGroupsList[1];
+        void AddBeatGroup(EditorBeatGroup group)
+        {
+            //top line or bottom line
+            var beatGroups = group.CurrentPiste == BeatPiste.Left ? beatGroupsList[0] : beatGroupsList[1];
 
-			if (beatGroups.Count < 1)
-			{
-				beatGroups.Add(group);
-				return;
-			}
+            if (beatGroups.Count < 1)
+            {
+                beatGroups.Add(group);
+                return;
+            }
 
-			var index = 0;
-			var groupStartTime = group.beatList[0].info.time;
+            var index = 0;
+            var groupStartTime = group.beatList[0].info.time;
 
-			for (int i = 0; i < beatGroups.Count; i++)
-			{
-				if (groupStartTime > beatGroups[i].beatList[0].info.time)
-					index += 1;
-				else
-					break;
-			}
+            for (int i = 0; i < beatGroups.Count; i++)
+            {
+                if (groupStartTime > beatGroups[i].beatList[0].info.time)
+                    index += 1;
+                else
+                    break;
+            }
 
-			if (index >= beatGroups.Count)
-				beatGroups.Add(group);
-			else
-				beatGroups.Insert(index, group);
-		}
+            if (index >= beatGroups.Count)
+                beatGroups.Add(group);
+            else
+                beatGroups.Insert(index, group);
+        }
 
-		public void OnClickRemoveBeat(float time)
-		{
-			var piste = GetSelectedPiste();
-			if (piste == null) return;
+        public void OnClickRemoveBeat(float time)
+        {
+            var piste = GetSelectedPiste();
+            if (piste == null) return;
 
-			var beat = FindBeatByTime(time, piste.Value);
-			//return when can't find beat
-			if (beat == null)
-				return;
+            var beat = FindBeatByTime(time, piste.Value);
+            //return when can't find beat
+            if (beat == null)
+                return;
 
-			var group = beat.currentGroup;
-			group.RemoveBeat(beat);
-		}
+            var group = beat.currentGroup;
+            group.RemoveBeat(beat);
+        }
 
-		void RemoveBeatGroup(EditorBeatGroup group)
-		{
-			//left piste or right piste
-			var groupList = group.CurrentPiste == BeatPiste.Left ? beatGroupsList[0] : beatGroupsList[1];
-			if (!groupList.Contains(group))
-				return;
+        void RemoveBeatGroup(EditorBeatGroup group)
+        {
+            //left piste or right piste
+            var groupList = group.CurrentPiste == BeatPiste.Left ? beatGroupsList[0] : beatGroupsList[1];
+            if (!groupList.Contains(group))
+                return;
 
-			groupList.Remove(group);
-			main.ShowBeatMarkerPos();
-		}
+            groupList.Remove(group);
+            main.ShowBeatMarkerPos();
+        }
 
-		public void AdjustBeatPos()
-		{
+        public void AdjustBeatPos()
+        {
 
-			for (int i = 0; i < beatGroupsList.Count; i++)
-			{
-				//adjust all object
-				foreach (var group in beatGroupsList[i])
-				{
-					foreach (var b in group.beatList)
-						b.rectTransfom.anchoredPosition = new Vector2(main.GetPositionByTime(b.info.time), 0);
+            for (int i = 0; i < beatGroupsList.Count; i++)
+            {
+                //adjust all object
+                foreach (var group in beatGroupsList[i])
+                {
+                    foreach (var b in group.beatList)
+                        b.rectTransfom.anchoredPosition = new Vector2(main.GetPositionByTime(b.info.time), 0);
 
-					//refresh group lenght
-					group.SetGroupLenght();
-				}
-			}
-		}
+                    //refresh group lenght
+                    group.SetGroupLenght();
+                }
+            }
+        }
 
-		public EditorBeatGroup FindBeatGroupByTime(float time, BeatPiste piste)
-		{
-			var groups = piste == BeatPiste.Left ? beatGroupsList[0] : beatGroupsList[1];
+        public EditorBeatGroup FindBeatGroupByTime(float time, BeatPiste piste)
+        {
+            var groups = piste == BeatPiste.Left ? beatGroupsList[0] : beatGroupsList[1];
 
-			foreach (var group in groups)
-			{
-				//find group which contains this time
-				if (group.CheckTimeInRange(time))
-					return group;
-			}
-			return null;
-		}
+            foreach (var group in groups)
+            {
+                //find group which contains this time
+                if (group.CheckTimeInRange(time))
+                    return group;
+            }
+            return null;
+        }
 
-		EditorBeat FindBeatByTime(float time, BeatPiste piste)
-		{
-			var groups = piste == BeatPiste.Left ? beatGroupsList[0] : beatGroupsList[1];
+        EditorBeat FindBeatByTime(float time, BeatPiste piste)
+        {
+            var groups = piste == BeatPiste.Left ? beatGroupsList[0] : beatGroupsList[1];
 
-			foreach (var group in groups)
-			{
-				foreach (var b in group.beatList)
-					if (Mathf.Abs(b.info.time - time) < .02) return b;
-			}
-			return null;
-		}
+            foreach (var group in groups)
+            {
+                foreach (var b in group.beatList)
+                    if (Mathf.Abs(b.info.time - time) < .02) return b;
+            }
+            return null;
+        }
 
-		public EditorBeat FindBeatByTimeInAllPiste(float time)
-		{
-			for (int i = 0; i < beatGroupsList.Count; i++)
-			{
-				foreach (var group in beatGroupsList[i])
-				{
-					foreach (var b in group.beatList)
-						if (Mathf.Abs(b.info.time - time) < .02) return b;
-				}
-			}
-			return null;
-		}
+        public EditorBeat FindBeatByTimeInAllPiste(float time)
+        {
+            for (int i = 0; i < beatGroupsList.Count; i++)
+            {
+                foreach (var group in beatGroupsList[i])
+                {
+                    foreach (var b in group.beatList)
+                        if (Mathf.Abs(b.info.time - time) < .02) return b;
+                }
+            }
+            return null;
+        }
 
-		public EditorBeat FindClosestBeat(float targetTime, BeatPiste piste, bool findNext)
-		{
-			//top line or bottom line
-			var groups = piste == BeatPiste.Left ? beatGroupsList[0] : beatGroupsList[1];
-			var beatList = new List<EditorBeat>();
+        public EditorBeat FindClosestBeat(float targetTime, BeatPiste piste, bool findNext)
+        {
+            //top line or bottom line
+            var groups = piste == BeatPiste.Left ? beatGroupsList[0] : beatGroupsList[1];
+            var beatList = new List<EditorBeat>();
 
-			foreach (var group in groups)
-				foreach (var b in group.beatList)
-					beatList.Add(b);
+            foreach (var group in groups)
+                foreach (var b in group.beatList)
+                    beatList.Add(b);
 
-			if (findNext)
-				beatList = beatList.Where(b => b.info.time > targetTime).ToList();
-			else
-				beatList = beatList.Where(b => b.info.time < targetTime).ToList();
+            if (findNext)
+                beatList = beatList.Where(b => b.info.time > targetTime).ToList();
+            else
+                beatList = beatList.Where(b => b.info.time < targetTime).ToList();
 
-			return GetClosestBeat(targetTime, beatList);
-		}
+            return GetClosestBeat(targetTime, beatList);
+        }
 
-		public EditorBeat FindClosestBeatInAllPiste(float targetTime)
-		{
-			var beatList = new List<EditorBeat>();
+        public EditorBeat FindClosestBeatInAllPiste(float targetTime)
+        {
+            var beatList = new List<EditorBeat>();
 
-			for (int i = 0; i < beatGroupsList.Count; i++)
-			{
-				foreach (var group in beatGroupsList[i])
-					foreach (var b in group.beatList)
-						beatList.Add(b);
-			}
+            for (int i = 0; i < beatGroupsList.Count; i++)
+            {
+                foreach (var group in beatGroupsList[i])
+                    foreach (var b in group.beatList)
+                        beatList.Add(b);
+            }
 
-			return GetClosestBeat(targetTime, beatList);
-		}
+            return GetClosestBeat(targetTime, beatList);
+        }
 
-		EditorBeat GetClosestBeat(float targetTime, List<EditorBeat> beatList)
-		{
-			EditorBeat closestBeat = null;
-			if (beatList.Count < 1) return closestBeat;
+        EditorBeat GetClosestBeat(float targetTime, List<EditorBeat> beatList)
+        {
+            EditorBeat closestBeat = null;
+            if (beatList.Count < 1) return closestBeat;
 
-			var closestTime = float.MaxValue;
-			foreach (var b in beatList)
-			{
-				var time = Mathf.Abs(b.info.time - targetTime);
-				if (time < closestTime)
-				{
-					closestTime = time;
-					closestBeat = b;
-				}
-			}
-			return closestBeat;
-		}
+            var closestTime = float.MaxValue;
+            foreach (var b in beatList)
+            {
+                var time = Mathf.Abs(b.info.time - targetTime);
+                if (time < closestTime)
+                {
+                    closestTime = time;
+                    closestBeat = b;
+                }
+            }
+            return closestBeat;
+        }
 
-		public BeatPiste? GetSelectedPiste()
-		{
-			if (selectedBtnPiste == null) return null;
-			return selectedBtnPiste == btnBeatPiste[0] ? BeatPiste.Left : BeatPiste.Right;
-		}
-	}
+        public BeatPiste? GetSelectedPiste()
+        {
+            if (selectedBtnPiste == null) return null;
+            return selectedBtnPiste == btnBeatPiste[0] ? BeatPiste.Left : BeatPiste.Right;
+        }
+    }
 }

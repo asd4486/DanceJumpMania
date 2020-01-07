@@ -42,6 +42,9 @@ namespace RythhmMagic
                 markerLine.GenerateMesh(posList.ToArray());
             }
 
+            if (beat.markerType == MarkerType.Default) markerLine.SetMaterial(defaultMat);
+            else markerLine.SetMaterial(triggerMat);
+
             base.Init(beat, beatTime);
         }
 

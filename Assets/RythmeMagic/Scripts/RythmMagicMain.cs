@@ -20,6 +20,8 @@ namespace RythhmMagic
 
         [SerializeField] MarkerBase markerPrefab;
         [SerializeField] MarkerHold markerHoldPrefab;
+        [SerializeField] MarkerTwoHand markerTwoHandPrefab;
+        //[SerializeField] MarkerHold markerHoldPrefab;
 
         [SerializeField] Transform markerParent;
 
@@ -39,7 +41,6 @@ namespace RythhmMagic
 
             bpm = UniBpmAnalyzer.AnalyzeBpm(mainAudio.clip);
             nextEventTime = AudioSettings.dspTime + 60.0f / bpm;
-            StartGame();
         }
 
         Coroutine startGameCoroutine;
@@ -57,10 +58,9 @@ namespace RythhmMagic
             score = 0;
 
             //for adjust speed
-            //var startTime = musicSheet.beatList[0].startTime;
-            //if (startTime < gameMgr.markerTime)
-            //    yield return new WaitForSeconds(gameMgr.markerTime - startTime);
-            yield return null;
+            var startTime = musicSheet.beatList[0].startTime;
+            if (startTime < gameMgr.markerTime)
+                yield return new WaitForSeconds(gameMgr.markerTime - startTime);
 
             mainAudio.Play();
             startGameCoroutine = null;
@@ -70,10 +70,9 @@ namespace RythhmMagic
         {
             if (GameOver) return;
 
-            playingTimer += Time.fixedDeltaTime;
+            playingTimer += Time.deltaTime;
             if (nowBeat < musicSheet.beatList.Count && musicSheet.beatList[nowBeat].startTime - gameMgr.markerTime <= playingTimer)
             {
-                Debug.Log(playingTimer);
                 SpawnNewMarkers(musicSheet.beatList[nowBeat]);
                 nowBeat += 1;
             }
@@ -86,6 +85,11 @@ namespace RythhmMagic
             }
         }
 
+        public void LogTime()
+        {
+            Debug.Log(playingTimer);
+        }
+
         void SpawnNewMarkers(MusicSheetObject.Beat beat)
         {
             if (beat.infos.Count < 1) return;
@@ -93,13 +97,29 @@ namespace RythhmMagic
             foreach (var item in beat.infos)
             {
                 var marker = markerPrefab;
-                switch (item.type)
-                {
-                    case BeatTypes.Holding:
-                        marker = markerHoldPrefab;
-                        break;
-                }
 
+                if(item.markerType == MarkerType.TwoHand)
+                {
+                    switch (item.beatType)
+                    {
+                        case BeatTypes.Default:
+                            marker = markerTwoHandPrefab;
+                            break;
+                        case BeatTypes.Holding:
+                            marker = markerHoldPrefab;
+                            break;
+                    }
+                }
+                else
+                {
+                    switch (item.beatType)
+                    {
+                        case BeatTypes.Holding:
+                            marker = markerHoldPrefab;
+                            break;
+                    }
+                }
+           
                 var o = Instantiate(marker.gameObject);
                 o.transform.SetParent(markerParent, true);
                 o.GetComponent<MarkerBase>().Init(item, beat.startTime);

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace RythhmMagic
 {
@@ -11,6 +12,13 @@ namespace RythhmMagic
 		Default,
 		Holding
 	}
+
+    public enum MarkerType
+    {
+        Default,
+        Trigger,
+        TwoHand
+    }
 
 	[CreateAssetMenu(fileName = "NewMusicSheet", menuName = "Rythm magic/MusicSheetObject", order = 1)]
 	public class MusicSheetObject : ScriptableObject
@@ -28,7 +36,8 @@ namespace RythhmMagic
 		[Serializable]
 		public class BeatInfo
 		{
-			public BeatTypes type;
+            [FormerlySerializedAs("type")] public BeatTypes beatType;
+            public MarkerType markerType;
 			public List<PosInfo> posList = new List<PosInfo>();
 		}
 

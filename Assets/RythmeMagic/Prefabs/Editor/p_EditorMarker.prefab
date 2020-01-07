@@ -264,8 +264,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a9e7c08a9a709f4c90bc4dffd4af718, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  markerTag: 
   enterX: {fileID: 0}
   enterY: {fileID: 0}
+  markerTypeDp: {fileID: 0}
+  markerTypeRenderer: {fileID: 930153073962366674}
+  defaultMat: {fileID: 2100000, guid: 6ba97b32bbfc3cc48b13d159d899be0c, type: 2}
+  triggerMat: {fileID: 2100000, guid: 72bf9cb9b08762b4fa0851c63674efbd, type: 2}
+  twoHandMat: {fileID: 2100000, guid: 448f5e99d293b934c890774408bd4824, type: 2}
 --- !u!1 &8975371833663278568
 GameObject:
   m_ObjectHideFlags: 0
@@ -277,7 +283,7 @@ GameObject:
   - component: {fileID: 8602319783664994762}
   - component: {fileID: 3410166943679086365}
   - component: {fileID: 930153073962366674}
-  - component: {fileID: 612403897491362863}
+  - component: {fileID: 5728406045200876425}
   m_Layer: 0
   m_Name: p_Marker
   m_TagString: Untagged
@@ -344,7 +350,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &612403897491362863
+--- !u!65 &5728406045200876425
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

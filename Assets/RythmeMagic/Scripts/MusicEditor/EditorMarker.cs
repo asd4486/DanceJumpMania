@@ -9,9 +9,16 @@ namespace RythhmMagic.MusicEditor
 {
 	public class EditorMarker : MonoBehaviour
 	{
+        [SerializeField] string markerTag;
 		[SerializeField] InputField enterX;
 		[SerializeField] InputField enterY;
+        [SerializeField] Dropdown markerTypeDp;
 		public EditorBeat currentBeat { get; private set; }
+
+        [SerializeField] MeshRenderer markerTypeRenderer;
+        [SerializeField] Material defaultMat;
+        [SerializeField] Material triggerMat;
+        [SerializeField] Material twoHandMat;
 
 		TextMeshPro textPos;
 		// Start is called before the first frame update
@@ -22,7 +29,10 @@ namespace RythhmMagic.MusicEditor
 			enterY.onValueChanged.AddListener(EnterYPos);
 
 			enterX.interactable = enterY.interactable = false;
-		}
+            markerTypeRenderer.material = defaultMat;
+
+            markerTypeDp.onValueChanged.AddListener(MarkerTypeChanged);
+        }
 
 		public void SetActive(bool active)
 		{
@@ -33,7 +43,16 @@ namespace RythhmMagic.MusicEditor
 		public void SetCurrentBeat(EditorBeat beat)
 		{
 			currentBeat = beat;
-			enterX.interactable = enterY.interactable = currentBeat != null;
+			enterX.interactable = enterY.interactable = markerTypeDp.enabled = currentBeat != null;
+
+            if (currentBeat != null)
+            {
+                markerTypeDp.onValueChanged.RemoveAllListeners();
+                markerTypeDp.value = (int)currentBeat.currentGroup.markerType;
+                markerTypeDp.onValueChanged.AddListener(MarkerTypeChanged);
+
+                ChangeMarkerTypeMat();
+            }            
 		}
 
 		public void DragSetPosition(Vector3 pos)
@@ -42,7 +61,7 @@ namespace RythhmMagic.MusicEditor
 			var strX = transform.localPosition.x.ToString("F2").Replace(',', '.');
 			var strY = transform.localPosition.y.ToString("F2").Replace(',', '.');
 
-			textPos.text = "X:" + strX + "  Y:" + strY;
+			textPos.text = markerTag + " X:" + strX + "  Y:" + strY;
 
 			enterX.onValueChanged.RemoveAllListeners();
 			enterY.onValueChanged.RemoveAllListeners();
@@ -85,5 +104,28 @@ namespace RythhmMagic.MusicEditor
 			textPos.text = "X:" + strX + "  Y:" + strY;
 			currentBeat.info.pos = transform.localPosition;
 		}
+
+        void MarkerTypeChanged(int index)
+        {
+            if (currentBeat == null) return;
+            currentBeat.currentGroup.markerType = (MarkerType)index;
+            ChangeMarkerTypeMat();
+        }
+
+        void ChangeMarkerTypeMat()
+        {
+            switch (currentBeat.currentGroup.markerType)
+            {
+                case MarkerType.Default:
+                    markerTypeRenderer.material = defaultMat;
+                    break;
+                case MarkerType.Trigger:
+                    markerTypeRenderer.material = triggerMat;
+                    break;
+                case MarkerType.TwoHand:
+                    markerTypeRenderer.material = twoHandMat;
+                    break;
+            }
+        }
 	}
 }

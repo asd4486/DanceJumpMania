@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 1575751481130487624}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.15, y: 0.15, z: 0.01}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.01}
   m_Children:
   - {fileID: 7162441185440504567}
   m_Father: {fileID: 2014714740851991278}
@@ -155,6 +155,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fxTouch: {fileID: 3653603084065966800}
+  markerRenderer: {fileID: 7329694105789559922}
+  defaultMat: {fileID: 2100000, guid: 6ba97b32bbfc3cc48b13d159d899be0c, type: 2}
+  triggerMat: {fileID: 2100000, guid: 72bf9cb9b08762b4fa0851c63674efbd, type: 2}
 --- !u!1 &8197320637479983139
 GameObject:
   m_ObjectHideFlags: 0
@@ -5013,5 +5016,4 @@ MonoBehaviour:
   width: 0.05
   thickness: 0.05
   flattenSurface: 0
-  lineMat: {fileID: 2100000, guid: 6ba97b32bbfc3cc48b13d159d899be0c, type: 2}
   textureTiling: 1

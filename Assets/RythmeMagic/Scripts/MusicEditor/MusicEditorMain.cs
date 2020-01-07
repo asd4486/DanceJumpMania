@@ -151,7 +151,9 @@ namespace RythhmMagic.MusicEditor
 				foreach (var group in beatInfoEditor.beatGroupsList[i])
 				{
 					var newInfo = new MusicSheetObject.BeatInfo();
-					newInfo.type = group.beatList.Count < 2 ? BeatTypes.Default : BeatTypes.Holding;
+					newInfo.beatType = group.beatList.Count < 2 ? BeatTypes.Default : BeatTypes.Holding;
+                    newInfo.markerType = group.markerType;
+
 					foreach (var beat in group.beatList)
 						newInfo.posList.Add(new MusicSheetObject.PosInfo() { time = beat.info.time.Round3Decimal(), pos = beat.info.pos });
 
@@ -318,7 +320,7 @@ namespace RythhmMagic.MusicEditor
 			foreach (var b in group.beatList)
 				beatInfos.Add(b.info);
 
-			copiedGroupInfo = new BeatGroupInfo(beatInfos);
+			copiedGroupInfo = new BeatGroupInfo(beatInfos, group.markerType);
 			Debug.Log("copied");
 		}
 
