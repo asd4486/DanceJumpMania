@@ -81,12 +81,16 @@ namespace RythhmMagic
         protected override void OnHitMarker()
         {
             if (!fxTouch.isPlaying) fxTouch.Play();
+            main.AddScore();
         }
 
         private void OnCollisionExit(Collision collision)
         {
             if (collision.gameObject.GetComponent<MarkerController>() != null)
+            {
                 fxTouch.Stop();
+                main.BreakCombo(); 
+            }        
         }
     }
 }

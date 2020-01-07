@@ -1,18 +1,31 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class UIMain : MonoBehaviour
 {
+    [SerializeField] Text textCombo;
+    [SerializeField] Text textScore;
     // Start is called before the first frame update
     void Start()
     {
-        
+        BreakCombo();
     }
 
-    // Update is called once per frame
-    void Update()
+   public void SetScore(int score)
     {
-        
+        textScore.text = score.ToString();
+    }
+
+    public void SetCombo(int combo)
+    {
+        if (!textCombo.gameObject.activeSelf)
+            textCombo.gameObject.SetActive(true);
+
+        textCombo.text = combo + " HIT";
+    }
+
+    public void BreakCombo()
+    {
+        textCombo.gameObject.SetActive(false);
     }
 }

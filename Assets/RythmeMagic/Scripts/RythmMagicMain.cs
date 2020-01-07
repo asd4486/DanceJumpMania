@@ -6,9 +6,12 @@ namespace RythhmMagic
 {
     public class RythmMagicMain : MonoBehaviour
     {
+        UIMain uiMain;
         GameManager gameMgr;
 
         int score;
+        int combo;
+
         public bool GameOver { get; private set; }
 
         [SerializeField] AudioSource mainAudio;
@@ -32,6 +35,7 @@ namespace RythhmMagic
         // Start is called before the first frame update
         void Start()
         {
+            uiMain = FindObjectOfType<UIMain>();
             gameMgr = FindObjectOfType<GameManager>();
 
             mainAudio.clip = musicSheet.music;
@@ -124,6 +128,20 @@ namespace RythhmMagic
                 o.transform.SetParent(markerParent, true);
                 o.GetComponent<MarkerBase>().Init(item, beat.startTime);
             }
+        }
+
+        public void AddScore()
+        {
+            score += 10;
+            combo += 1;
+            uiMain.SetScore(score);
+            uiMain.SetCombo(combo);
+        }
+
+        public void BreakCombo()
+        {
+            combo = 0;
+            uiMain.BreakCombo();
         }
     }
 }

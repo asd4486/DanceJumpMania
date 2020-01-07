@@ -8,6 +8,7 @@ namespace RythhmMagic
 {
     public class MarkerBase : MonoBehaviour
     {
+        protected RythmMagicMain main;
         protected MusicSheetObject.BeatInfo currentBeat;
         protected Collider myCol;
         [SerializeField] protected ParticleSystem fxTouch;
@@ -23,6 +24,7 @@ namespace RythhmMagic
         // Start is called before the first frame update
         void Awake()
         {
+            main = FindObjectOfType<RythmMagicMain>();
             gameMgr = FindObjectOfType<GameManager>();
             markerSpeed = gameMgr.MarkerSpeed;
 
@@ -64,16 +66,20 @@ namespace RythhmMagic
         IEnumerator WaitPlayerHitCoroutine()
         {
             yield return new WaitForSeconds(0.15f);
-            if(markerRenderer.enabled)
+            if (myCol.enabled)
+            {
                 Destroy(gameObject);
+                main.BreakCombo();
+            }                
         }
 
         protected virtual void OnHitMarker()
         {
             startMove = myCol.enabled = false;
-            markerRenderer.enabled = false;
             myCol.transform.DOScale(Vector3.zero, 0.1f);
             fxTouch.Play();
+            main.AddScore();
+
             Destroy(gameObject, 0.2f);
         }
 
