@@ -24,7 +24,7 @@ namespace RythhmMagic
         [SerializeField] MarkerBase markerPrefab;
         [SerializeField] MarkerHold markerHoldPrefab;
         [SerializeField] MarkerTwoHand markerTwoHandPrefab;
-        //[SerializeField] MarkerHold markerHoldPrefab;
+        [SerializeField] MarkerHoldTwoHand markerHoldTwoHandPrefab;
 
         [SerializeField] Transform markerParent;
 
@@ -110,7 +110,7 @@ namespace RythhmMagic
                             marker = markerTwoHandPrefab;
                             break;
                         case BeatTypes.Holding:
-                            marker = markerHoldPrefab;
+                            marker = markerHoldTwoHandPrefab;
                             break;
                     }
                 }

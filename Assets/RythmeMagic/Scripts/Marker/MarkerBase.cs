@@ -17,7 +17,7 @@ namespace RythhmMagic
 
         protected bool startMove;
 
-        [SerializeField] MeshRenderer markerRenderer;
+        [SerializeField] protected SpriteRenderer markerRenderer;
         [SerializeField] protected Material defaultMat;
         [SerializeField] protected Material triggerMat;
 
@@ -35,7 +35,7 @@ namespace RythhmMagic
         public virtual void Init(MusicSheetObject.BeatInfo beat, float beatTime)
         {
             if (beat.markerType == MarkerType.Default) markerRenderer.material = defaultMat;
-            else markerRenderer.material = triggerMat;
+            else if (beat.markerType == MarkerType.Trigger) markerRenderer.material = triggerMat;
 
             currentBeat = beat;
             transform.localPosition = new Vector3(beat.posList[0].pos.x, beat.posList[0].pos.y, gameMgr.markerDistance);
@@ -70,26 +70,28 @@ namespace RythhmMagic
             {
                 Destroy(gameObject);
                 main.BreakCombo();
-            }                
+            }
         }
 
         protected virtual void OnHitMarker()
         {
             startMove = myCol.enabled = false;
-            myCol.transform.DOScale(Vector3.zero, 0.1f);
+            markerRenderer.transform.DOScale(Vector3.zero, 0.1f);
             fxTouch.Play();
             main.AddScore();
 
             Destroy(gameObject, 0.2f);
         }
 
-        protected virtual void OnCollisionStay(Collision collision)
+        protected virtual void OnTriggerStay(Collider col)
         {
-            if (collision.gameObject.GetComponent<MarkerController>() != null &&
-                collision.gameObject.GetComponent<MarkerController>().controlMarkerType == currentBeat.markerType)
+            if (col.gameObject.GetComponent<MarkerController>() != null &&
+                col.gameObject.GetComponent<MarkerController>().controlMarkerType == currentBeat.markerType)
             {
                 OnHitMarker();
             }
         }
+
+        protected virtual void OnTriggerExit(Collider col) { }
     }
 }

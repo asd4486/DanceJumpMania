@@ -14,14 +14,14 @@ namespace RythhmMagic
 
         public MarkerType controlMarkerType { get; private set; }
 
-        SpriteRenderer spRenderer;
+        MeshRenderer rendrerer;
         [SerializeField] Material defaultMat;
         [SerializeField] Material triggerMat;
 
         private void Awake()
         {
             myCol = GetComponent<Collider>();
-            spRenderer = GetComponent<SpriteRenderer>();
+            rendrerer = GetComponentInChildren<MeshRenderer>();
         }
 
         // Update is called once per frame
@@ -32,11 +32,11 @@ namespace RythhmMagic
             if (currentHand.IsGrabbingWithType(GrabTypes.Pinch))
             {
                 controlMarkerType = MarkerType.Trigger;
-                spRenderer.material = triggerMat;
+                rendrerer.material = triggerMat;
             }                      
             else
             {
-                spRenderer.material = defaultMat;
+                rendrerer.material = defaultMat;
                 controlMarkerType = MarkerType.Default;
             }                        
         }

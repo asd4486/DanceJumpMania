@@ -1,12 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Valve.VR;
 
 namespace RythhmMagic
 {
-    public class MarkerTwoHand : MarkerBase
+    public class MarkerHoldTwoHand : MarkerHold
     {
         bool touchLeft;
         bool touchRight;
@@ -25,11 +24,16 @@ namespace RythhmMagic
 
         protected override void OnTriggerExit(Collider col)
         {
+            if (!myCol.enabled) return;
+
             if (col.gameObject.GetComponent<MarkerController>() != null)
             {
                 var controller = col.gameObject.GetComponent<MarkerController>();
                 if (controller.CurrentHand.handType == SteamVR_Input_Sources.LeftHand) touchLeft = false;
                 else touchRight = false;
+
+                fxTouch.Stop();
+                main.BreakCombo();
             }
         }
     }

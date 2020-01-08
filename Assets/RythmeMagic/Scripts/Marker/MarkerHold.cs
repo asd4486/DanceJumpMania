@@ -9,11 +9,14 @@ namespace RythhmMagic
     public class MarkerHold : MarkerBase
     {
         MarkerLine markerLine;
-
-        //for moving Marker
-        float movePathSpeed;
-
         float markerDuration;
+
+        protected float addScoreTimer;
+
+        private void Start()
+        {
+            addScoreTimer = gameMgr.addScoreDelay;
+        }
 
         public override void Init(MusicSheetObject.BeatInfo beat, float beatTime)
         {
@@ -43,7 +46,7 @@ namespace RythhmMagic
             }
 
             if (beat.markerType == MarkerType.Default) markerLine.SetMaterial(defaultMat);
-            else markerLine.SetMaterial(triggerMat);
+            else if (beat.markerType == MarkerType.Trigger) markerLine.SetMaterial(triggerMat);
 
             base.Init(beat, beatTime);
         }
@@ -63,7 +66,7 @@ namespace RythhmMagic
             if (pathTimer >= 1)
             {
                 startMove = myCol.enabled = false;
-                myCol.transform.DOScale(Vector3.zero, 0.1f);
+                markerRenderer.transform.DOScale(Vector3.zero, 0.1f);
                 if (fxTouch.isPlaying) fxTouch.Stop();
                 Destroy(gameObject, 0.2f);
                 return;
@@ -73,7 +76,7 @@ namespace RythhmMagic
 
             pathTimer += Time.deltaTime / markerDuration;
             var pathPos = markerLine.vectexPath.GetPointAtTime(pathTimer, EndOfPathInstruction.Stop);
-            myCol.transform.position = new Vector3(pathPos.x, pathPos.y, transform.position.z);
+            markerRenderer.transform.position = new Vector3(pathPos.x, pathPos.y, transform.position.z);
 
             //transform.rotation = path.GetRotationAtDistance(distanceTravelled, endOfPathInstruction);
         }
@@ -81,16 +84,24 @@ namespace RythhmMagic
         protected override void OnHitMarker()
         {
             if (!fxTouch.isPlaying) fxTouch.Play();
-            main.AddScore();
+
+            addScoreTimer += Time.deltaTime;
+            if (addScoreTimer >= gameMgr.addScoreDelay)
+            {
+                main.AddScore();
+                addScoreTimer = 0;
+            }
         }
 
-        private void OnCollisionExit(Collision collision)
+        protected override void OnTriggerExit(Collider col)
         {
-            if (collision.gameObject.GetComponent<MarkerController>() != null)
+            if (!myCol.enabled) return;
+
+            if (col.gameObject.GetComponent<MarkerController>() != null)
             {
                 fxTouch.Stop();
-                main.BreakCombo(); 
-            }        
+                main.BreakCombo();
+            }
         }
     }
 }
