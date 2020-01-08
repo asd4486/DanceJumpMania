@@ -49,6 +49,11 @@ namespace RythhmMagic.MusicEditor
 			markers[index].SetActive(active);
 		}
 
+		public void SetMarkerBeatGroup(int index, EditorBeatGroup group)
+		{
+			markers[index].SetCurrentBeatGroup(group);
+		}
+
 		public void SetMarkerBeat(int index, EditorBeat beat)
 		{
 			markers[index].SetCurrentBeat(beat);

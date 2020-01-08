@@ -9,16 +9,19 @@ namespace RythhmMagic.MusicEditor
 {
 	public class EditorMarker : MonoBehaviour
 	{
-        [SerializeField] string markerTag;
+		[SerializeField] string markerTag;
 		[SerializeField] InputField enterX;
 		[SerializeField] InputField enterY;
-        [SerializeField] Dropdown markerTypeDp;
+		[SerializeField] Dropdown markerTypeDp;
+		EditorBeatGroup currentBeatGroup;
 		public EditorBeat currentBeat { get; private set; }
 
-        [SerializeField] MeshRenderer markerTypeRenderer;
-        [SerializeField] Material defaultMat;
-        [SerializeField] Material triggerMat;
-        [SerializeField] Material twoHandMat;
+		[SerializeField] LineRenderer lineRenderer;
+
+		[SerializeField] MeshRenderer markerTypeRenderer;
+		[SerializeField] Material defaultMat;
+		[SerializeField] Material triggerMat;
+		[SerializeField] Material twoHandMat;
 
 		TextMeshPro textPos;
 		// Start is called before the first frame update
@@ -29,10 +32,10 @@ namespace RythhmMagic.MusicEditor
 			enterY.onValueChanged.AddListener(EnterYPos);
 
 			enterX.interactable = enterY.interactable = false;
-            markerTypeRenderer.material = defaultMat;
+			markerTypeRenderer.material = defaultMat;
 
-            markerTypeDp.onValueChanged.AddListener(MarkerTypeChanged);
-        }
+			markerTypeDp.onValueChanged.AddListener(MarkerTypeChanged);
+		}
 
 		public void SetActive(bool active)
 		{
@@ -40,19 +43,36 @@ namespace RythhmMagic.MusicEditor
 			gameObject.SetActive(active);
 		}
 
+		public void SetCurrentBeatGroup(EditorBeatGroup group)
+		{
+			currentBeatGroup = group;
+			markerTypeDp.enabled = currentBeatGroup != null;
+
+			var posList = new List<Vector3>();
+			posList.Add(Vector3.zero);
+			if (currentBeatGroup != null)
+			{
+				markerTypeDp.onValueChanged.RemoveAllListeners();
+				markerTypeDp.value = (int)currentBeatGroup.markerType;
+				markerTypeDp.onValueChanged.AddListener(MarkerTypeChanged);
+
+				if (currentBeatGroup.beatList.Count > 1)
+				{
+					posList.Clear();
+					foreach (var b in currentBeatGroup.beatList)
+						posList.Add(b.info.pos);
+				}
+				ChangeMarkerTypeMat();
+			}
+
+			lineRenderer.positionCount = posList.Count;
+			lineRenderer.SetPositions(posList.ToArray());
+		}
+
 		public void SetCurrentBeat(EditorBeat beat)
 		{
 			currentBeat = beat;
-			enterX.interactable = enterY.interactable = markerTypeDp.enabled = currentBeat != null;
-
-            if (currentBeat != null)
-            {
-                markerTypeDp.onValueChanged.RemoveAllListeners();
-                markerTypeDp.value = (int)currentBeat.currentGroup.markerType;
-                markerTypeDp.onValueChanged.AddListener(MarkerTypeChanged);
-
-                ChangeMarkerTypeMat();
-            }            
+			enterX.interactable = enterY.interactable = currentBeat != null;
 		}
 
 		public void DragSetPosition(Vector3 pos)
@@ -62,6 +82,7 @@ namespace RythhmMagic.MusicEditor
 			var strY = transform.localPosition.y.ToString("F2").Replace(',', '.');
 
 			textPos.text = markerTag + " X:" + strX + "  Y:" + strY;
+			RefreshMarkerLinePos();
 
 			enterX.onValueChanged.RemoveAllListeners();
 			enterY.onValueChanged.RemoveAllListeners();
@@ -101,31 +122,43 @@ namespace RythhmMagic.MusicEditor
 		{
 			var strX = transform.localPosition.x.ToString("F2").Replace(',', '.');
 			var strY = transform.localPosition.y.ToString("F2").Replace(',', '.');
-			textPos.text = "X:" + strX + "  Y:" + strY;
+			textPos.text = markerTag + "X:" + strX + "  Y:" + strY;
+			RefreshMarkerLinePos();
+
 			currentBeat.info.pos = transform.localPosition;
 		}
 
-        void MarkerTypeChanged(int index)
-        {
-            if (currentBeat == null) return;
-            currentBeat.currentGroup.markerType = (MarkerType)index;
-            ChangeMarkerTypeMat();
-        }
+		void MarkerTypeChanged(int index)
+		{
+			if (currentBeatGroup == null) return;
+			currentBeatGroup.markerType = (MarkerType)index;
+			ChangeMarkerTypeMat();
+		}
 
-        void ChangeMarkerTypeMat()
-        {
-            switch (currentBeat.currentGroup.markerType)
-            {
-                case MarkerType.Default:
-                    markerTypeRenderer.material = defaultMat;
-                    break;
-                case MarkerType.Trigger:
-                    markerTypeRenderer.material = triggerMat;
-                    break;
-                case MarkerType.TwoHand:
-                    markerTypeRenderer.material = twoHandMat;
-                    break;
-            }
-        }
+		void RefreshMarkerLinePos()
+		{
+			if (currentBeatGroup == null || currentBeatGroup.beatList.Count < 2) return;
+			var posList = new List<Vector3>();
+
+			foreach (var b in currentBeatGroup.beatList)
+				posList.Add(b.info.pos);
+			lineRenderer.SetPositions(posList.ToArray());
+		}
+
+		void ChangeMarkerTypeMat()
+		{
+			switch (currentBeatGroup.markerType)
+			{
+				case MarkerType.Default:
+					markerTypeRenderer.material = lineRenderer.material = defaultMat;
+					break;
+				case MarkerType.Trigger:
+					markerTypeRenderer.material = lineRenderer.material = triggerMat;
+					break;
+				case MarkerType.TwoHand:
+					markerTypeRenderer.material = lineRenderer.material = twoHandMat;
+					break;
+			}
+		}
 	}
 }

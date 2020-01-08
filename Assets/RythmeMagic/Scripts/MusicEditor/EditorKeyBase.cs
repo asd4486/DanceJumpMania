@@ -22,6 +22,11 @@ namespace RythhmMagic.MusicEditor
 			col = GetComponent<BoxCollider2D>();
 		}
 
+		public virtual void OnDragStart(float xPos)
+		{
+
+		}
+
 		public virtual void OnDragSetPos(float xPos)
 		{
 			if (onDragAction != null) onDragAction();

@@ -14,16 +14,10 @@ namespace RythhmMagic.MusicEditor
 
 	public class EditorBeat : EditorKeyBase
 	{
-		BtnMusicProgress progressBtn;
 		public BeatInfo info = new BeatInfo();
 
 		public EditorBeatGroup currentGroup { get; private set; }
 		public event System.Action<EditorBeat> onDragEndAction;
-
-		private void Start()
-		{
-			progressBtn = FindObjectOfType<BtnMusicProgress>();
-		}
 
 		public void Init(float _time, Vector2 _pos, EditorBeatGroup _group)
 		{
@@ -38,12 +32,18 @@ namespace RythhmMagic.MusicEditor
 			//magnet mode set position to progress button when close 
 			if (main.moveMode == MoveModes.Magnet)
 			{
-				if (progressBtn != null && Mathf.Abs(xPos - progressBtn.rectTransfom.anchoredPosition.x) < 10)
-					xPos = progressBtn.rectTransfom.anchoredPosition.x;
+				var progressTime = main.GetProgressTime();
+				if (Mathf.Abs(progressTime - main.GetTimeByPosition(xPos)) < 0.1f)
+					xPos = main.GetPositionByTime(progressTime);
 			}
 
 			rectTransfom.anchoredPosition = new Vector2(xPos, 0);
 			base.OnDragSetPos(xPos);
+		}
+
+		public void GroupDragSetPos(float xPos)
+		{
+			rectTransfom.anchoredPosition = new Vector2(rectTransfom.anchoredPosition.x + xPos, 0);
 		}
 
 		public override void OnDragEnd()

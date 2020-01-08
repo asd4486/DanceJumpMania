@@ -85,6 +85,7 @@ namespace RythhmMagic.MusicEditor
 			{
 				var keybase = hit2D.collider.GetComponent<EditorKeyBase>();
 				dragKey = keybase;
+				keybase.OnDragStart(GetMouseXPosInUI());
 			}
 		}
 

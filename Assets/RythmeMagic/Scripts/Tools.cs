@@ -34,10 +34,5 @@ namespace RythhmMagic
 			else
 				return RoundDown(toRound, multiple);
 		}
-
-        public static float Round3Decimal(this float num)
-        {
-            return (float)Math.Round(num, 3);
-        }
 	}
 }

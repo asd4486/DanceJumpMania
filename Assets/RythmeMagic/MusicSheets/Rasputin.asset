@@ -21,12 +21,12 @@ MonoBehaviour:
       posList:
       - time: 2.5
         pos: {x: 0, y: 0.3}
-  - startTime: 2.73
+  - startTime: 2.74513
     infos:
     - beatType: 0
       markerType: 2
       posList:
-      - time: 2.73
+      - time: 2.74513
         pos: {x: 0, y: 0.3}
   - startTime: 3
     infos:
@@ -485,7 +485,7 @@ MonoBehaviour:
   - startTime: 29.17
     infos:
     - beatType: 0
-      markerType: 1
+      markerType: 0
       posList:
       - time: 29.17
         pos: {x: 0.013043655, y: -0.064492345}
@@ -534,7 +534,7 @@ MonoBehaviour:
   - startTime: 31.145
     infos:
     - beatType: 0
-      markerType: 1
+      markerType: 0
       posList:
       - time: 31.145
         pos: {x: 0.011910167, y: -0.036630034}
@@ -594,3 +594,527 @@ MonoBehaviour:
       posList:
       - time: 34.96
         pos: {x: 0.7, y: 0.16754115}
+  - startTime: 35.463
+    infos:
+    - beatType: 0
+      markerType: 2
+      posList:
+      - time: 35.463
+        pos: {x: -0.525, y: 0.008166432}
+  - startTime: 35.973
+    infos:
+    - beatType: 0
+      markerType: 2
+      posList:
+      - time: 35.973
+        pos: {x: -0.26250005, y: 0.2581662}
+  - startTime: 36.448
+    infos:
+    - beatType: 0
+      markerType: 2
+      posList:
+      - time: 36.448
+        pos: {x: 0.05937519, y: 0.3675412}
+  - startTime: 36.935
+    infos:
+    - beatType: 0
+      markerType: 2
+      posList:
+      - time: 36.935
+        pos: {x: 0.2968751, y: 0.23004115}
+  - startTime: 37.38
+    infos:
+    - beatType: 0
+      markerType: 2
+      posList:
+      - time: 37.38
+        pos: {x: 0.509375, y: -0.010583758}
+  - startTime: 37.849
+    infos:
+    - beatType: 0
+      markerType: 2
+      posList:
+      - time: 37.849
+        pos: {x: 0.33750013, y: -0.33870894}
+  - startTime: 38.33
+    infos:
+    - beatType: 0
+      markerType: 2
+      posList:
+      - time: 38.33
+        pos: {x: -0.08437512, y: -0.48870867}
+  - startTime: 38.792
+    infos:
+    - beatType: 0
+      markerType: 2
+      posList:
+      - time: 38.792
+        pos: {x: -0.34375006, y: -0.2699585}
+  - startTime: 39.25
+    infos:
+    - beatType: 0
+      markerType: 2
+      posList:
+      - time: 39.25
+        pos: {x: -0.52812505, y: -0.023083806}
+  - startTime: 39.713
+    infos:
+    - beatType: 0
+      markerType: 2
+      posList:
+      - time: 39.713
+        pos: {x: -0.35937506, y: 0.2675413}
+  - startTime: 40.169
+    infos:
+    - beatType: 0
+      markerType: 2
+      posList:
+      - time: 40.169
+        pos: {x: 0.015625164, y: 0.41754115}
+  - startTime: 40.644
+    infos:
+    - beatType: 0
+      markerType: 2
+      posList:
+      - time: 40.644
+        pos: {x: 0.38125, y: 0.2675413}
+  - startTime: 41.131
+    infos:
+    - beatType: 0
+      markerType: 2
+      posList:
+      - time: 41.131
+        pos: {x: 0.49374998, y: -0.06370866}
+  - startTime: 41.594
+    infos:
+    - beatType: 0
+      markerType: 2
+      posList:
+      - time: 41.594
+        pos: {x: 0.2906251, y: -0.2855838}
+  - startTime: 42.081
+    infos:
+    - beatType: 0
+      markerType: 2
+      posList:
+      - time: 42.081
+        pos: {x: -0.07499994, y: -0.45120865}
+  - startTime: 42.555
+    infos:
+    - beatType: 0
+      markerType: 2
+      posList:
+      - time: 42.555
+        pos: {x: -0.40624994, y: -0.27620882}
+  - startTime: 43.031
+    infos:
+    - beatType: 0
+      markerType: 0
+      posList:
+      - time: 43.031
+        pos: {x: 0.4, y: -0.1}
+  - startTime: 43.494
+    infos:
+    - beatType: 0
+      markerType: 0
+      posList:
+      - time: 43.494
+        pos: {x: 0.4, y: -0.1}
+  - startTime: 43.981
+    infos:
+    - beatType: 1
+      markerType: 0
+      posList:
+      - time: 43.981
+        pos: {x: -0.37499997, y: -0.30312502}
+      - time: 44.101
+        pos: {x: -0.5312499, y: -0.13870895}
+      - time: 44.221
+        pos: {x: -0.33437487, y: 0.023791313}
+      - time: 44.351
+        pos: {x: -0.5249999, y: 0.18004096}
+      - time: 44.474
+        pos: {x: -0.346875, y: 0.37066615}
+  - startTime: 44.69076
+    infos:
+    - beatType: 1
+      markerType: 0
+      posList:
+      - time: 44.69076
+        pos: {x: -0.346875, y: 0.37066615}
+      - time: 44.826733
+        pos: {x: -0.23124994, y: 0.086291194}
+  - startTime: 44.97164
+    infos:
+    - beatType: 1
+      markerType: 0
+      posList:
+      - time: 44.97164
+        pos: {x: 0.5343751, y: -0.17308396}
+      - time: 45.186928
+        pos: {x: 0.01250012, y: -0.19808394}
+      - time: 45.413544
+        pos: {x: 0.5343751, y: -0.17308396}
+  - startTime: 45.66282
+    infos:
+    - beatType: 1
+      markerType: 0
+      posList:
+      - time: 45.66282
+        pos: {x: -0.5, y: -0.2}
+      - time: 46.331337
+        pos: {x: -0.5, y: -0.2}
+  - startTime: 45.88245
+    infos:
+    - beatType: 1
+      markerType: 1
+      posList:
+      - time: 45.88245
+        pos: {x: -0.33, y: 0.25}
+      - time: 46.153404
+        pos: {x: -0.023749858, y: -0.009375095}
+      - time: 46.331337
+        pos: {x: -0.4425, y: 0.328125}
+  - startTime: 46.80723
+    infos:
+    - beatType: 0
+      markerType: 1
+      posList:
+      - time: 46.80723
+        pos: {x: -0.4, y: -0.1}
+  - startTime: 47.271793
+    infos:
+    - beatType: 0
+      markerType: 1
+      posList:
+      - time: 47.271793
+        pos: {x: -0.4, y: -0.1}
+  - startTime: 47.73539
+    infos:
+    - beatType: 1
+      markerType: 1
+      posList:
+      - time: 47.73539
+        pos: {x: 0.38, y: -0.30312502}
+      - time: 47.855392
+        pos: {x: 0.53, y: -0.13870895}
+      - time: 47.97539
+        pos: {x: 0.33, y: 0.023791313}
+      - time: 48.105392
+        pos: {x: 0.52, y: 0.18004096}
+      - time: 48.22839
+        pos: {x: 0.35, y: 0.37066615}
+  - startTime: 48.46193
+    infos:
+    - beatType: 1
+      markerType: 1
+      posList:
+      - time: 48.46193
+        pos: {x: -0.015625086, y: 0.3987912}
+      - time: 48.57163
+        pos: {x: -0.3812503, y: 0.27691638}
+      - time: 48.69047
+        pos: {x: -0.6250001, y: -0.0043336153}
+  - startTime: 48.91678
+    infos:
+    - beatType: 0
+      markerType: 1
+      posList:
+      - time: 48.91678
+        pos: {x: 0.1499999, y: -0.37933356}
+  - startTime: 49.137295
+    infos:
+    - beatType: 0
+      markerType: 1
+      posList:
+      - time: 49.137295
+        pos: {x: 0.44062516, y: -0.013708591}
+  - startTime: 49.376984
+    infos:
+    - beatType: 1
+      markerType: 2
+      posList:
+      - time: 49.376984
+        pos: {x: 0, y: 0}
+      - time: 50.07688
+        pos: {x: 0, y: -0.2}
+  - startTime: 50.58879
+    infos:
+    - beatType: 1
+      markerType: 0
+      posList:
+      - time: 50.58879
+        pos: {x: -0.32500023, y: 0.2}
+      - time: 50.828484
+        pos: {x: -0.4, y: -0.012500048}
+      - time: 51.096935
+        pos: {x: -0.33125016, y: -0.25}
+      - time: 51.336624
+        pos: {x: -0.4, y: 0}
+      - time: 51.585903
+        pos: {x: -0.32500023, y: 0.2}
+      - time: 51.825592
+        pos: {x: -0.4, y: 0}
+      - time: 52.07487
+        pos: {x: -0.32500023, y: -0.25}
+    - beatType: 1
+      markerType: 0
+      posList:
+      - time: 50.58879
+        pos: {x: 0.33, y: 0.2}
+      - time: 50.828484
+        pos: {x: 0.4, y: -0.012500048}
+      - time: 51.096935
+        pos: {x: 0.33, y: -0.25}
+      - time: 51.336624
+        pos: {x: 0.4, y: 0}
+      - time: 51.585903
+        pos: {x: 0.33, y: 0.2}
+      - time: 51.825592
+        pos: {x: 0.4, y: 0}
+      - time: 52.07487
+        pos: {x: 0.33, y: -0.25}
+  - startTime: 52.47755
+    infos:
+    - beatType: 1
+      markerType: 0
+      posList:
+      - time: 52.47755
+        pos: {x: -0.32500023, y: 0.2}
+      - time: 52.726826
+        pos: {x: -0.4, y: -0.012500048}
+      - time: 52.995277
+        pos: {x: -0.33125016, y: -0.25}
+      - time: 53.23497
+        pos: {x: -0.4, y: 0}
+      - time: 53.484245
+        pos: {x: -0.32500023, y: 0.2}
+      - time: 53.733524
+        pos: {x: -0.4, y: 0}
+      - time: 53.9828
+        pos: {x: -0.32500023, y: -0.25}
+    - beatType: 1
+      markerType: 0
+      posList:
+      - time: 52.47755
+        pos: {x: 0.33, y: -0.25}
+      - time: 52.726826
+        pos: {x: 0.4, y: -0.012500048}
+      - time: 52.995277
+        pos: {x: 0.33, y: 0.2}
+      - time: 53.23497
+        pos: {x: 0.4, y: 0}
+      - time: 53.484245
+        pos: {x: 0.33, y: -0.25}
+      - time: 53.733524
+        pos: {x: 0.4, y: 0}
+      - time: 53.9828
+        pos: {x: 0.33, y: 0.2}
+  - startTime: 54.434975
+    infos:
+    - beatType: 1
+      markerType: 0
+      posList:
+      - time: 54.434975
+        pos: {x: -0.7, y: -0.2}
+      - time: 54.803295
+        pos: {x: -0.2, y: 0.1}
+      - time: 55.22359
+        pos: {x: -0.2, y: 0.1}
+      - time: 55.620533
+        pos: {x: -0.7, y: -0.2}
+      - time: 55.959106
+        pos: {x: -0.7, y: -0.2}
+    - beatType: 1
+      markerType: 0
+      posList:
+      - time: 54.434975
+        pos: {x: 0.1, y: 0.2}
+      - time: 54.803295
+        pos: {x: 0.7, y: -0.2}
+      - time: 55.22359
+        pos: {x: 0.7, y: -0.2}
+      - time: 55.620533
+        pos: {x: 0.2, y: 0.1}
+      - time: 55.959106
+        pos: {x: 0.2, y: 0.1}
+  - startTime: 56.192608
+    infos:
+    - beatType: 1
+      markerType: 1
+      posList:
+      - time: 56.192608
+        pos: {x: -0.7, y: -0.2}
+      - time: 56.56093
+        pos: {x: -0.2, y: 0.1}
+      - time: 56.98122
+        pos: {x: -0.2, y: 0.1}
+      - time: 57.378166
+        pos: {x: -0.7, y: -0.2}
+      - time: 57.71674
+        pos: {x: -0.7, y: -0.2}
+    - beatType: 1
+      markerType: 1
+      posList:
+      - time: 56.192608
+        pos: {x: 0.1, y: 0.2}
+      - time: 56.56093
+        pos: {x: 0.7, y: -0.2}
+      - time: 56.981224
+        pos: {x: 0.7, y: -0.2}
+      - time: 57.378166
+        pos: {x: 0.2, y: 0.1}
+      - time: 57.71674
+        pos: {x: 0.2, y: 0.1}
+  - startTime: 58.11097
+    infos:
+    - beatType: 1
+      markerType: 0
+      posList:
+      - time: 58.11097
+        pos: {x: -0.32500023, y: 0.2}
+      - time: 58.350662
+        pos: {x: -0.4, y: -0.012500048}
+      - time: 58.619114
+        pos: {x: -0.33125016, y: -0.25}
+      - time: 58.858803
+        pos: {x: -0.4, y: 0}
+      - time: 59.10808
+        pos: {x: -0.32500023, y: 0.2}
+      - time: 59.34777
+        pos: {x: -0.4, y: 0}
+      - time: 59.59705
+        pos: {x: -0.32500023, y: -0.25}
+    - beatType: 1
+      markerType: 0
+      posList:
+      - time: 58.11097
+        pos: {x: 0.33, y: -0.25}
+      - time: 58.360245
+        pos: {x: 0.4, y: -0.012500048}
+      - time: 58.628696
+        pos: {x: 0.33, y: 0.2}
+      - time: 58.86839
+        pos: {x: 0.4, y: 0}
+      - time: 59.117664
+        pos: {x: 0.33, y: -0.25}
+      - time: 59.366943
+        pos: {x: 0.4, y: 0}
+      - time: 59.61622
+        pos: {x: 0.33, y: 0.2}
+  - startTime: 59.99355
+    infos:
+    - beatType: 1
+      markerType: 0
+      posList:
+      - time: 59.99355
+        pos: {x: -0.32500023, y: 0.2}
+      - time: 60.242825
+        pos: {x: -0.4, y: -0.012500048}
+      - time: 60.511272
+        pos: {x: -0.33125016, y: -0.25}
+      - time: 60.75097
+        pos: {x: -0.4, y: 0}
+      - time: 61.000248
+        pos: {x: -0.32500023, y: 0.2}
+      - time: 61.249523
+        pos: {x: -0.4, y: 0}
+      - time: 61.498795
+        pos: {x: -0.32500023, y: -0.25}
+    - beatType: 1
+      markerType: 0
+      posList:
+      - time: 59.99355
+        pos: {x: 0.33, y: 0.2}
+      - time: 60.233242
+        pos: {x: 0.4, y: -0.012500048}
+      - time: 60.501694
+        pos: {x: 0.33, y: -0.25}
+      - time: 60.741383
+        pos: {x: 0.4, y: 0}
+      - time: 60.990665
+        pos: {x: 0.33, y: 0.2}
+      - time: 61.230354
+        pos: {x: 0.4, y: 0}
+      - time: 61.47963
+        pos: {x: 0.33, y: -0.25}
+  - startTime: 62.000988
+    infos:
+    - beatType: 1
+      markerType: 0
+      posList:
+      - time: 62.000988
+        pos: {x: -0.32500023, y: 0.2}
+      - time: 62.240685
+        pos: {x: -0.4, y: -0.012500048}
+      - time: 62.509132
+        pos: {x: -0.33125016, y: -0.25}
+    - beatType: 1
+      markerType: 0
+      posList:
+      - time: 62.000988
+        pos: {x: 0.33, y: -0.25}
+      - time: 62.240685
+        pos: {x: 0.4, y: -0.012500048}
+      - time: 62.504467
+        pos: {x: 0.33, y: 0.2}
+  - startTime: 62.909447
+    infos:
+    - beatType: 1
+      markerType: 1
+      posList:
+      - time: 62.909447
+        pos: {x: -0.5, y: 0.2}
+      - time: 63.149143
+        pos: {x: -0.6, y: -0.012500048}
+      - time: 63.41759
+        pos: {x: -0.5, y: -0.25}
+    - beatType: 1
+      markerType: 1
+      posList:
+      - time: 62.909447
+        pos: {x: 0.1, y: -0.25}
+      - time: 63.149143
+        pos: {x: 0.2, y: -0.012500048}
+      - time: 63.412926
+        pos: {x: 0.1, y: 0.2}
+  - startTime: 63.828842
+    infos:
+    - beatType: 1
+      markerType: 0
+      posList:
+      - time: 63.828842
+        pos: {x: -0.7, y: 0.2}
+      - time: 64.06964
+        pos: {x: -0.8, y: -0.012500048}
+      - time: 64.33699
+        pos: {x: -0.7, y: -0.25}
+    - beatType: 1
+      markerType: 0
+      posList:
+      - time: 63.828842
+        pos: {x: -0.1, y: -0.25}
+      - time: 64.06854
+        pos: {x: 0, y: -0.012500048}
+      - time: 64.33232
+        pos: {x: -0.1, y: 0.2}
+  - startTime: 64.77013
+    infos:
+    - beatType: 1
+      markerType: 1
+      posList:
+      - time: 64.77013
+        pos: {x: -0.32500023, y: 0.2}
+      - time: 65.00983
+        pos: {x: -0.4, y: -0.012500048}
+      - time: 65.278275
+        pos: {x: -0.33125016, y: -0.25}
+    - beatType: 1
+      markerType: 1
+      posList:
+      - time: 64.77013
+        pos: {x: 0.33, y: -0.25}
+      - time: 65.00983
+        pos: {x: 0.4, y: -0.012500048}
+      - time: 65.273605
+        pos: {x: 0.33, y: 0.2}

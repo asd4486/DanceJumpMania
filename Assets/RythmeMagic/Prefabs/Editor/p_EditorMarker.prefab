@@ -268,6 +268,7 @@ MonoBehaviour:
   enterX: {fileID: 0}
   enterY: {fileID: 0}
   markerTypeDp: {fileID: 0}
+  lineRenderer: {fileID: 0}
   markerTypeRenderer: {fileID: 930153073962366674}
   defaultMat: {fileID: 2100000, guid: 6ba97b32bbfc3cc48b13d159d899be0c, type: 2}
   triggerMat: {fileID: 2100000, guid: 72bf9cb9b08762b4fa0851c63674efbd, type: 2}
