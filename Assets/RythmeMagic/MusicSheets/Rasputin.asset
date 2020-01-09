@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Rasputin
   m_EditorClassIdentifier: 
   music: {fileID: 8300000, guid: 2faa42913bcc3b3449ac067e7d3f419d, type: 3}
+  completeTime: 98
   beatList:
   - startTime: 2.5
     infos:
@@ -1237,21 +1238,21 @@ MonoBehaviour:
       markerType: 0
       posList:
       - time: 70.58013
-        pos: {x: -0.0021954644, y: -0.3}
+        pos: {x: -0.0021954644, y: -0.4}
   - startTime: 70.80676
     infos:
     - beatType: 0
       markerType: 1
       posList:
       - time: 70.80676
-        pos: {x: -0.45, y: -0.1}
+        pos: {x: -0.45, y: -0.3}
   - startTime: 71.023094
     infos:
     - beatType: 0
       markerType: 0
       posList:
       - time: 71.023094
-        pos: {x: -0.0021954644, y: -0.3}
+        pos: {x: -0.0021954644, y: -0.4}
   - startTime: 71.27032
     infos:
     - beatType: 0
@@ -1265,21 +1266,21 @@ MonoBehaviour:
       markerType: 0
       posList:
       - time: 71.49864
-        pos: {x: 0, y: -0.3}
+        pos: {x: 0, y: -0.4}
   - startTime: 71.72358
     infos:
     - beatType: 0
       markerType: 1
       posList:
       - time: 71.72358
-        pos: {x: -0.45, y: -0.1}
+        pos: {x: -0.45, y: -0.3}
   - startTime: 71.97081
     infos:
     - beatType: 0
       markerType: 0
       posList:
       - time: 71.97081
-        pos: {x: 0, y: -0.3}
+        pos: {x: 0, y: -0.4}
   - startTime: 72.19914
     infos:
     - beatType: 0
@@ -1293,21 +1294,21 @@ MonoBehaviour:
       markerType: 0
       posList:
       - time: 72.43264
-        pos: {x: 0, y: -0.3}
+        pos: {x: 0, y: -0.4}
   - startTime: 72.67131
     infos:
     - beatType: 0
       markerType: 1
       posList:
       - time: 72.67131
-        pos: {x: -0.45, y: -0.1}
+        pos: {x: -0.45, y: -0.3}
   - startTime: 72.887634
     infos:
     - beatType: 0
       markerType: 0
       posList:
       - time: 72.887634
-        pos: {x: 0, y: -0.3}
+        pos: {x: 0, y: -0.4}
   - startTime: 73.124565
     infos:
     - beatType: 0
@@ -1829,11 +1830,11 @@ MonoBehaviour:
       markerType: 2
       posList:
       - time: 97.09504
-        pos: {x: 0, y: -0.8}
+        pos: {x: 0, y: -1}
   - startTime: 97.49852
     infos:
     - beatType: 0
       markerType: 2
       posList:
       - time: 97.49852
-        pos: {x: 0, y: 1}
+        pos: {x: 0, y: 1.2}

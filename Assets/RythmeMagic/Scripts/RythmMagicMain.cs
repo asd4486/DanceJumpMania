@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,20 +7,22 @@ namespace RythhmMagic
 {
     public class RythmMagicMain : MonoBehaviour
     {
+        PlayerUI playerUI;
         UIMain uiMain;
         GameManager gameMgr;
 
+        public bool GameOver { get; private set; }
+
+        int nowBeat;
         int score;
         int combo;
 
-        public bool GameOver { get; private set; }
-
         [SerializeField] AudioSource mainAudio;
         [SerializeField] MusicSheetObject musicSheet;
-        int nowBeat;
 
         float totalDuration;
         float playingTimer;
+        float completeTime;
 
         [SerializeField] MarkerBase markerPrefab;
         [SerializeField] MarkerHold markerHoldPrefab;
@@ -32,9 +35,12 @@ namespace RythhmMagic
         double nextEventTime;
         float bpm;
 
+        Coroutine completeCoroutine;
+
         // Start is called before the first frame update
         void Start()
         {
+            playerUI = FindObjectOfType<PlayerUI>();
             uiMain = FindObjectOfType<UIMain>();
             gameMgr = FindObjectOfType<GameManager>();
 
@@ -45,10 +51,11 @@ namespace RythhmMagic
 
             bpm = UniBpmAnalyzer.AnalyzeBpm(mainAudio.clip);
             nextEventTime = AudioSettings.dspTime + 60.0f / bpm;
+            completeTime = musicSheet.completeTime > 0 ? musicSheet.completeTime : musicSheet.music.length;
         }
 
         Coroutine startGameCoroutine;
-        internal void StartGame()
+        public void StartGame()
         {
             if (startGameCoroutine != null) return;
 
@@ -57,15 +64,18 @@ namespace RythhmMagic
 
         IEnumerator StartGameCoroutine()
         {
+            playerUI.ActiveUI(false);
+
+            playingTimer =  nowBeat = score = combo = 0;
             //init all values
             GameOver = false;
-            score = 0;
 
             //for adjust speed
             var startTime = musicSheet.beatList[0].startTime;
             if (startTime < gameMgr.markerTime)
                 yield return new WaitForSeconds(gameMgr.markerTime - startTime);
 
+            mainAudio.volume = 1;
             mainAudio.Play();
             startGameCoroutine = null;
         }
@@ -87,11 +97,12 @@ namespace RythhmMagic
                 // Place the next event 16 beats from here at a rate of 140 beats per minute
                 nextEventTime += 60.0f / bpm /** numBeatsPerSegment*/;
             }
-        }
 
-        public void LogTime()
-        {
-            Debug.Log(playingTimer);
+            if (playingTimer >= completeTime + gameMgr.markerTime)
+            {
+                if (completeCoroutine == null)
+                    completeCoroutine = StartCoroutine(CompleteCorou());
+            }
         }
 
         void SpawnNewMarkers(MusicSheetObject.Beat beat)
@@ -102,7 +113,7 @@ namespace RythhmMagic
             {
                 var marker = markerPrefab;
 
-                if(item.markerType == MarkerType.TwoHand)
+                if (item.markerType == MarkerType.TwoHand)
                 {
                     switch (item.beatType)
                     {
@@ -123,7 +134,7 @@ namespace RythhmMagic
                             break;
                     }
                 }
-           
+
                 var o = Instantiate(marker.gameObject);
                 o.transform.SetParent(markerParent, true);
                 o.GetComponent<MarkerBase>().Init(item, beat.startTime);
@@ -142,6 +153,18 @@ namespace RythhmMagic
         {
             combo = 0;
             uiMain.BreakCombo();
+        }
+
+        IEnumerator CompleteCorou()
+        {
+            mainAudio.DOFade(0, 4f);
+            yield return new WaitForSeconds(4f);
+
+            mainAudio.Stop();
+            playerUI.ActiveUI(true);
+            GameOver = true;
+
+            completeCoroutine = null;
         }
     }
 }

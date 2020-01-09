@@ -8,8 +8,8 @@ namespace RythhmMagic
 {
     public class MarkerHold : MarkerBase
     {
-        MarkerLine markerLine;
-        float markerDuration;
+        protected MarkerLine markerLine;
+        protected float markerDuration;
 
         protected float addScoreTimer;
 
@@ -21,6 +21,9 @@ namespace RythhmMagic
         public override void Init(MusicSheetObject.BeatInfo beat, float beatTime)
         {
             markerLine = GetComponentInChildren<MarkerLine>();
+
+            if (beat.markerType == MarkerType.Default) markerLine.SetMaterial(defaultMat);
+            else if (beat.markerType == MarkerType.Trigger) markerLine.SetMaterial(triggerMat);
 
             //create holding road
             if (beat.posList != null)
@@ -42,11 +45,8 @@ namespace RythhmMagic
                 }
 
                 //draw road
-                markerLine.GenerateMesh(posList.ToArray());
+                markerLine.GenerateLine(posList.ToArray());
             }
-
-            if (beat.markerType == MarkerType.Default) markerLine.SetMaterial(defaultMat);
-            else if (beat.markerType == MarkerType.Trigger) markerLine.SetMaterial(triggerMat);
 
             base.Init(beat, beatTime);
         }

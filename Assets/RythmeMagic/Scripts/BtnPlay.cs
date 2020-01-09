@@ -33,7 +33,7 @@ namespace RythhmMagic
         void StartGame()
         {
             main.StartGame();
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 }
