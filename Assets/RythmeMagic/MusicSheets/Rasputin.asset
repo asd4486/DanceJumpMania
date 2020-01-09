@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: Rasputin
   m_EditorClassIdentifier: 
   music: {fileID: 8300000, guid: 2faa42913bcc3b3449ac067e7d3f419d, type: 3}
+  couverture: {fileID: 21300000, guid: 261c13a7bef71db4fba88b255015ab62, type: 3}
+  name: Rasputin
+  artistName: Boney M
   completeTime: 98
   beatList:
   - startTime: 2.5
@@ -1837,4 +1840,4 @@ MonoBehaviour:
       markerType: 2
       posList:
       - time: 97.49852
-        pos: {x: 0, y: 1.2}
+        pos: {x: 0, y: 1.1}

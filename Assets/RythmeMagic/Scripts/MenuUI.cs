@@ -5,7 +5,7 @@ using Valve.VR.Extras;
 
 namespace RythhmMagic
 {
-    public class PlayerUI : MonoBehaviour
+    public class MenuUI : MonoBehaviour
     {
         [SerializeField] SteamVR_LaserPointer currrentLaser;
         RythmMagicMain main;

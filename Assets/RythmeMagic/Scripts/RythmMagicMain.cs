@@ -7,7 +7,7 @@ namespace RythhmMagic
 {
     public class RythmMagicMain : MonoBehaviour
     {
-        PlayerUI playerUI;
+        MenuUI playerUI;
         UIMain uiMain;
         GameManager gameMgr;
 
@@ -40,7 +40,7 @@ namespace RythhmMagic
         // Start is called before the first frame update
         void Start()
         {
-            playerUI = FindObjectOfType<PlayerUI>();
+            playerUI = FindObjectOfType<MenuUI>();
             uiMain = FindObjectOfType<UIMain>();
             gameMgr = FindObjectOfType<GameManager>();
 

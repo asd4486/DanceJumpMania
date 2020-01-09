@@ -24,6 +24,11 @@ namespace RythhmMagic
     public class MusicSheetObject : ScriptableObject
     {
         public AudioClip music;
+
+        public Sprite couverture;
+        public string name;
+        public string artistName;
+
         public float completeTime;
         public List<Beat> beatList = new List<Beat>();
 

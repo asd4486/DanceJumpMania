@@ -2070,7 +2070,6 @@ Transform:
   - {fileID: 818093831}
   - {fileID: 2087227353}
   - {fileID: 34817722}
-  - {fileID: 1140004980}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2439,7 +2438,7 @@ GameObject:
   - component: {fileID: 1140004982}
   - component: {fileID: 1140004981}
   m_Layer: 5
-  m_Name: playerUI
+  m_Name: MainMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2453,16 +2452,16 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1140004979}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.1}
+  m_LocalPosition: {x: 0, y: 0, z: 1.5}
   m_LocalScale: {x: 0.003, y: 0.003, z: 1}
   m_Children:
   - {fileID: 1159917062}
-  m_Father: {fileID: 677347543}
-  m_RootOrder: 3
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 1}
   m_SizeDelta: {x: 1000, y: 1000}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1140004981
@@ -7716,6 +7715,11 @@ PrefabInstance:
       propertyPath: currentHand
       value: 
       objectReference: {fileID: 385669194}
+    - target: {fileID: 1661153796077020942, guid: db6c2e0c4b50d6b4387f85019ddb2bff,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ceb8b29e1d6cc604aa9d6a688d944bd3, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db6c2e0c4b50d6b4387f85019ddb2bff, type: 3}
 --- !u!4 &2087227353 stripped
