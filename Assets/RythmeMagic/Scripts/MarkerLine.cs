@@ -26,13 +26,12 @@ namespace RythhmMagic
             if (prefab != null)
             {
                 float dst = 0;
-
                 while (dst < vectexPath.length)
                 {
                     Vector3 point = vectexPath.GetPointAtDistance(dst);
-
-                    var o = Instantiate(prefab, point, Quaternion.identity, transform);
-                    o.GetComponent<MeshRenderer>().material = lineMat;
+                    Quaternion rot = vectexPath.GetRotationAtDistance(dst);
+                    var o = Instantiate(prefab, point, rot, transform);
+                    o.GetComponentInChildren<MeshRenderer>().material = lineMat;
 
                     dst += prefabSpacing;
                 }

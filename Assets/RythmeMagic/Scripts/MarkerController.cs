@@ -8,11 +8,14 @@ namespace RythhmMagic
 {
     public class MarkerController : MonoBehaviour
     {
+        RythmMagicMain main;
+
         Collider myCol;
         [SerializeField] Hand currentHand;
         public Hand CurrentHand { get { return currentHand; } }
 
         public MarkerType controlMarkerType { get; private set; }
+        public Material currentMat { get; set; }
 
         SpriteRenderer rendrerer;
         [SerializeField] Material defaultMat;
@@ -24,6 +27,7 @@ namespace RythhmMagic
 
         private void Awake()
         {
+            main = FindObjectOfType<RythmMagicMain>();
             myCol = GetComponent<Collider>();
             rendrerer = GetComponentInChildren<SpriteRenderer>();
         }
@@ -31,11 +35,13 @@ namespace RythhmMagic
         // Update is called once per frame
         void Update()
         {
+            myCol.enabled = !main.GameOver;
+
             transform.position = new Vector3(currentHand.transform.position.x, currentHand.transform.position.y, transform.position.z);
 
-            if (currentHand.IsGrabbingWithType(GrabTypes.Pinch))         
-                controlMarkerType = MarkerType.Trigger;                              
-            else      
+            if (currentHand.IsGrabbingWithType(GrabTypes.Pinch))
+                controlMarkerType = MarkerType.Trigger;
+            else
                 controlMarkerType = MarkerType.Default;
 
             ChangeMat();
@@ -56,9 +62,9 @@ namespace RythhmMagic
 
         void ChangeMat()
         {
-            if(touchOtherHand)
+            if (touchOtherHand)
             {
-                rendrerer.material = twoHandsMat;
+                rendrerer.material = currentMat = twoHandsMat;
                 if (fxTrigger.isPlaying) fxTrigger.Stop();
                 return;
             }
@@ -66,11 +72,11 @@ namespace RythhmMagic
             switch (controlMarkerType)
             {
                 case MarkerType.Default:
-                    rendrerer.material = defaultMat;
+                    rendrerer.material = currentMat = defaultMat;
                     if (fxTrigger.isPlaying) fxTrigger.Stop();
                     break;
                 case MarkerType.Trigger:
-                    rendrerer.material = triggerMat;
+                    rendrerer.material = currentMat = triggerMat;
                     if (!fxTrigger.isPlaying) fxTrigger.Play();
                     break;
             }

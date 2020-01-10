@@ -12,6 +12,7 @@ namespace RythhmMagic
         protected float markerDuration;
 
         protected float addScoreTimer;
+        Coroutine breakComboCoroutine;
 
         private void Start()
         {
@@ -49,6 +50,26 @@ namespace RythhmMagic
             }
 
             base.Init(beat, beatTime);
+        }
+
+        protected override IEnumerator ActiveColCoroutine(float time)
+        {
+            yield return new WaitForSeconds(time);
+            myCol.enabled = true;
+            BreakCombo();
+        }
+
+        void BreakCombo()
+        {
+            if (breakComboCoroutine != null) StopCoroutine(breakComboCoroutine);
+            breakComboCoroutine = StartCoroutine(BreakComboCorou());
+        }
+
+        IEnumerator BreakComboCorou()
+        {
+            yield return new WaitForSeconds(0.1f);
+            main.BreakCombo();
+            breakComboCoroutine = null;
         }
 
         protected override void Update()
@@ -90,6 +111,8 @@ namespace RythhmMagic
             {
                 main.AddScore();
                 addScoreTimer = 0;
+
+                if (breakComboCoroutine != null) StopCoroutine(breakComboCoroutine);
             }
         }
 
@@ -97,10 +120,12 @@ namespace RythhmMagic
         {
             if (!myCol.enabled) return;
 
-            if (col.gameObject.GetComponent<MarkerController>() != null)
+            if (col.gameObject.GetComponent<MarkerController>() != null &&
+                col.gameObject.GetComponent<MarkerController>() == hitedController)
             {
+                hitedController = null;
                 fxTouch.Stop();
-                main.BreakCombo();
+                BreakCombo();
             }
         }
     }

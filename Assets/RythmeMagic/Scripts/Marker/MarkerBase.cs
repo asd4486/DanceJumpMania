@@ -39,12 +39,12 @@ namespace RythhmMagic
 
             currentBeat = beat;
             transform.localPosition = new Vector3(beat.posList[0].pos.x, beat.posList[0].pos.y, gameMgr.markerDistance);
-            StartCoroutine(ActiveColCoroutine(gameMgr.markerTime - 0.1f));
+            StartCoroutine(ActiveColCoroutine(gameMgr.markerTime));
 
             startMove = true;
         }
 
-        protected IEnumerator ActiveColCoroutine(float time)
+        protected virtual IEnumerator ActiveColCoroutine(float time)
         {
             yield return new WaitForSeconds(time);
             myCol.enabled = true;
@@ -66,6 +66,8 @@ namespace RythhmMagic
         IEnumerator WaitPlayerHitCoroutine()
         {
             yield return new WaitForSeconds(0.15f);
+            markerRenderer.transform.DOScale(Vector3.zero, 0.1f);
+            yield return new WaitForSeconds(0.1f);
             if (myCol.enabled)
             {
                 Destroy(gameObject);
@@ -83,15 +85,28 @@ namespace RythhmMagic
             Destroy(gameObject, 0.2f);
         }
 
+        protected MarkerController hitedController;
         protected virtual void OnTriggerStay(Collider col)
         {
             if (col.gameObject.GetComponent<MarkerController>() != null &&
                 col.gameObject.GetComponent<MarkerController>().controlMarkerType == currentBeat.markerType)
             {
-                OnHitMarker();
+                if (hitedController == null)
+                {
+                    hitedController = col.gameObject.GetComponent<MarkerController>();
+                    OnHitMarker();
+                }
+                else
+                    OnHitMarker();
             }
         }
 
-        protected virtual void OnTriggerExit(Collider col) { }
+        protected virtual void OnTriggerExit(Collider col)
+        {
+            if (!myCol.enabled) return;
+
+            if (col.gameObject.GetComponent<MarkerController>() != null && col.gameObject.GetComponent<MarkerController>() == hitedController)
+                hitedController = null;
+        }
     }
 }

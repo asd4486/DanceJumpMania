@@ -7,7 +7,7 @@ namespace RythhmMagic
 {
     public class RythmMagicMain : MonoBehaviour
     {
-        MenuUI playerUI;
+        MenuUI menuUI;
         UIMain uiMain;
         GameManager gameMgr;
 
@@ -18,7 +18,7 @@ namespace RythhmMagic
         int combo;
 
         [SerializeField] AudioSource mainAudio;
-        [SerializeField] MusicSheetObject musicSheet;
+        MusicSheetObject currentSheet;
 
         float totalDuration;
         float playingTimer;
@@ -40,38 +40,41 @@ namespace RythhmMagic
         // Start is called before the first frame update
         void Start()
         {
-            playerUI = FindObjectOfType<MenuUI>();
+            menuUI = FindObjectOfType<MenuUI>();
             uiMain = FindObjectOfType<UIMain>();
             gameMgr = FindObjectOfType<GameManager>();
 
-            mainAudio.clip = musicSheet.music;
-            totalDuration = mainAudio.clip.length + gameMgr.markerTime;
-
             GameOver = true;
-
-            bpm = UniBpmAnalyzer.AnalyzeBpm(mainAudio.clip);
-            nextEventTime = AudioSettings.dspTime + 60.0f / bpm;
-            completeTime = musicSheet.completeTime > 0 ? musicSheet.completeTime : musicSheet.music.length;
         }
 
         Coroutine startGameCoroutine;
-        public void StartGame()
+        public void StartGame(MusicSheetObject sheet)
         {
             if (startGameCoroutine != null) return;
 
-            startGameCoroutine = StartCoroutine(StartGameCoroutine());
+            startGameCoroutine = StartCoroutine(StartGameCoroutine(sheet));
         }
 
-        IEnumerator StartGameCoroutine()
+        IEnumerator StartGameCoroutine(MusicSheetObject sheet)
         {
-            playerUI.ActiveUI(false);
+            menuUI.ActiveUI(false);
 
-            playingTimer =  nowBeat = score = combo = 0;
+            //setup music infos
+            currentSheet = sheet;
+            mainAudio.clip = currentSheet.music;
+            totalDuration = mainAudio.clip.length + gameMgr.markerTime;
+
+            bpm = UniBpmAnalyzer.AnalyzeBpm(mainAudio.clip);
+            nextEventTime = AudioSettings.dspTime + 60.0f / bpm;
+            completeTime = currentSheet.duration > 0 ? currentSheet.duration : currentSheet.music.length;
+            yield return new WaitForSeconds(1f);
+
             //init all values
+            playingTimer = nowBeat = score = combo = 0;
             GameOver = false;
 
             //for adjust speed
-            var startTime = musicSheet.beatList[0].startTime;
+            var startTime = currentSheet.beatList[0].startTime;
             if (startTime < gameMgr.markerTime)
                 yield return new WaitForSeconds(gameMgr.markerTime - startTime);
 
@@ -85,9 +88,9 @@ namespace RythhmMagic
             if (GameOver) return;
 
             playingTimer += Time.deltaTime;
-            if (nowBeat < musicSheet.beatList.Count && musicSheet.beatList[nowBeat].startTime - gameMgr.markerTime <= playingTimer)
+            if (nowBeat < currentSheet.beatList.Count && currentSheet.beatList[nowBeat].startTime - gameMgr.markerTime <= playingTimer)
             {
-                SpawnNewMarkers(musicSheet.beatList[nowBeat]);
+                SpawnNewMarkers(currentSheet.beatList[nowBeat]);
                 nowBeat += 1;
             }
 
@@ -161,7 +164,7 @@ namespace RythhmMagic
             yield return new WaitForSeconds(4f);
 
             mainAudio.Stop();
-            playerUI.ActiveUI(true);
+            menuUI.ActiveUI(true);
             GameOver = true;
 
             completeCoroutine = null;

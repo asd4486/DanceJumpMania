@@ -16,7 +16,7 @@ MonoBehaviour:
   couverture: {fileID: 21300000, guid: 261c13a7bef71db4fba88b255015ab62, type: 3}
   name: Rasputin
   artistName: Boney M
-  completeTime: 98
+  duration: 98
   beatList:
   - startTime: 2.5
     infos:

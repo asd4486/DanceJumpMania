@@ -1,53 +1,54 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using Valve.VR.Extras;
 
-[RequireComponent(typeof(SteamVR_LaserPointer))]
-public class VRUIInput : MonoBehaviour
+namespace RythhmMagic
 {
-    private SteamVR_LaserPointer laserPointer;
-
-    private void OnEnable()
+    [RequireComponent(typeof(ControllerLaser))]
+    public class VRUIInput : MonoBehaviour
     {
-        laserPointer = GetComponent<SteamVR_LaserPointer>();
-        laserPointer.PointerIn -= HandlePointerIn;
-        laserPointer.PointerIn += HandlePointerIn;
+        private ControllerLaser laser;
 
-        laserPointer.PointerClick -= HandleTriggerClicked;
-        laserPointer.PointerClick += HandleTriggerClicked;
-
-        laserPointer.PointerOut -= HandlePointerOut;
-        laserPointer.PointerOut += HandlePointerOut;
-
-    }
-
-    private void HandleTriggerClicked(object sender, PointerEventArgs e)
-    {
-        if (EventSystem.current.currentSelectedGameObject != null)
+        private void Awake()
         {
-            ExecuteEvents.Execute(EventSystem.current.currentSelectedGameObject, new PointerEventData(EventSystem.current), ExecuteEvents.submitHandler);
+            laser = GetComponent<ControllerLaser>();
+            laser.PointerIn -= HandlePointerIn;
+            laser.PointerIn += HandlePointerIn;
+
+            laser.PointerClick -= HandleTriggerClicked;
+            laser.PointerClick += HandleTriggerClicked;
+
+            laser.PointerOut -= HandlePointerOut;
+            laser.PointerOut += HandlePointerOut;
         }
-    }
 
-    private void HandlePointerIn(object sender, PointerEventArgs e)
-    {
-        var button = e.target.GetComponent<Button>();
-        if (button != null)
+        private void HandleTriggerClicked(object sender, PointerEventArgs e)
         {
-            button.Select();
-            Debug.Log("HandlePointerIn", e.target.gameObject);
+            if (EventSystem.current.currentSelectedGameObject != null)
+            {
+                ExecuteEvents.Execute(EventSystem.current.currentSelectedGameObject, new PointerEventData(EventSystem.current), ExecuteEvents.submitHandler);
+            }
         }
-    }
 
-    private void HandlePointerOut(object sender, PointerEventArgs e)
-    {
-
-        var button = e.target.GetComponent<Button>();
-        if (button != null)
+        private void HandlePointerIn(object sender, PointerEventArgs e)
         {
-            EventSystem.current.SetSelectedGameObject(null);
-            Debug.Log("HandlePointerOut", e.target.gameObject);
+            var button = e.target.GetComponent<Button>();
+            if (button != null)
+            {
+                button.Select();
+                Debug.Log("HandlePointerIn", e.target.gameObject);
+            }
+        }
+
+        private void HandlePointerOut(object sender, PointerEventArgs e)
+        {
+
+            var button = e.target.GetComponent<Button>();
+            if (button != null)
+            {
+                EventSystem.current.SetSelectedGameObject(null);
+                Debug.Log("HandlePointerOut", e.target.gameObject);
+            }
         }
     }
 }

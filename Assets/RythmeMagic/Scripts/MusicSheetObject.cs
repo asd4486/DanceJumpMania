@@ -29,7 +29,7 @@ namespace RythhmMagic
         public string name;
         public string artistName;
 
-        public float completeTime;
+        public float duration;
         public List<Beat> beatList = new List<Beat>();
 
         [Serializable]
