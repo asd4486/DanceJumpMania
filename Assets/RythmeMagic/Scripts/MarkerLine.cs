@@ -25,7 +25,7 @@ namespace RythhmMagic
 
             if (prefab != null)
             {
-                float dst = 0;
+                float dst = prefabSpacing;
                 while (dst < vectexPath.length)
                 {
                     Vector3 point = vectexPath.GetPointAtDistance(dst);

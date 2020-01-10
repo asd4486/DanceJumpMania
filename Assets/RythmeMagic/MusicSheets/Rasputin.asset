@@ -478,14 +478,14 @@ MonoBehaviour:
       markerType: 0
       posList:
       - time: 28.87
-        pos: {x: -0.0093972385, y: 0.08072114}
+        pos: {x: 0.1585499, y: 0.0774281}
   - startTime: 29.01
     infos:
     - beatType: 0
       markerType: 0
       posList:
       - time: 29.01
-        pos: {x: 0.6952648, y: -0.4677049}
+        pos: {x: 0.9257806, y: -0.47758418}
   - startTime: 29.17
     infos:
     - beatType: 0
@@ -527,14 +527,14 @@ MonoBehaviour:
       markerType: 0
       posList:
       - time: 30.893
-        pos: {x: 0.003411755, y: 0.1070596}
+        pos: {x: -0.16782874, y: 0.1070596}
   - startTime: 31.024
     infos:
     - beatType: 0
       markerType: 0
       posList:
       - time: 31.024
-        pos: {x: -0.6682448, y: -0.48905843}
+        pos: {x: -0.96791565, y: -0.47588605}
   - startTime: 31.145
     infos:
     - beatType: 0
@@ -791,7 +791,7 @@ MonoBehaviour:
       - time: 45.88245
         pos: {x: -0.33, y: 0.25}
       - time: 46.153404
-        pos: {x: -0.023749858, y: -0.009375095}
+        pos: {x: 0.13431817, y: -0.11475378}
       - time: 46.331337
         pos: {x: -0.4425, y: 0.328125}
   - startTime: 46.80723
@@ -865,68 +865,68 @@ MonoBehaviour:
       - time: 50.58879
         pos: {x: -0.4, y: 0.35}
       - time: 50.828484
-        pos: {x: -0.6, y: 0}
+        pos: {x: -0.6, y: -0.1}
       - time: 51.096935
-        pos: {x: -0.4, y: -0.4}
+        pos: {x: -0.4, y: -0.6}
       - time: 51.336624
-        pos: {x: -0.6, y: 0}
+        pos: {x: -0.6, y: -0.1}
       - time: 51.585903
         pos: {x: -0.4, y: 0.35}
       - time: 51.825592
-        pos: {x: -0.6, y: 0}
+        pos: {x: -0.6, y: -0.1}
       - time: 52.07487
-        pos: {x: -0.4, y: -0.4}
+        pos: {x: -0.4, y: -0.6}
     - beatType: 1
       markerType: 0
       posList:
       - time: 50.58879
         pos: {x: 0.4, y: 0.35}
       - time: 50.828484
-        pos: {x: 0.6, y: 0}
+        pos: {x: 0.6, y: -0.1}
       - time: 51.096935
-        pos: {x: 0.4, y: -0.4}
+        pos: {x: 0.4, y: -0.6}
       - time: 51.33662
-        pos: {x: 0.6, y: 0}
+        pos: {x: 0.6, y: -0.1}
       - time: 51.585903
         pos: {x: 0.4, y: 0.35}
       - time: 51.825592
-        pos: {x: 0.6, y: 0}
+        pos: {x: 0.6, y: -0.1}
       - time: 52.07487
-        pos: {x: 0.4, y: -0.4}
-  - startTime: 52.477554
+        pos: {x: 0.4, y: -0.6}
+  - startTime: 52.47755
     infos:
     - beatType: 1
       markerType: 0
       posList:
-      - time: 52.477554
+      - time: 52.47755
         pos: {x: -0.4, y: 0.35}
-      - time: 52.72683
-        pos: {x: -0.6, y: 0}
-      - time: 52.995274
-        pos: {x: -0.4, y: -0.4}
-      - time: 53.234966
-        pos: {x: -0.6, y: 0}
-      - time: 53.484245
+      - time: 52.717243
+        pos: {x: -0.6, y: -0.1}
+      - time: 52.985695
+        pos: {x: -0.4, y: -0.6}
+      - time: 53.225384
+        pos: {x: -0.6, y: -0.1}
+      - time: 53.474663
         pos: {x: -0.4, y: 0.35}
-      - time: 53.733524
-        pos: {x: -0.6, y: 0}
-      - time: 53.9828
-        pos: {x: -0.4, y: -0.4}
+      - time: 53.71435
+        pos: {x: -0.6, y: -0.1}
+      - time: 53.96363
+        pos: {x: -0.4, y: -0.6}
     - beatType: 1
       markerType: 0
       posList:
       - time: 52.47755
-        pos: {x: 0.4, y: -0.4}
+        pos: {x: 0.4, y: -0.6}
       - time: 52.726826
-        pos: {x: 0.6, y: 0}
+        pos: {x: 0.6, y: -0.1}
       - time: 52.995277
         pos: {x: 0.4, y: 0.35}
       - time: 53.23497
-        pos: {x: 0.6, y: 0}
+        pos: {x: 0.6, y: -0.1}
       - time: 53.484245
-        pos: {x: 0.4, y: -0.4}
+        pos: {x: 0.4, y: -0.6}
       - time: 53.733524
-        pos: {x: 0.6, y: 0}
+        pos: {x: 0.6, y: -0.1}
       - time: 53.9828
         pos: {x: 0.4, y: 0.35}
   - startTime: 54.504265
@@ -985,41 +985,41 @@ MonoBehaviour:
         pos: {x: 0.2, y: 0.1}
       - time: 57.71674
         pos: {x: 0.2, y: 0.1}
-  - startTime: 58.135925
+  - startTime: 58.13593
     infos:
     - beatType: 1
       markerType: 0
       posList:
-      - time: 58.135925
+      - time: 58.13593
         pos: {x: -0.4, y: 0.35}
-      - time: 58.385197
-        pos: {x: -0.6, y: 0}
-      - time: 58.653656
-        pos: {x: -0.4, y: -0.4}
-      - time: 58.89335
-        pos: {x: -0.6, y: 0}
+      - time: 58.38521
+        pos: {x: -0.6, y: -0.1}
+      - time: 58.65365
+        pos: {x: -0.4, y: -0.6}
+      - time: 58.893345
+        pos: {x: -0.6, y: -0.1}
       - time: 59.14262
         pos: {x: -0.4, y: 0.35}
-      - time: 59.391903
-        pos: {x: -0.6, y: 0}
-      - time: 59.641174
-        pos: {x: -0.4, y: -0.4}
+      - time: 59.391907
+        pos: {x: -0.6, y: -0.1}
+      - time: 59.64117
+        pos: {x: -0.4, y: -0.6}
     - beatType: 1
       markerType: 0
       posList:
-      - time: 58.135925
-        pos: {x: 0.4, y: -0.4}
+      - time: 58.13593
+        pos: {x: 0.4, y: -0.6}
       - time: 58.385204
-        pos: {x: 0.6, y: 0}
-      - time: 58.65365
+        pos: {x: 0.6, y: -0.1}
+      - time: 58.653656
         pos: {x: 0.4, y: 0.35}
-      - time: 58.89334
-        pos: {x: 0.6, y: 0}
-      - time: 59.14262
-        pos: {x: 0.4, y: -0.4}
+      - time: 58.89335
+        pos: {x: 0.6, y: -0.1}
+      - time: 59.142624
+        pos: {x: 0.4, y: -0.6}
       - time: 59.391903
-        pos: {x: 0.6, y: 0}
-      - time: 59.641167
+        pos: {x: 0.6, y: -0.1}
+      - time: 59.64118
         pos: {x: 0.4, y: 0.35}
   - startTime: 60.063644
     infos:
@@ -1028,35 +1028,35 @@ MonoBehaviour:
       posList:
       - time: 60.063644
         pos: {x: -0.4, y: 0.35}
-      - time: 60.312923
-        pos: {x: -0.6, y: 0}
-      - time: 60.581383
-        pos: {x: -0.4, y: -0.4}
-      - time: 60.821075
-        pos: {x: -0.6, y: 0}
-      - time: 61.070347
+      - time: 60.303337
+        pos: {x: -0.6, y: -0.1}
+      - time: 60.57179
+        pos: {x: -0.4, y: -0.6}
+      - time: 60.811478
+        pos: {x: -0.6, y: -0.1}
+      - time: 61.060757
         pos: {x: -0.4, y: 0.35}
-      - time: 61.31963
-        pos: {x: -0.6, y: 0}
-      - time: 61.5689
-        pos: {x: -0.4, y: -0.4}
+      - time: 61.300446
+        pos: {x: -0.6, y: -0.1}
+      - time: 61.549725
+        pos: {x: -0.4, y: -0.6}
     - beatType: 1
       markerType: 0
       posList:
       - time: 60.063644
         pos: {x: 0.4, y: 0.35}
-      - time: 60.312916
-        pos: {x: 0.6, y: 0}
-      - time: 60.581383
-        pos: {x: 0.4, y: -0.4}
-      - time: 60.821075
-        pos: {x: 0.6, y: 0}
-      - time: 61.070347
+      - time: 60.303337
+        pos: {x: 0.6, y: -0.1}
+      - time: 60.57179
+        pos: {x: 0.4, y: -0.6}
+      - time: 60.811474
+        pos: {x: 0.6, y: -0.1}
+      - time: 61.060757
         pos: {x: 0.4, y: 0.35}
-      - time: 61.31963
-        pos: {x: 0.6, y: 0}
-      - time: 61.5689
-        pos: {x: 0.4, y: -0.4}
+      - time: 61.300446
+        pos: {x: 0.6, y: -0.1}
+      - time: 61.549725
+        pos: {x: 0.4, y: -0.6}
   - startTime: 62.044758
     infos:
     - beatType: 1
@@ -1145,18 +1145,18 @@ MonoBehaviour:
       - time: 65.78582
         pos: {x: -0.45, y: -0.15411633}
       - time: 66.13708
-        pos: {x: 0.21039069, y: -0.35671204}
+        pos: {x: 0.35, y: -0.35671204}
       - time: 66.48733
-        pos: {x: 0.8, y: 0.1}
+        pos: {x: 1, y: 0.1}
     - beatType: 1
       markerType: 0
       posList:
       - time: 65.78582
         pos: {x: -0.25, y: -0.15411633}
       - time: 66.13708
-        pos: {x: 0.45, y: -0.35671204}
+        pos: {x: 0.55, y: -0.35671204}
       - time: 66.48733
-        pos: {x: 1, y: 0.1}
+        pos: {x: 1.2, y: 0.1}
   - startTime: 66.750015
     infos:
     - beatType: 1
@@ -1165,18 +1165,18 @@ MonoBehaviour:
       - time: 66.750015
         pos: {x: 0.45010975, y: -0.14753014}
       - time: 67.111206
-        pos: {x: -0.22724855, y: -0.37352896}
+        pos: {x: -0.35, y: -0.37352896}
       - time: 67.4724
-        pos: {x: -0.8, y: 0.1}
+        pos: {x: -1, y: 0.1}
     - beatType: 1
       markerType: 0
       posList:
       - time: 66.750015
         pos: {x: 0.25, y: -0.14753014}
       - time: 67.111206
-        pos: {x: -0.45, y: -0.37352896}
+        pos: {x: -0.55, y: -0.37352896}
       - time: 67.4724
-        pos: {x: -1, y: 0.1}
+        pos: {x: -1.2, y: 0.1}
   - startTime: 67.73509
     infos:
     - beatType: 1
@@ -1185,18 +1185,18 @@ MonoBehaviour:
       - time: 67.73509
         pos: {x: -0.45, y: -0.15411633}
       - time: 68.08635
-        pos: {x: 0.21039069, y: -0.35671204}
+        pos: {x: 0.35, y: -0.35671204}
       - time: 68.4366
-        pos: {x: 0.8, y: 0.1}
+        pos: {x: 1, y: 0.1}
     - beatType: 1
       markerType: 0
       posList:
       - time: 67.73509
         pos: {x: -0.25, y: -0.15411633}
       - time: 68.08635
-        pos: {x: 0.45, y: -0.35671204}
+        pos: {x: 0.55, y: -0.35671204}
       - time: 68.4366
-        pos: {x: 1, y: 0.1}
+        pos: {x: 1.2, y: 0.1}
   - startTime: 68.67637
     infos:
     - beatType: 1
@@ -1205,18 +1205,18 @@ MonoBehaviour:
       - time: 68.67637
         pos: {x: 0.45010975, y: -0.14753014}
       - time: 69.03756
-        pos: {x: -0.22724855, y: -0.37352896}
+        pos: {x: -0.35, y: -0.37352896}
       - time: 69.39875
-        pos: {x: -0.8, y: 0.1}
+        pos: {x: -1, y: 0.1}
     - beatType: 1
       markerType: 0
       posList:
       - time: 68.67637
         pos: {x: 0.25, y: -0.14753014}
       - time: 69.03756
-        pos: {x: -0.45, y: -0.37352896}
+        pos: {x: -0.55, y: -0.37352896}
       - time: 69.39875
-        pos: {x: -1, y: 0.1}
+        pos: {x: -1.2, y: 0.1}
   - startTime: 69.74571
     infos:
     - beatType: 1
@@ -1326,19 +1326,19 @@ MonoBehaviour:
       posList:
       - time: 73.376366
         pos: {x: -0.45, y: -0.15411633}
-      - time: 73.727615
-        pos: {x: 0.21039069, y: -0.35671204}
+      - time: 73.72762
+        pos: {x: 0.35, y: -0.35671204}
       - time: 74.07787
-        pos: {x: 0.8, y: 0.1}
+        pos: {x: 1, y: 0.1}
     - beatType: 1
       markerType: 0
       posList:
       - time: 73.376366
         pos: {x: -0.25, y: -0.15411633}
       - time: 73.72762
-        pos: {x: 0.45, y: -0.35671204}
+        pos: {x: 0.55, y: -0.35671204}
       - time: 74.07787
-        pos: {x: 1, y: 0.1}
+        pos: {x: 1.2, y: 0.1}
   - startTime: 74.30061
     infos:
     - beatType: 1
@@ -1347,18 +1347,18 @@ MonoBehaviour:
       - time: 74.30061
         pos: {x: 0.45010975, y: -0.14753014}
       - time: 74.661804
-        pos: {x: -0.22724855, y: -0.37352896}
-      - time: 75.023
-        pos: {x: -0.8, y: 0.1}
+        pos: {x: -0.35, y: -0.37352896}
+      - time: 75.022995
+        pos: {x: -1, y: 0.1}
     - beatType: 1
       markerType: 0
       posList:
       - time: 74.30061
         pos: {x: 0.25, y: -0.14753014}
       - time: 74.661804
-        pos: {x: -0.45, y: -0.37352896}
+        pos: {x: -0.55, y: -0.37352896}
       - time: 75.022995
-        pos: {x: -1, y: 0.1}
+        pos: {x: -1.2, y: 0.1}
   - startTime: 75.27353
     infos:
     - beatType: 1
@@ -1367,18 +1367,18 @@ MonoBehaviour:
       - time: 75.27353
         pos: {x: -0.45, y: -0.15411633}
       - time: 75.62479
-        pos: {x: 0.21039069, y: -0.35671204}
+        pos: {x: 0.35, y: -0.35671204}
       - time: 75.97504
-        pos: {x: 0.8, y: 0.1}
+        pos: {x: 1, y: 0.1}
     - beatType: 1
       markerType: 0
       posList:
       - time: 75.27353
         pos: {x: -0.25, y: -0.15411633}
       - time: 75.62479
-        pos: {x: 0.45, y: -0.35671204}
+        pos: {x: 0.55, y: -0.35671204}
       - time: 75.97504
-        pos: {x: 1, y: 0.1}
+        pos: {x: 1.2, y: 0.1}
   - startTime: 76.20752
     infos:
     - beatType: 1
@@ -1387,18 +1387,18 @@ MonoBehaviour:
       - time: 76.20752
         pos: {x: 0.45010975, y: -0.14753014}
       - time: 76.56871
-        pos: {x: -0.22724855, y: -0.37352896}
+        pos: {x: -0.35, y: -0.37352896}
       - time: 76.9299
-        pos: {x: -0.8, y: 0.1}
+        pos: {x: -1, y: 0.1}
     - beatType: 1
       markerType: 0
       posList:
       - time: 76.20752
         pos: {x: 0.25, y: -0.14753014}
       - time: 76.56871
-        pos: {x: -0.45, y: -0.37352896}
+        pos: {x: -0.55, y: -0.37352896}
       - time: 76.9299
-        pos: {x: -1, y: 0.1}
+        pos: {x: -1.2, y: 0.1}
   - startTime: 77.40578
     infos:
     - beatType: 1
