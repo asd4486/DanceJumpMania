@@ -6,107 +6,125 @@ using UnityEngine;
 
 namespace RythhmMagic
 {
-    public class MarkerBase : MonoBehaviour
-    {
-        protected RythmMagicMain main;
-        protected MusicSheetObject.BeatInfo currentBeat;
-        protected Collider myCol;
-        [SerializeField] protected ParticleSystem fxTouch;
-        protected GameManager gameMgr;
-        protected float markerSpeed;
+	public class MarkerBase : MonoBehaviour
+	{
+		protected RythmMagicMain main;
+		protected MusicSheetObject.BeatInfo currentBeat;
+		protected Collider myCol;
+		[SerializeField] protected ParticleSystem fxTouch;
+		[SerializeField] protected ParticleSystem fxTouchTrigger;
+		protected GameManager gameMgr;
+		protected float markerSpeed;
 
-        protected bool startMove;
+		protected bool startMove;
 
-        [SerializeField] protected SpriteRenderer markerRenderer;
-        [SerializeField] protected Material defaultMat;
-        [SerializeField] protected Material triggerMat;
+		[SerializeField] protected SpriteRenderer markerRenderer;
+		[SerializeField] protected Material defaultMat;
+		[SerializeField] protected Material triggerMat;
 
-        // Start is called before the first frame update
-        void Awake()
-        {
-            main = FindObjectOfType<RythmMagicMain>();
-            gameMgr = FindObjectOfType<GameManager>();
-            markerSpeed = gameMgr.MarkerSpeed;
+		protected int rotateDirection;
+		// Start is called before the first frame update
+		void Awake()
+		{
+			main = FindObjectOfType<RythmMagicMain>();
+			gameMgr = FindObjectOfType<GameManager>();
+			markerSpeed = gameMgr.MarkerSpeed;
 
-            myCol = GetComponentInChildren<Collider>();
-            myCol.enabled = false;
-        }
+			myCol = GetComponentInChildren<Collider>();
+			myCol.enabled = false;
+		}
 
-        public virtual void Init(MusicSheetObject.BeatInfo beat, float beatTime)
-        {
-            if (beat.markerType == MarkerType.Default) markerRenderer.material = defaultMat;
-            else if (beat.markerType == MarkerType.Trigger) markerRenderer.material = triggerMat;
+		public virtual void Init(MusicSheetObject.BeatInfo beat, float beatTime)
+		{
+			if (beat.markerType == MarkerType.Default) markerRenderer.material = defaultMat;
+			else if (beat.markerType == MarkerType.Trigger) markerRenderer.material = triggerMat;
 
-            currentBeat = beat;
-            transform.localPosition = new Vector3(beat.posList[0].pos.x, beat.posList[0].pos.y, gameMgr.markerDistance);
-            StartCoroutine(ActiveColCoroutine(gameMgr.markerTime));
+			currentBeat = beat;
+			transform.localPosition = new Vector3(beat.posList[0].pos.x, beat.posList[0].pos.y, gameMgr.markerDistance);
+			StartCoroutine(ActiveColCoroutine(gameMgr.markerTime));
 
-            startMove = true;
-        }
+			//set random rotate direction
+			rotateDirection = Random.Range(-1, 2);
+			if (rotateDirection == 0) rotateDirection = 1;
 
-        protected virtual IEnumerator ActiveColCoroutine(float time)
-        {
-            yield return new WaitForSeconds(time);
-            myCol.enabled = true;
-        }
+			var scale = markerRenderer.transform.localScale;
+			markerRenderer.transform.localScale = Vector3.zero;
+			markerRenderer.transform.DOScale(scale, 0.1f);
 
-        protected virtual void Update()
-        {
-            if (!startMove)
-                return;
+			startMove = true;
+		}
 
-            transform.localPosition -= Vector3.forward * gameMgr.MarkerSpeed * Time.deltaTime;
-            if (transform.localPosition.z <= 0)
-            {
-                startMove = false;
-                StartCoroutine(WaitPlayerHitCoroutine());
-            }
-        }
+		protected virtual IEnumerator ActiveColCoroutine(float time)
+		{
+			yield return new WaitForSeconds(time);
+			myCol.enabled = true;
+		}
 
-        IEnumerator WaitPlayerHitCoroutine()
-        {
-            yield return new WaitForSeconds(0.15f);
-            markerRenderer.transform.DOScale(Vector3.zero, 0.1f);
-            yield return new WaitForSeconds(0.1f);
-            if (myCol.enabled)
-            {
-                Destroy(gameObject);
-                main.BreakCombo();
-            }
-        }
+		protected virtual void Update()
+		{
+			if (!startMove)
+				return;
 
-        protected virtual void OnHitMarker()
-        {
-            startMove = myCol.enabled = false;
-            markerRenderer.transform.DOScale(Vector3.zero, 0.1f);
-            fxTouch.Play();
-            main.AddScore();
+			markerRenderer.transform.Rotate(0, 0, main.BPM * rotateDirection * Time.deltaTime);
+			transform.localPosition -= Vector3.forward * gameMgr.MarkerSpeed * Time.deltaTime;
+			if (transform.localPosition.z <= 0)
+			{
+				startMove = false;
+				StartCoroutine(WaitPlayerHitCoroutine());
+			}
+		}
 
-            Destroy(gameObject, 0.2f);
-        }
+		IEnumerator WaitPlayerHitCoroutine()
+		{
+			yield return new WaitForSeconds(0.15f);
+			markerRenderer.transform.DOScale(Vector3.zero, 0.1f);
+			yield return new WaitForSeconds(0.1f);
+			if (myCol.enabled)
+			{
+				Destroy(gameObject);
+				main.BreakCombo();
+			}
+		}
 
-        protected MarkerController hitedController;
-        protected virtual void OnTriggerStay(Collider col)
-        {
-            if (col.gameObject.GetComponent<MarkerController>() != null &&
-                col.gameObject.GetComponent<MarkerController>().controlMarkerType == currentBeat.markerType)
-            {
-                if (hitedController == null)
-                {
-                    hitedController = col.gameObject.GetComponent<MarkerController>();
-                    OnHitMarker();
-                }
-                else
-                    OnHitMarker();
-            }
-        }
+		protected virtual void OnHitMarker()
+		{
+			startMove = myCol.enabled = false;
+			markerRenderer.transform.DOScale(Vector3.zero, 0.1f);
+			if (currentBeat.markerType == MarkerType.Trigger)
+				fxTouchTrigger.Play();
+			else
+				fxTouch.Play();
 
-        protected virtual void OnTriggerExit(Collider col)
-        {
-            if (!myCol.enabled) return;
+			main.AddScore();
+			Destroy(gameObject, 0.2f);
+		}
 
-            if (col.gameObject.GetComponent<MarkerController>() != null && col.gameObject.GetComponent<MarkerController>() == hitedController)
-                hitedController = null;
-        }
-    }
+		protected MarkerController hitedController;
+		protected virtual void OnTriggerStay(Collider col)
+		{
+			if (col.gameObject.GetComponent<MarkerController>() != null &&
+				col.gameObject.GetComponent<MarkerController>().controlMarkerType == currentBeat.markerType)
+			{
+				if (hitedController == null)
+				{
+					hitedController = col.gameObject.GetComponent<MarkerController>();
+					OnHitMarker();
+				}
+				else
+					OnHitMarker();
+
+				hitedController.TouchMarker();
+			}
+		}
+
+		protected virtual void OnTriggerExit(Collider col)
+		{
+			if (!myCol.enabled) return;
+
+			if (col.gameObject.GetComponent<MarkerController>() != null && col.gameObject.GetComponent<MarkerController>() == hitedController)
+			{
+				hitedController = null;
+			}
+		}
+	}
 }

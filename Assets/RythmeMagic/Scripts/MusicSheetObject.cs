@@ -20,19 +20,28 @@ namespace RythhmMagic
         TwoHand
     }
 
+	public enum MusicDifficulty
+	{
+		Easy,
+		Normal,
+		Hard
+	}
+
     [CreateAssetMenu(fileName = "NewMusicSheet", menuName = "Rythm magic/MusicSheetObject", order = 1)]
     public class MusicSheetObject : ScriptableObject
     {
         public AudioClip music;
 
-        public Sprite couverture;
+		public Sprite couverture;
         public string name;
         public string artistName;
 
-        public float duration;
-        public List<Beat> beatList = new List<Beat>();
+		public float duration;
+		public MusicDifficulty difficulty;
 
-        [Serializable]
+		public List<Beat> beatList = new List<Beat>();
+
+		[Serializable]
         public class Beat
         {
             public float startTime;

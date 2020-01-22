@@ -76,7 +76,8 @@ namespace RythhmMagic
         {
             if (!startMove) return;
 
-            if (transform.localPosition.z > 0) transform.position -= transform.forward * markerSpeed * Time.deltaTime;
+			markerRenderer.transform.Rotate(0, 0, main.BPM * rotateDirection * Time.deltaTime);
+			if (transform.localPosition.z > 0) transform.position -= transform.forward * markerSpeed * Time.deltaTime;
             else FollowRoadPath();
         }
 
@@ -86,7 +87,7 @@ namespace RythhmMagic
         {
             if (pathTimer >= 1)
             {
-                startMove = myCol.enabled = false;
+				startMove = myCol.enabled = false;
                 markerRenderer.transform.DOScale(Vector3.zero, 0.1f);
                 if (fxTouch.isPlaying) fxTouch.Stop();
                 Destroy(gameObject, 0.2f);
@@ -104,7 +105,14 @@ namespace RythhmMagic
 
         protected override void OnHitMarker()
         {
-            if (!fxTouch.isPlaying) fxTouch.Play();
+			if (currentBeat.markerType == MarkerType.Trigger)
+			{
+				if (!fxTouchTrigger.isPlaying) fxTouchTrigger.Play();
+			}
+			else
+			{
+				if (!fxTouch.isPlaying) fxTouch.Play();
+			}		
 
             addScoreTimer += Time.deltaTime;
             if (addScoreTimer >= gameMgr.addScoreDelay)

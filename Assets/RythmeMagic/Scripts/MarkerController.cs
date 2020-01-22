@@ -6,80 +6,109 @@ using Valve.VR.InteractionSystem;
 
 namespace RythhmMagic
 {
-    public class MarkerController : MonoBehaviour
-    {
-        RythmMagicMain main;
+	public class MarkerController : MonoBehaviour
+	{
+		RythmMagicMain main;
 
-        Collider myCol;
-        [SerializeField] Hand currentHand;
-        public Hand CurrentHand { get { return currentHand; } }
+		Collider myCol;
+		[SerializeField] Hand currentHand;
+		public Hand CurrentHand { get { return currentHand; } }
 
-        public MarkerType controlMarkerType { get; private set; }
-        public Material currentMat { get; set; }
+		public MarkerType controlMarkerType { get; private set; }
+		public Material currentMat { get; set; }
 
-        SpriteRenderer rendrerer;
-        [SerializeField] Material defaultMat;
-        [SerializeField] Material triggerMat;
-        [SerializeField] Material twoHandsMat;
-        [SerializeField] ParticleSystem fxTrigger;
+		SpriteRenderer rendrerer;
+		[SerializeField] Material defaultMat;
+		[SerializeField] Material triggerMat;
+		[SerializeField] Material twoHandsMat;
+		[SerializeField] ParticleSystem fxTrigger;
 
-        bool touchOtherHand;
+		bool touchOtherHand;
 
-        private void Awake()
-        {
-            main = FindObjectOfType<RythmMagicMain>();
-            myCol = GetComponent<Collider>();
-            rendrerer = GetComponentInChildren<SpriteRenderer>();
-        }
+		float rotateSpeed;
+		[SerializeField] float maxRotateSpeed;
 
-        // Update is called once per frame
-        void Update()
-        {
-            myCol.enabled = !main.GameOver;
+		private void Awake()
+		{
+			main = FindObjectOfType<RythmMagicMain>();
+			myCol = GetComponent<Collider>();
+			rendrerer = GetComponentInChildren<SpriteRenderer>();
+		}
 
-            transform.position = new Vector3(currentHand.transform.position.x, currentHand.transform.position.y, transform.position.z);
+		// Update is called once per frame
+		void Update()
+		{
+			myCol.enabled = !main.GameOver;
 
-            if (currentHand.IsGrabbingWithType(GrabTypes.Pinch))
-                controlMarkerType = MarkerType.Trigger;
-            else
-                controlMarkerType = MarkerType.Default;
+			transform.position = new Vector3(currentHand.transform.position.x, currentHand.transform.position.y, transform.position.z);
 
-            ChangeMat();
-        }
+			if (currentHand.IsGrabbingWithType(GrabTypes.Pinch))
+				controlMarkerType = MarkerType.Trigger;
+			else
+				controlMarkerType = MarkerType.Default;
 
+			RotateController();
+			ChangeMat();
+		}
 
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.GetComponent<MarkerController>() != null)
-                touchOtherHand = true;
-        }
+		void RotateController()
+		{
+			if (rotateSpeed > maxRotateSpeed)
+				rotateSpeed = maxRotateSpeed;
+			else
+			{
+				if (rotateSpeed > 0)
+					rotateSpeed -= 15;
+				else
+				{
+					rotateSpeed = 0;
+					return;
+				}
+			}
 
-        private void OnTriggerExit(Collider other)
-        {
-            if (other.GetComponent<MarkerController>() != null)
-                touchOtherHand = false;
-        }
+			if (currentHand.handType == Valve.VR.SteamVR_Input_Sources.LeftHand)
+				rendrerer.transform.eulerAngles += new Vector3(0, 0, rotateSpeed) * Time.deltaTime;
+			else
+				rendrerer.transform.eulerAngles -= new Vector3(0, 0, rotateSpeed) * Time.deltaTime;
+		}
 
-        void ChangeMat()
-        {
-            if (touchOtherHand)
-            {
-                rendrerer.material = currentMat = twoHandsMat;
-                if (fxTrigger.isPlaying) fxTrigger.Stop();
-                return;
-            }
+		public void TouchMarker()
+		{
+			rotateSpeed += 500;
+		}
 
-            switch (controlMarkerType)
-            {
-                case MarkerType.Default:
-                    rendrerer.material = currentMat = defaultMat;
-                    if (fxTrigger.isPlaying) fxTrigger.Stop();
-                    break;
-                case MarkerType.Trigger:
-                    rendrerer.material = currentMat = triggerMat;
-                    if (!fxTrigger.isPlaying) fxTrigger.Play();
-                    break;
-            }
-        }
-    }
+		private void OnTriggerEnter(Collider other)
+		{
+			if (other.GetComponent<MarkerController>() != null)
+				touchOtherHand = true;
+		}
+
+		private void OnTriggerExit(Collider other)
+		{
+			if (other.GetComponent<MarkerController>() != null)
+				touchOtherHand = false;
+		}
+
+		void ChangeMat()
+		{
+			if (touchOtherHand)
+			{
+				rendrerer.material = currentMat = twoHandsMat;
+				if (fxTrigger.isPlaying) fxTrigger.Stop();
+				return;
+			}
+
+			switch (controlMarkerType)
+			{
+				case MarkerType.Default:
+					rendrerer.material = currentMat = defaultMat;
+					if (fxTrigger.isPlaying) fxTrigger.Stop();
+					break;
+				case MarkerType.Trigger:
+					rendrerer.material = currentMat = triggerMat;
+					if (!fxTrigger.isPlaying) fxTrigger.Play();
+					break;
+			}
+		}
+	}
 }

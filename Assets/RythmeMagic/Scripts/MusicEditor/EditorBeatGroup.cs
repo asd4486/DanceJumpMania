@@ -54,6 +54,7 @@ namespace RythhmMagic.MusicEditor
 			var beatLenght = endBeat.rectTransfom.anchoredPosition.x - startBeat.rectTransfom.anchoredPosition.x;
 			rectTransfom.sizeDelta = new Vector2(beatLenght, rectTransfom.sizeDelta.y);
 			col.size = new Vector2(rectTransfom.sizeDelta.x, col.size.y);
+			col.offset = new Vector2(rectTransfom.sizeDelta.x / 2, 0);
 		}
 
 		public void AdjustBeatInList(EditorBeat beat)
@@ -127,14 +128,24 @@ namespace RythhmMagic.MusicEditor
 
 			if (beatList.Count < 1)
 			{
-				if (onDestroyAction != null) onDestroyAction(this);
-				Destroy(gameObject, 0.1f);
+				Destroy();
 			}
 			else
 			{
 				SetGroupLenght();
 				if (onRemoveBeatAction != null) onRemoveBeatAction(this);
 			}
+		}
+
+		public void Destroy()
+		{
+			foreach (var b in beatList)
+			{
+				Destroy(b.gameObject);
+			}
+
+			if (onDestroyAction != null) onDestroyAction(this);
+			Destroy(gameObject, 0.05f);
 		}
 
 		EditorBeat FindBeatByTime(float time)

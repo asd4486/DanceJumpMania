@@ -93,6 +93,7 @@ namespace RythhmMagic.MusicEditor
 
 			newGroup.onAddBeatAction += SetBeatMarkerPos;
 			newGroup.onRemoveBeatAction += SetBeatMarkerPos;
+			newGroup.onDestroyAction += SetBeatMarkerPos;
 			newGroup.onDestroyAction += RemoveBeatGroup;
 			return newGroup;
 		}
@@ -223,11 +224,17 @@ namespace RythhmMagic.MusicEditor
 
 			var beat = FindBeatByTime(time, piste.Value);
 			//return when can't find beat
-			if (beat == null)
+			if (beat != null)
+			{
+				var group = beat.currentGroup;
+				group.RemoveBeat(beat);
 				return;
+			}
 
-			var group = beat.currentGroup;
-			group.RemoveBeat(beat);
+			var beatGroup = FindBeatGroupByTime(time, piste.Value);
+			if (beatGroup != null)
+				beatGroup.Destroy();
+
 		}
 
 		void RemoveBeatGroup(EditorBeatGroup group)
@@ -265,7 +272,7 @@ namespace RythhmMagic.MusicEditor
 			foreach (var group in groups)
 			{
 				//find group which contains this time
-				if (group.CheckTimeInRange(time))
+				if (group.beatList.Count > 0 && group.CheckTimeInRange(time))
 					return group;
 			}
 			return null;

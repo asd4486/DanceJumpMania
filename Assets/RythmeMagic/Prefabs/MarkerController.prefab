@@ -48,7 +48,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fbc58642b2dc34442847fc081cb1638d, type: 2}
+  - {fileID: 2100000, guid: ceb8b29e1d6cc604aa9d6a688d944bd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4867,3 +4867,4 @@ MonoBehaviour:
   triggerMat: {fileID: 2100000, guid: fbc58642b2dc34442847fc081cb1638d, type: 2}
   twoHandsMat: {fileID: 2100000, guid: ceb8b29e1d6cc604aa9d6a688d944bd3, type: 2}
   fxTrigger: {fileID: 4430590216167955313}
+  maxRotateSpeed: 700

@@ -3,29 +3,39 @@ using UnityEngine.UI;
 
 public class UIMain : MonoBehaviour
 {
-    [SerializeField] Text textCombo;
-    [SerializeField] Text textScore;
-    // Start is called before the first frame update
-    void Start()
-    {
-        BreakCombo();
-    }
+	bool isCombo;
+	[SerializeField] Text textCombo;
+	Animator comboAnimator;
 
-   public void SetScore(int score)
-    {
-        textScore.text = score.ToString();
-    }
+	[SerializeField] Text textScore;
+	// Start is called before the first frame update
+	void Awake()
+	{
+		comboAnimator = textCombo.GetComponent<Animator>();
+	}
 
-    public void SetCombo(int combo)
-    {
-        if (!textCombo.gameObject.activeSelf)
-            textCombo.gameObject.SetActive(true);
+	public void Init()
+	{
+		BreakCombo();
+	}
 
-        textCombo.text = combo + " HIT";
-    }
+	public void SetScore(int score)
+	{
+		textScore.text = score.ToString();
+	}
 
-    public void BreakCombo()
-    {
-        textCombo.gameObject.SetActive(false);
-    }
+	public void SetCombo(int combo)
+	{
+		isCombo = true;
+		comboAnimator.SetTrigger("combo");
+		textCombo.text = combo + " HIT";
+	}
+
+	public void BreakCombo()
+	{
+		if (!isCombo) return;
+
+		isCombo = false;
+		comboAnimator.SetTrigger("break");
+	}
 }
