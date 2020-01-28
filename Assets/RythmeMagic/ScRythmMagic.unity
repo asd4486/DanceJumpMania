@@ -8050,6 +8050,10 @@ MonoBehaviour:
   - {fileID: 1730836480}
   - {fileID: 1293608704}
   - {fileID: 1331142173}
+  songMusicSheetsList:
+  - sheets:
+    - {fileID: 11400000, guid: 88d0f24fb257b38419a40b384e850f76, type: 2}
+    - {fileID: 11400000, guid: 069dc34ea8fcaa349b781bcedc475de8, type: 2}
 --- !u!114 &1140004982
 MonoBehaviour:
   m_ObjectHideFlags: 0
