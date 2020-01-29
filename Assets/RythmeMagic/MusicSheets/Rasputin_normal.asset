@@ -183,80 +183,80 @@ MonoBehaviour:
       markerType: 0
       posList:
       - time: 16.02
-        pos: {x: -0.3, y: -0.25}
+        pos: {x: -0.15, y: -0.4}
     - beatType: 0
       markerType: 0
       posList:
       - time: 16.02
-        pos: {x: 0.3, y: -0.25}
+        pos: {x: 0.15, y: -0.4}
   - startTime: 16.5
     infos:
     - beatType: 0
       markerType: 0
       posList:
       - time: 16.5
-        pos: {x: -0.47, y: 0.1}
+        pos: {x: -0.4, y: 0}
     - beatType: 0
       markerType: 0
       posList:
       - time: 16.5
-        pos: {x: 0.46965486, y: 0.1}
+        pos: {x: 0.4, y: 0}
   - startTime: 17.058235
     infos:
     - beatType: 1
       markerType: 0
       posList:
       - time: 17.058235
-        pos: {x: -0.65, y: 0.4}
+        pos: {x: -0.6, y: 0.4}
       - time: 17.75929
-        pos: {x: -0.65, y: 0.4}
+        pos: {x: -0.6, y: 0.4}
     - beatType: 1
       markerType: 0
       posList:
       - time: 17.058235
-        pos: {x: 0.65, y: 0.4}
+        pos: {x: 0.6, y: 0.4}
       - time: 17.75929
-        pos: {x: 0.65, y: 0.4}
+        pos: {x: 0.6, y: 0.4}
   - startTime: 17.96
     infos:
     - beatType: 0
       markerType: 0
       posList:
       - time: 17.96
-        pos: {x: -0.65, y: 0.4}
+        pos: {x: -0.6, y: 0.4}
     - beatType: 0
       markerType: 0
       posList:
       - time: 17.96
-        pos: {x: 0.65, y: 0.4}
+        pos: {x: 0.6, y: 0.4}
   - startTime: 18.39434
     infos:
     - beatType: 0
       markerType: 0
       posList:
       - time: 18.39434
-        pos: {x: -0.47, y: 0.1}
+        pos: {x: -0.4, y: 0}
     - beatType: 0
       markerType: 0
       posList:
       - time: 18.39434
-        pos: {x: 0.47, y: 0.1}
+        pos: {x: 0.4, y: 0}
   - startTime: 18.94
     infos:
     - beatType: 1
       markerType: 0
       posList:
       - time: 18.94
-        pos: {x: -0.3, y: -0.25}
+        pos: {x: -0.15, y: -0.4}
       - time: 19.73
-        pos: {x: -0.3, y: -0.25}
+        pos: {x: -0.15, y: -0.4}
     - beatType: 1
       markerType: 0
       posList:
       - time: 18.94
-        pos: {x: 0.3, y: -0.25}
+        pos: {x: 0.15, y: -0.4}
       - time: 19.73
-        pos: {x: 0.3, y: -0.25}
+        pos: {x: 0.15, y: -0.4}
   - startTime: 19.97
     infos:
     - beatType: 0
@@ -309,80 +309,80 @@ MonoBehaviour:
       markerType: 0
       posList:
       - time: 23.88
-        pos: {x: -0.3, y: -0.25}
+        pos: {x: -0.15, y: -0.4}
     - beatType: 0
       markerType: 0
       posList:
       - time: 23.88
-        pos: {x: 0.3, y: -0.25}
+        pos: {x: 0.15, y: -0.4}
   - startTime: 24.349382
     infos:
     - beatType: 0
       markerType: 0
       posList:
       - time: 24.349382
-        pos: {x: -0.47, y: 0.1}
+        pos: {x: -0.4, y: 0}
     - beatType: 0
       markerType: 0
       posList:
       - time: 24.349382
-        pos: {x: 0.46965486, y: 0.1}
-  - startTime: 24.840555
+        pos: {x: 0.4, y: 0}
+  - startTime: 24.840553
     infos:
     - beatType: 1
       markerType: 0
       posList:
-      - time: 24.840555
-        pos: {x: -0.65, y: 0.4}
+      - time: 24.840553
+        pos: {x: -0.6, y: 0.4}
       - time: 25.54161
-        pos: {x: -0.65, y: 0.4}
+        pos: {x: -0.6, y: 0.4}
     - beatType: 1
       markerType: 0
       posList:
       - time: 24.840555
-        pos: {x: 0.65, y: 0.4}
+        pos: {x: 0.6, y: 0.4}
       - time: 25.54161
-        pos: {x: 0.65, y: 0.4}
+        pos: {x: 0.6, y: 0.4}
   - startTime: 25.77234
     infos:
     - beatType: 0
       markerType: 1
       posList:
       - time: 25.77234
-        pos: {x: -0.65, y: 0.4}
+        pos: {x: -0.6, y: 0.4}
     - beatType: 0
       markerType: 1
       posList:
       - time: 25.77234
-        pos: {x: 0.65, y: 0.4}
+        pos: {x: 0.6, y: 0.4}
   - startTime: 26.269999
     infos:
     - beatType: 0
       markerType: 1
       posList:
       - time: 26.269999
-        pos: {x: -0.47, y: 0.1}
+        pos: {x: -0.4, y: 0}
     - beatType: 0
       markerType: 1
       posList:
       - time: 26.269999
-        pos: {x: 0.47, y: 0.1}
+        pos: {x: 0.4, y: 0}
   - startTime: 26.714073
     infos:
     - beatType: 1
       markerType: 1
       posList:
       - time: 26.714073
-        pos: {x: -0.3, y: -0.25}
+        pos: {x: -0.15, y: -0.4}
       - time: 27.504072
-        pos: {x: -0.3, y: -0.25}
+        pos: {x: -0.15, y: -0.4}
     - beatType: 1
       markerType: 1
       posList:
       - time: 26.714073
-        pos: {x: 0.3, y: -0.25}
+        pos: {x: 0.15, y: -0.4}
       - time: 27.504072
-        pos: {x: 0.3, y: -0.25}
+        pos: {x: 0.15, y: -0.4}
   - startTime: 27.7
     infos:
     - beatType: 0
@@ -760,8 +760,6 @@ MonoBehaviour:
         pos: {x: -0.6, y: -0.1}
       - time: 51.585903
         pos: {x: -0.4, y: 0.35}
-      - time: 52.07487
-        pos: {x: -0.4, y: 0.35}
     - beatType: 1
       markerType: 0
       posList:
@@ -774,8 +772,6 @@ MonoBehaviour:
       - time: 51.33662
         pos: {x: 0.6, y: -0.1}
       - time: 51.585903
-        pos: {x: 0.4, y: 0.35}
-      - time: 52.07487
         pos: {x: 0.4, y: 0.35}
   - startTime: 52.47755
     infos:
@@ -792,8 +788,6 @@ MonoBehaviour:
         pos: {x: -0.6, y: -0.1}
       - time: 53.474663
         pos: {x: -0.4, y: 0.35}
-      - time: 53.9828
-        pos: {x: -0.4, y: 0.35}
     - beatType: 1
       markerType: 0
       posList:
@@ -806,8 +800,6 @@ MonoBehaviour:
       - time: 53.23497
         pos: {x: 0.6, y: -0.1}
       - time: 53.484245
-        pos: {x: 0.4, y: -0.6}
-      - time: 53.9828
         pos: {x: 0.4, y: -0.6}
   - startTime: 54.504265
     infos:
@@ -880,8 +872,6 @@ MonoBehaviour:
         pos: {x: -0.6, y: -0.1}
       - time: 59.14262
         pos: {x: -0.4, y: 0.35}
-      - time: 59.64117
-        pos: {x: -0.4, y: 0.35}
     - beatType: 1
       markerType: 0
       posList:
@@ -894,8 +884,6 @@ MonoBehaviour:
       - time: 58.89335
         pos: {x: 0.6, y: -0.1}
       - time: 59.142624
-        pos: {x: 0.4, y: -0.6}
-      - time: 59.64118
         pos: {x: 0.4, y: -0.6}
   - startTime: 60.063644
     infos:
@@ -912,8 +900,6 @@ MonoBehaviour:
         pos: {x: -0.6, y: -0.1}
       - time: 61.060757
         pos: {x: -0.4, y: 0.35}
-      - time: 61.549725
-        pos: {x: -0.4, y: 0.35}
     - beatType: 1
       markerType: 0
       posList:
@@ -926,8 +912,6 @@ MonoBehaviour:
       - time: 60.811474
         pos: {x: 0.6, y: -0.1}
       - time: 61.060757
-        pos: {x: 0.4, y: 0.35}
-      - time: 61.549725
         pos: {x: 0.4, y: 0.35}
   - startTime: 62.044758
     infos:

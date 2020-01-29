@@ -10,6 +10,7 @@ namespace RythhmMagic
 		MenuUI menuUI;
 		UIMain uiMain;
 		GameManager gameMgr;
+        [SerializeField] SceneAmbiance ambiance;
 
 		public bool GameOver { get; private set; }
 
@@ -73,6 +74,9 @@ namespace RythhmMagic
 			nextEventTime = AudioSettings.dspTime + 60.0f / BPM;
 			completeTime = currentSheet.duration > 0 ? currentSheet.duration : currentSheet.music.length;
 			yield return new WaitForSeconds(1f);
+
+            //change amibance
+            ambiance.PlayAmbianceFx(true);
 
 			//init all values
 			playingTimer = nowBeat = score = combo = 0;
@@ -175,7 +179,10 @@ namespace RythhmMagic
 			mainAudio.DOFade(0, 4f);
 			yield return new WaitForSeconds(4f);
 
-			mainAudio.Stop();
+            //change amibance
+            ambiance.PlayAmbianceFx(false);
+
+            mainAudio.Stop();
 			menuUI.ActiveUI(true);
 			GameOver = true;
 

@@ -48,8 +48,11 @@ namespace RythhmMagic
 			else
 				controlMarkerType = MarkerType.Default;
 
-			RotateController();
-			ChangeMat();
+            if (!main.GameOver)
+            {
+                RotateController();
+                ChangeMat();
+            }
 		}
 
 		void SetVisible()
