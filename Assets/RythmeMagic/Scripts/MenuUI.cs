@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,6 +17,7 @@ namespace RythhmMagic
 		[SerializeField] Text textArtist;
 		[SerializeField] Text textDuration;
 		[SerializeField] Button[] btnsDifficulty;
+		[SerializeField] Material matSelectedDifficulty;
 
 		[SerializeField] SongMusicSheets[] songMusicSheetsList;
 		SongMusicSheets selectedSong;
@@ -85,7 +87,8 @@ namespace RythhmMagic
 		{
 			for (int i = 0; i < btnsDifficulty.Length; i++)
 			{
-				btnsDifficulty[i].image.color = i == (int)difficulty ? Color.yellow : Color.gray;
+				btnsDifficulty[i].image.material = i == (int)difficulty ? matSelectedDifficulty : null;
+				btnsDifficulty[i].transform.DOScale(i == (int)difficulty ? new Vector3(1.1f, 1.1f) : Vector3.one, 0.1f);
 			}
 			selectedDifficulty = difficulty;
 		}

@@ -29,6 +29,10 @@ namespace RythhmMagic
 		[SerializeField] MarkerTwoHand markerTwoHandPrefab;
 		[SerializeField] MarkerHoldTwoHand markerHoldTwoHandPrefab;
 
+		[SerializeField] GameObject fxSpawn;
+		[SerializeField] GameObject fxSpawnTrigger;
+		[SerializeField] GameObject fxSpawnTwoHand;
+
 		[SerializeField] Transform markerParent;
 
 		//[SerializeField] int numBeatsPerSegment = 16;
@@ -116,6 +120,7 @@ namespace RythhmMagic
 			foreach (var item in beat.infos)
 			{
 				var marker = markerPrefab;
+				var fx = item.markerType == MarkerType.Default? fxSpawn:fxSpawnTrigger;
 
 				if (item.markerType == MarkerType.TwoHand)
 				{
@@ -128,6 +133,7 @@ namespace RythhmMagic
 							marker = markerHoldTwoHandPrefab;
 							break;
 					}
+					fx = fxSpawnTwoHand;
 				}
 				else
 				{
@@ -142,6 +148,11 @@ namespace RythhmMagic
 				var o = Instantiate(marker.gameObject);
 				o.transform.SetParent(markerParent, true);
 				o.GetComponent<MarkerBase>().Init(item, beat.startTime);
+
+				var newFx = Instantiate(fx);
+				newFx.transform.SetParent(markerParent, true);
+				newFx.transform.localPosition = new Vector3(item.posList[0].pos.x, item.posList[0].pos.y, gameMgr.markerDistance);
+				Destroy(newFx, 0.25f);
 			}
 		}
 

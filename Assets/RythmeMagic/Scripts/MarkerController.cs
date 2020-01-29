@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR.InteractionSystem;
@@ -38,7 +39,7 @@ namespace RythhmMagic
 		// Update is called once per frame
 		void Update()
 		{
-			myCol.enabled = !main.GameOver;
+			SetVisible();
 
 			transform.position = new Vector3(currentHand.transform.position.x, currentHand.transform.position.y, transform.position.z);
 
@@ -49,6 +50,15 @@ namespace RythhmMagic
 
 			RotateController();
 			ChangeMat();
+		}
+
+		void SetVisible()
+		{
+			if (myCol.enabled != main.GameOver)
+				return;
+
+			myCol.enabled = !main.GameOver;
+			transform.DOScale(main.GameOver ? Vector3.zero : Vector3.one, 0.1f).SetEase(Ease.OutElastic);
 		}
 
 		void RotateController()
