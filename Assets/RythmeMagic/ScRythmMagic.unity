@@ -12068,7 +12068,7 @@ MonoBehaviour:
     type: 3}
   fxAmbiance: {fileID: 2056730326}
   fxAmbianceInGame: {fileID: 1932351969}
-  numBeatsPerSegment: 8
+  numBeatsPerSegment: 4
 --- !u!114 &1668390401 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7388794899961235903, guid: db6c2e0c4b50d6b4387f85019ddb2bff,
