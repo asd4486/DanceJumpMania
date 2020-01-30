@@ -20,9 +20,12 @@ namespace RythhmMagic
 
         Transform previousContact = null;
 
-        private void Awake()
-        {
-            line = GetComponent<LineRenderer>();
+		int raycastLayerMask = 1 << 8;
+
+		private void Awake()
+		{
+			raycastLayerMask = ~raycastLayerMask;
+			line = GetComponent<LineRenderer>();
         }
 
         // Update is called once per frame
@@ -36,7 +39,7 @@ namespace RythhmMagic
             float dist = 100f;
 
             RaycastHit hit;
-            bool bHit = Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity);
+            bool bHit = Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, raycastLayerMask);
 
             if (previousContact && previousContact != hit.transform)
             {

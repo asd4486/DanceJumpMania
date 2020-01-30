@@ -69,7 +69,7 @@ namespace RythhmMagic
                 return;
 
             gameOver = main.GameOver;
-            transform.DOScale(gameOver ? new Vector3(0.5f, 0.5f, 0.5f) : Vector3.one, 0.1f).SetEase(Ease.OutElastic);
+            transform.DOScale(gameOver ? new Vector3(0.3f, 0.3f, 0.3f) : Vector3.one, 0.1f).SetEase(Ease.OutElastic);
         }
 
         void RotateController()

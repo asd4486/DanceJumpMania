@@ -15,9 +15,9 @@ TagManager:
   - UI
   - 
   - 
-  - pingpong
-  - pongTouched
-  - racket
+  - Controller
+  - 
+  - disable
   - 
   - 
   - 
@@ -42,4 +42,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: controller
+    uniqueID: 3515089813
     locked: 0

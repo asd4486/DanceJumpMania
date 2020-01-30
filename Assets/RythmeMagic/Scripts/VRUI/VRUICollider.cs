@@ -26,6 +26,6 @@ public class VRUICollider : MonoBehaviour
             boxCollider = gameObject.AddComponent<BoxCollider>();
         }
 
-        boxCollider.size = new Vector3(rectTransform.sizeDelta.x, rectTransform.sizeDelta.y, 0.05f);
+        boxCollider.size = new Vector3(rectTransform.sizeDelta.x, rectTransform.sizeDelta.y, 10f);
     }
 }
