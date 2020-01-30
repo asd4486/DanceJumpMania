@@ -50,11 +50,11 @@ namespace RythhmMagic
 			else
 				controlMarkerType = MarkerType.Default;
 
-            if (!main.GameOver)
-            {
-                RotateController();
-                ChangeMat();
-            }
+			if (!main.GameOver)
+			{
+				RotateController();
+				ChangeMat();
+			}
 		}
 
 		void SetVisible()
@@ -63,7 +63,7 @@ namespace RythhmMagic
 				return;
 
 			myCol.enabled = !main.GameOver;
-			transform.DOScale(main.GameOver ? Vector3.zero : Vector3.one, 0.1f).SetEase(Ease.OutElastic);
+			transform.DOScale(main.GameOver ? new Vector3(0.2f, 0.2f, 0.2f) : Vector3.one, 0.1f).SetEase(Ease.OutElastic);
 		}
 
 		void RotateController()

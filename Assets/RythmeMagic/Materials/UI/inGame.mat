@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: UICadre
+  m_Name: inGame
   m_Shader: {fileID: 4800000, guid: 91a9454556c506245ac3189d1d9e909e, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -80,5 +80,5 @@ Material:
     - _UseUIAlphaClip: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 0.740566, b: 0.85018593, a: 1}
-    - _EmissionColor: {r: 1.6475834, g: 0, b: 1.4719262, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 1.3390749, g: 0.651805, b: 0, a: 1}
