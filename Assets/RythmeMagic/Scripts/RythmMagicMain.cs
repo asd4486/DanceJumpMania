@@ -25,8 +25,9 @@ namespace RythhmMagic
 
 		[SerializeField] AudioSource mainAudio;
 		MusicSheetObject currentSheet;
+        public float BPM { get; private set; }
 
-		float totalDuration;
+        float totalDuration;
 		float playingTimer;
 		float completeTime;
 
@@ -39,11 +40,7 @@ namespace RythhmMagic
 		[SerializeField] GameObject fxSpawnTrigger;
 		[SerializeField] GameObject fxSpawnTwoHand;
 
-		[SerializeField] Transform markerParent;
-
-		//[SerializeField] int numBeatsPerSegment = 16;
-		double nextEventTime;
-		public float BPM { get; private set; }
+		[SerializeField] Transform gameZone;
 
 		Coroutine completeCoroutine;
 
@@ -77,21 +74,22 @@ namespace RythhmMagic
 			mainAudio.clip = currentSheet.music;
 			totalDuration = mainAudio.clip.length + gameMgr.markerTime;
 
-			BPM = UniBpmAnalyzer.AnalyzeBpm(mainAudio.clip);
-			nextEventTime = AudioSettings.dspTime + 60.0f / BPM;
 			completeTime = currentSheet.duration > 0 ? currentSheet.duration : currentSheet.music.length;
-			yield return new WaitForSeconds(1f);
+            BPM = UniBpmAnalyzer.AnalyzeBpm(currentSheet.music);
+
+            yield return new WaitForSeconds(2f);
 
 			menuUI.ActiveUI(false);
 
-			//change amibance
-			ambiance.PlayAmbianceFx(true);
+            //change amibance
+            ambiance.SetBpm(BPM);
+            ambiance.PlayAmbianceFx(true);
 
 			//init all values
 			goodCount = missCount = 0;
 			playingTimer = nowBeat = score = combo = maxCombo = 0;
 
-			GameOver = false;
+            GameOver = false;
 
 			//for adjust speed
 			var startTime = currentSheet.beatList[0].startTime;
@@ -112,13 +110,6 @@ namespace RythhmMagic
 			{
 				SpawnNewMarkers(currentSheet.beatList[nowBeat]);
 				nowBeat += 1;
-			}
-
-			double time = AudioSettings.dspTime;
-			if (time + 1.0f > nextEventTime)
-			{
-				// Place the next event 16 beats from here at a rate of 140 beats per minute
-				nextEventTime += 60.0f / BPM /** numBeatsPerSegment*/;
 			}
 
 			if (playingTimer >= completeTime + gameMgr.markerTime)
@@ -161,11 +152,11 @@ namespace RythhmMagic
 				}
 
 				var o = Instantiate(marker.gameObject);
-				o.transform.SetParent(markerParent, true);
+				o.transform.SetParent(gameZone, true);
 				o.GetComponent<MarkerBase>().Init(item, beat.startTime);
 
 				var newFx = Instantiate(fx);
-				newFx.transform.SetParent(markerParent, true);
+				newFx.transform.SetParent(gameZone, true);
 				newFx.transform.localPosition = new Vector3(item.posList[0].pos.x, item.posList[0].pos.y, gameMgr.markerDistance);
 				Destroy(newFx, 0.25f);
 			}

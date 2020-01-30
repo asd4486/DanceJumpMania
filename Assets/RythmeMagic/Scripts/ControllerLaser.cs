@@ -14,6 +14,8 @@ namespace RythhmMagic
 
         public event PointerEventHandler PointerIn;
         public event PointerEventHandler PointerOut;
+
+        bool pointerClicked;
         public event PointerEventHandler PointerClick;
 
         Transform previousContact = null;
@@ -63,14 +65,20 @@ namespace RythhmMagic
                 dist = hit.distance;
             }
 
-            if (bHit && controller.CurrentHand.IsGrabbingWithType(GrabTypes.Pinch))
+            if (bHit && controller.TriggerDown && !pointerClicked)
             {
+                pointerClicked = true;
+
                 PointerEventArgs argsClick = new PointerEventArgs();
                 argsClick.distance = hit.distance;
                 argsClick.flags = 0;
                 argsClick.target = hit.transform;
                 OnPointerClick(argsClick);
             }
+
+            //avoid repeat action
+            if (pointerClicked && !controller.TriggerDown)
+                pointerClicked = false;
         }
 
         private void OnPointerIn(PointerEventArgs e)

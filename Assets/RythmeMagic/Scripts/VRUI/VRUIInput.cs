@@ -34,6 +34,7 @@ namespace RythhmMagic
         {
             if (EventSystem.current.currentSelectedGameObject != null)
             {
+                PlayAudio(clickBtnClip);
                 ExecuteEvents.Execute(EventSystem.current.currentSelectedGameObject, new PointerEventData(EventSystem.current), ExecuteEvents.submitHandler);
             }
         }
@@ -56,7 +57,6 @@ namespace RythhmMagic
             if (button != null)
             {
                 EventSystem.current.SetSelectedGameObject(null);
-				PlayAudio(clickBtnClip);
 				//Debug.Log("HandlePointerOut", e.target.gameObject);
             }
         }

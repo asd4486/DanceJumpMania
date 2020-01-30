@@ -7,10 +7,10 @@ namespace RythhmMagic
 {
 	public class MarkerHoldTwoHand : MarkerHold
 	{
-		bool touchLeft;
-		bool touchRight;
+        MarkerController hitedControllerL;
+        MarkerController hitedControllerR;
 
-		public override void Init(MusicSheetObject.BeatInfo beat, float beatTime)
+        public override void Init(MusicSheetObject.BeatInfo beat, float beatTime)
 		{
 			markerLine = GetComponentInChildren<MarkerLine>();
 			markerLine.SetMaterial(markerRenderer.material);
@@ -45,16 +45,23 @@ namespace RythhmMagic
 		{
 			if (col.gameObject.GetComponent<MarkerController>() != null)
 			{
-				var controller = col.gameObject.GetComponent<MarkerController>();
-				if (controller.CurrentHand.handType == SteamVR_Input_Sources.LeftHand) touchLeft = true;
-				else touchRight = true;
+                var controller = col.gameObject.GetComponent<MarkerController>();
+                if (controller.CurrentHand.handType == SteamVR_Input_Sources.LeftHand) hitedControllerL = controller;
+                else hitedControllerR = controller;
 
-				if (touchLeft && touchRight)
-				{
-					controller.TouchMarker();
-					OnHitMarker();
-				}
-			}
+                if (hitedControllerL != null && hitedControllerR != null)
+                {
+                    //first hit
+                    if (!fxTouch.isPlaying)
+                    {
+                        hitedControllerL.Vibrate();
+                        hitedControllerR.Vibrate();
+                    }
+
+                    controller.TouchMarker();
+                    OnHitMarker();                    
+                }
+            }
 		}
 
 		protected override void OnTriggerExit(Collider col)
@@ -64,10 +71,10 @@ namespace RythhmMagic
 			if (col.gameObject.GetComponent<MarkerController>() != null)
 			{
 				var controller = col.gameObject.GetComponent<MarkerController>();
-				if (controller.CurrentHand.handType == SteamVR_Input_Sources.LeftHand) touchLeft = false;
-				else touchRight = false;
+                if (controller.CurrentHand.handType == SteamVR_Input_Sources.LeftHand) hitedControllerL = null;
+                else hitedControllerR = null;
 
-				fxTouch.Stop();
+                fxTouch.Stop();
 				BreakCombo();
 			}
 		}

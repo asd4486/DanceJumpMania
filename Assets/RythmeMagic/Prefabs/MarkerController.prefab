@@ -4796,8 +4796,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7388794899961235888}
   - component: {fileID: 7388794899961235902}
-  - component: {fileID: 7426123405711484705}
   - component: {fileID: 7388794899961235903}
+  - component: {fileID: 6048579972695790194}
   m_Layer: 0
   m_Name: MarkerController
   m_TagString: Untagged
@@ -4837,19 +4837,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 3
---- !u!65 &7426123405711484705
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7388794899961235889}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.2, y: 0.2, z: 0.005}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &7388794899961235903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4868,3 +4855,16 @@ MonoBehaviour:
   twoHandsMat: {fileID: 2100000, guid: ceb8b29e1d6cc604aa9d6a688d944bd3, type: 2}
   fxTrigger: {fileID: 4430590216167955313}
   maxRotateSpeed: 700
+--- !u!135 &6048579972695790194
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7388794899961235889}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.1
+  m_Center: {x: 0, y: 0, z: 0}
