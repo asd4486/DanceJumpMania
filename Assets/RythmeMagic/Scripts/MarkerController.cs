@@ -34,6 +34,8 @@ namespace RythhmMagic
 			main = FindObjectOfType<RythmMagicMain>();
 			myCol = GetComponent<Collider>();
 			rendrerer = GetComponentInChildren<SpriteRenderer>();
+
+			currentMat = defaultMat;
 		}
 
 		// Update is called once per frame

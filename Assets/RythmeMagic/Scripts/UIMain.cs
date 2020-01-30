@@ -17,6 +17,7 @@ public class UIMain : MonoBehaviour
 	public void Init()
 	{
 		BreakCombo();
+		SetScore(0);
 	}
 
 	public void SetScore(int score)

@@ -5,13 +5,21 @@ using UnityEngine.UI;
 namespace RythhmMagic
 {
     [RequireComponent(typeof(ControllerLaser))]
+    [RequireComponent(typeof(AudioSource))]
+
     public class VRUIInput : MonoBehaviour
     {
+		AudioSource audioSource;
+		[SerializeField] AudioClip hoverBtnClip;
+		[SerializeField] AudioClip clickBtnClip;
+
         private ControllerLaser laser;
 
         private void Awake()
         {
-            laser = GetComponent<ControllerLaser>();
+			audioSource = GetComponent<AudioSource>();
+
+			laser = GetComponent<ControllerLaser>();
             laser.PointerIn -= HandlePointerIn;
             laser.PointerIn += HandlePointerIn;
 
@@ -36,8 +44,9 @@ namespace RythhmMagic
             if (button != null)
             {
                 button.Select();
-                Debug.Log("HandlePointerIn", e.target.gameObject);
-            }
+				PlayAudio(hoverBtnClip);
+				//Debug.Log("HandlePointerIn", e.target.gameObject);
+			}
         }
 
         private void HandlePointerOut(object sender, PointerEventArgs e)
@@ -47,8 +56,15 @@ namespace RythhmMagic
             if (button != null)
             {
                 EventSystem.current.SetSelectedGameObject(null);
-                Debug.Log("HandlePointerOut", e.target.gameObject);
+				PlayAudio(clickBtnClip);
+				//Debug.Log("HandlePointerOut", e.target.gameObject);
             }
         }
+
+		void PlayAudio(AudioClip clip)
+		{
+			audioSource.clip = clip;
+			audioSource.Play();
+		}
     }
 }

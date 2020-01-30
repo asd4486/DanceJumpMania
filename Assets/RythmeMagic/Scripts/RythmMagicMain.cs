@@ -7,16 +7,21 @@ namespace RythhmMagic
 {
 	public class RythmMagicMain : MonoBehaviour
 	{
-		MenuUI menuUI;
+		MainMenu menuUI;
 		UIMain uiMain;
 		GameManager gameMgr;
-        [SerializeField] SceneAmbiance ambiance;
+		[SerializeField] SceneAmbiance ambiance;
 
 		public bool GameOver { get; private set; }
 
 		int nowBeat;
+
 		int score;
+		int goodCount;
+		int missCount;
+
 		int combo;
+		int maxCombo;
 
 		[SerializeField] AudioSource mainAudio;
 		MusicSheetObject currentSheet;
@@ -45,8 +50,10 @@ namespace RythhmMagic
 		// Start is called before the first frame update
 		void Start()
 		{
-			menuUI = FindObjectOfType<MenuUI>();
+			menuUI = FindObjectOfType<MainMenu>();
 			uiMain = FindObjectOfType<UIMain>();
+			uiMain.gameObject.SetActive(false);
+
 			gameMgr = FindObjectOfType<GameManager>();
 
 			GameOver = true;
@@ -62,7 +69,7 @@ namespace RythhmMagic
 
 		IEnumerator StartGameCoroutine(MusicSheetObject sheet)
 		{
-			menuUI.ActiveUI(false);
+			uiMain.gameObject.SetActive(true);
 			uiMain.Init();
 
 			//setup music infos
@@ -75,11 +82,15 @@ namespace RythhmMagic
 			completeTime = currentSheet.duration > 0 ? currentSheet.duration : currentSheet.music.length;
 			yield return new WaitForSeconds(1f);
 
-            //change amibance
-            ambiance.PlayAmbianceFx(true);
+			menuUI.ActiveUI(false);
+
+			//change amibance
+			ambiance.PlayAmbianceFx(true);
 
 			//init all values
-			playingTimer = nowBeat = score = combo = 0;
+			goodCount = missCount = 0;
+			playingTimer = nowBeat = score = combo = maxCombo = 0;
+
 			GameOver = false;
 
 			//for adjust speed
@@ -124,7 +135,7 @@ namespace RythhmMagic
 			foreach (var item in beat.infos)
 			{
 				var marker = markerPrefab;
-				var fx = item.markerType == MarkerType.Default? fxSpawn:fxSpawnTrigger;
+				var fx = item.markerType == MarkerType.Default ? fxSpawn : fxSpawnTrigger;
 
 				if (item.markerType == MarkerType.TwoHand)
 				{
@@ -163,29 +174,43 @@ namespace RythhmMagic
 		public void AddScore()
 		{
 			score += 10;
+			goodCount += 1;
+
 			combo += 1;
+			if (combo > maxCombo)
+				maxCombo = combo;
+
 			uiMain.SetScore(score);
 			uiMain.SetCombo(combo);
 		}
 
 		public void BreakCombo()
 		{
-			combo = 0;
-			uiMain.BreakCombo();
+			//play break combo animation
+			if (combo > 0)
+			{
+				combo = 0;
+				uiMain.BreakCombo();
+			}
+
+			missCount += 1;
 		}
 
 		IEnumerator CompleteCorou()
 		{
 			mainAudio.DOFade(0, 4f);
+			//change amibance
+			ambiance.PlayAmbianceFx(false);
+
 			yield return new WaitForSeconds(4f);
 
-            //change amibance
-            ambiance.PlayAmbianceFx(false);
+			mainAudio.Stop();
 
-            mainAudio.Stop();
+			uiMain.gameObject.SetActive(false);
 			menuUI.ActiveUI(true);
-			GameOver = true;
+			menuUI.ShowResult(goodCount, missCount, maxCombo, score);
 
+			GameOver = true;
 			completeCoroutine = null;
 		}
 	}

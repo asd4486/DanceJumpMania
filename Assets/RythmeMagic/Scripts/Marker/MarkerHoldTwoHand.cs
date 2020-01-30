@@ -68,7 +68,7 @@ namespace RythhmMagic
 				else touchRight = false;
 
 				fxTouch.Stop();
-				main.BreakCombo();
+				BreakCombo();
 			}
 		}
 	}

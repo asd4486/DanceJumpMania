@@ -3,13 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Valve.VR.Extras;
 
 namespace RythhmMagic
 {
-	public class MenuUI : MonoBehaviour
+	public class MusicSelectorUI : MonoBehaviour
 	{
-		RythmMagicMain main;
+		MainMenu mainMenu;
 
 		//music infos
 		[SerializeField] Image imgCouverture;
@@ -19,14 +18,14 @@ namespace RythhmMagic
 		[SerializeField] Button[] btnsDifficulty;
 		[SerializeField] Material matSelectedDifficulty;
 
-		[SerializeField] SongMusicSheets[] songMusicSheetsList;
+		SongMusicSheets[] songMusicSheetsList;
 		SongMusicSheets selectedSong;
 		MusicDifficulty selectedDifficulty;
 
-		// Start is called before the first frame update
-		void Start()
+		public void Init(MainMenu menu, SongMusicSheets[] songList)
 		{
-			main = FindObjectOfType<RythmMagicMain>();
+			mainMenu = menu;
+			songMusicSheetsList = songList;
 
 			//load all music sheets
 			LoadMusicSheet(0);
@@ -107,19 +106,7 @@ namespace RythhmMagic
 
 			if (selectedSheet == null)
 				return;
-
-			main.StartGame(selectedSheet);
+			mainMenu.LaunchGame(selectedSheet);
 		}
-
-		public void ActiveUI(bool active)
-		{
-			gameObject.SetActive(active);
-		}
-	}
-
-	[System.Serializable]
-	public class SongMusicSheets
-	{
-		public List<MusicSheetObject> sheets;
 	}
 }

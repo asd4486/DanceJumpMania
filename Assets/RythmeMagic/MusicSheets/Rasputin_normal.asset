@@ -1104,30 +1104,30 @@ MonoBehaviour:
       markerType: 0
       posList:
       - time: 70.80676
-        pos: {x: 0.3, y: 0.1}
+        pos: {x: 0.3, y: 0}
   - startTime: 71.023094
     infos:
     - beatType: 0
       markerType: 0
       posList:
       - time: 71.023094
-        pos: {x: -0.3, y: 0}
+        pos: {x: -0.3, y: -0.2}
   - startTime: 71.27032
     infos:
     - beatType: 0
       markerType: 0
       posList:
       - time: 71.27032
-        pos: {x: 0.3, y: -0.1}
+        pos: {x: 0.3, y: -0.4}
   - startTime: 71.49864
     infos:
     - beatType: 1
       markerType: 0
       posList:
       - time: 71.49864
-        pos: {x: -0.3, y: -0.2}
+        pos: {x: -0.3, y: -0.6}
       - time: 71.91801
-        pos: {x: -0.3, y: -0.2}
+        pos: {x: -0.3, y: -0.6}
   - startTime: 73.376366
     infos:
     - beatType: 1
