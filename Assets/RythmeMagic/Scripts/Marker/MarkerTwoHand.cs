@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,10 +9,10 @@ namespace RythhmMagic
 {
 	public class MarkerTwoHand : MarkerBase
 	{
-        MarkerController hitedControllerL;
-        MarkerController hitedControllerR;
+		MarkerController hitedControllerL;
+		MarkerController hitedControllerR;
 
-        protected override void OnTriggerStay(Collider col)
+		protected override void OnTriggerStay(Collider col)
 		{
 			if (col.gameObject.GetComponent<MarkerController>() != null)
 			{
@@ -24,8 +25,8 @@ namespace RythhmMagic
 					controller.TouchMarker();
 					OnHitMarker();
 
-                    hitedControllerL.Vibrate();
-                    hitedControllerR.Vibrate();
+					hitedControllerL.Vibrate();
+					hitedControllerR.Vibrate();
 				}
 			}
 		}

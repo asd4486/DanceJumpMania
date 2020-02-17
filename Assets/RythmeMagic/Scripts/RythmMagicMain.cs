@@ -5,6 +5,14 @@ using UnityEngine;
 
 namespace RythhmMagic
 {
+	public enum HitJuge
+	{
+		Prefect,
+		Good,
+		Bad,
+		Miss
+	}
+
 	public class RythmMagicMain : MonoBehaviour
 	{
 		MainMenu menuUI;
@@ -16,18 +24,13 @@ namespace RythhmMagic
 
 		int nowBeat;
 
-		int score;
-		int goodCount;
-		int missCount;
-
-		int combo;
-		int maxCombo;
+		public ScoreData ScoreDt { get; private set; }
 
 		[SerializeField] AudioSource mainAudio;
 		MusicSheetObject currentSheet;
-        public float BPM { get; private set; }
+		public float BPM { get; private set; }
 
-        float totalDuration;
+		float totalDuration;
 		float playingTimer;
 		float completeTime;
 
@@ -47,6 +50,8 @@ namespace RythhmMagic
 		// Start is called before the first frame update
 		void Start()
 		{
+			ScoreDt = new ScoreData();
+
 			menuUI = FindObjectOfType<MainMenu>();
 			uiMain = FindObjectOfType<UIMain>();
 			uiMain.gameObject.SetActive(false);
@@ -75,21 +80,21 @@ namespace RythhmMagic
 			totalDuration = mainAudio.clip.length + gameMgr.markerTime;
 
 			completeTime = currentSheet.duration > 0 ? currentSheet.duration : currentSheet.music.length;
-            BPM = UniBpmAnalyzer.AnalyzeBpm(currentSheet.music);
+			BPM = UniBpmAnalyzer.AnalyzeBpm(currentSheet.music);
 
-            yield return new WaitForSeconds(2f);
+			yield return new WaitForSeconds(2f);
 
 			menuUI.ActiveUI(false);
 
-            //change amibance
-            ambiance.SetBpm(BPM);
-            ambiance.PlayAmbianceFx(true);
+			//change amibance
+			ambiance.SetBpm(BPM);
+			ambiance.PlayAmbianceFx(true);
 
 			//init all values
-			goodCount = missCount = 0;
-			playingTimer = nowBeat = score = combo = maxCombo = 0;
+			ScoreDt.Reset();
+			playingTimer = nowBeat = 0;
 
-            GameOver = false;
+			GameOver = false;
 
 			//for adjust speed
 			var startTime = currentSheet.beatList[0].startTime;
@@ -162,29 +167,47 @@ namespace RythhmMagic
 			}
 		}
 
-		public void AddScore()
+		public void HitMarker(HitJuge jugement)
 		{
-			score += 10;
-			goodCount += 1;
-
-			combo += 1;
-			if (combo > maxCombo)
-				maxCombo = combo;
-
-			uiMain.SetScore(score);
-			uiMain.SetCombo(combo);
-		}
-
-		public void BreakCombo()
-		{
-			//play break combo animation
-			if (combo > 0)
+			bool breakCombo = false;
+			switch (jugement)
 			{
-				combo = 0;
-				uiMain.BreakCombo();
+				case HitJuge.Prefect:
+					ScoreDt.score += 10;
+					ScoreDt.prefectCount += 1;
+					break;
+				case HitJuge.Good:
+					ScoreDt.score += 8;
+					ScoreDt.goodCount += 1;
+					break;
+				case HitJuge.Bad:
+					breakCombo = true;
+					ScoreDt.badCount += 1;
+					break;
+				case HitJuge.Miss:
+					breakCombo = true;
+					ScoreDt.missCount += 1;
+					break;
 			}
 
-			missCount += 1;
+			if (breakCombo)
+			{
+				//play break combo animation
+				if (ScoreDt.combo > 0)
+				{
+					ScoreDt.combo = 0;
+					uiMain.BreakCombo();
+				}
+				return;
+			}
+
+			//add combo
+			ScoreDt.combo += 1;
+			if (ScoreDt.combo > ScoreDt.maxCombo)
+				ScoreDt.maxCombo = ScoreDt.combo;
+
+			uiMain.SetScore(ScoreDt.score);
+			uiMain.SetCombo(ScoreDt.combo);
 		}
 
 		IEnumerator CompleteCorou()
@@ -199,7 +222,7 @@ namespace RythhmMagic
 
 			uiMain.gameObject.SetActive(false);
 			menuUI.ActiveUI(true);
-			menuUI.ShowResult(goodCount, missCount, maxCombo, score);
+			menuUI.ShowResult();
 
 			GameOver = true;
 			completeCoroutine = null;

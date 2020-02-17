@@ -46,20 +46,22 @@ namespace RythhmMagic
 			if (col.gameObject.GetComponent<MarkerController>() != null)
 			{
                 var controller = col.gameObject.GetComponent<MarkerController>();
-                if (controller.CurrentHand.handType == SteamVR_Input_Sources.LeftHand) hitedControllerL = controller;
-                else hitedControllerR = controller;
+                if (controller.CurrentHand.handType == SteamVR_Input_Sources.LeftHand)
+					hitedControllerL = controller;
+                else
+					hitedControllerR = controller;
 
                 if (hitedControllerL != null && hitedControllerR != null)
                 {
-                    //first hit
-                    if (!fxTouch.isPlaying)
+					controller.TouchMarker();
+					OnHitMarker();
+
+					//first hit
+					if (!fxTouch.isPlaying)
                     {
                         hitedControllerL.Vibrate();
                         hitedControllerR.Vibrate();
-                    }
-
-                    controller.TouchMarker();
-                    OnHitMarker();                    
+                    }                     
                 }
             }
 		}

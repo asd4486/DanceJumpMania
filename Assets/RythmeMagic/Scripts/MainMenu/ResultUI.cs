@@ -11,22 +11,27 @@ namespace RythhmMagic
 		[SerializeField] Text textName;
 		[SerializeField] Text textArtist;
 
+		[SerializeField] Text textPrefectCount;
 		[SerializeField] Text textGoodCount;
+		[SerializeField] Text textBadCount;
 		[SerializeField] Text textMissCount;
-		[SerializeField] Text textCombo;
+
+		[SerializeField] Text textMaxCombo;
 		[SerializeField] Text textScore;
 
-		public void SetInfos(MusicSheetObject musicSheet, int good, int miss, int combo, int score)
+		public void SetInfos(MusicSheetObject musicSheet, ScoreData data)
 		{
 			imgCouverture.sprite = musicSheet.couverture;
 			textName.text = musicSheet.name;
 			textArtist.text = musicSheet.artistName;
 
-			textGoodCount.text = good.ToString();
-			textMissCount.text = miss.ToString();
+			textPrefectCount.text = data.prefectCount.ToString();
+			textGoodCount.text = data.goodCount.ToString();
+			textBadCount.text = data.badCount.ToString();
+			textMissCount.text = data.missCount.ToString();
 
-			textCombo.text = combo.ToString();
-			textScore.text = score.ToString();
+			textMaxCombo.text = data.maxCombo.ToString();
+			textScore.text = data.score.ToString();
 		}
 	}
 }

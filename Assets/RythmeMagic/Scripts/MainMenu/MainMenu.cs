@@ -39,13 +39,13 @@ namespace RythhmMagic
 			selectorUI.gameObject.SetActive(true);
 		}
 
-		public void ShowResult(int goodCount, int missCount, int maxCombo, int score)
+		public void ShowResult()
 		{
 			menuAnimator.SetTrigger("show");
 			resultUI.gameObject.SetActive(true);
 			selectorUI.gameObject.SetActive(false);
 
-			resultUI.SetInfos(selectedSheet, goodCount, missCount, maxCombo, score);
+			resultUI.SetInfos(selectedSheet, main.ScoreDt);
 		}
 
 		public void LaunchGame(MusicSheetObject sheet)
