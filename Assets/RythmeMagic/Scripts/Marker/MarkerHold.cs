@@ -101,17 +101,17 @@ namespace RythhmMagic
 				countComboTimer += Time.deltaTime;
 				if (countComboTimer >= gameMgr.addScoreDelay)
 				{
-					if (isComboBreaking.Value) main.HitMarker(HitJuge.Miss);
+					if (isComboBreaking.Value) main.HitMarker(HitJuge.Miss, markerRenderer.transform.position);
 					else
 					{
 						if (currentBeat.markerType == MarkerType.TwoHand)
-							main.HitMarker(HitJuge.Prefect);
+							main.HitMarker(HitJuge.Prefect, markerRenderer.transform.position);
 						else
 						{
 							if (lastHitController != null && lastHitController.controlMarkerType == currentBeat.markerType)
-								main.HitMarker(HitJuge.Prefect);
+								main.HitMarker(HitJuge.Prefect, markerRenderer.transform.position);
 							else
-								main.HitMarker(HitJuge.Bad);
+								main.HitMarker(HitJuge.Bad, markerRenderer.transform.position);
 						}
 					}
 
@@ -152,7 +152,12 @@ namespace RythhmMagic
 		protected override void OnHitMarker()
 		{
 			//play fx if is good hit
-			if (currentBeat.markerType == MarkerType.TwoHand || hitedController.controlMarkerType == currentBeat.markerType)
+			if (currentBeat.markerType == MarkerType.TwoHand)
+			{
+				if (!fxTouch.isPlaying)
+					fxTouch.Play();
+			}
+			else if (hitedController.controlMarkerType == currentBeat.markerType)
 			{
 				//save current controller
 				if (hitedController.controlMarkerType == currentBeat.markerType) lastHitController = hitedController;

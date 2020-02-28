@@ -45,6 +45,13 @@ namespace RythhmMagic
 
 		[SerializeField] Transform gameZone;
 
+		//feedback text when hit marker
+		[SerializeField] GameObject textPrefect;
+		[SerializeField] GameObject textGood;
+		[SerializeField] GameObject textBad;
+		[SerializeField] GameObject textMiss;
+		[SerializeField] Transform feedbackParent;
+
 		Coroutine completeCoroutine;
 
 		// Start is called before the first frame update
@@ -167,26 +174,31 @@ namespace RythhmMagic
 			}
 		}
 
-		public void HitMarker(HitJuge jugement)
+		public void HitMarker(HitJuge jugement, Vector2 hitPos)
 		{
 			bool breakCombo = false;
+
 			switch (jugement)
 			{
 				case HitJuge.Prefect:
 					ScoreDt.score += 10;
 					ScoreDt.prefectCount += 1;
+					SpawnHitFeedbackText(textPrefect, hitPos);
 					break;
 				case HitJuge.Good:
 					ScoreDt.score += 8;
 					ScoreDt.goodCount += 1;
+					SpawnHitFeedbackText(textGood, hitPos);
 					break;
 				case HitJuge.Bad:
 					breakCombo = true;
 					ScoreDt.badCount += 1;
+					SpawnHitFeedbackText(textBad, hitPos);
 					break;
 				case HitJuge.Miss:
 					breakCombo = true;
 					ScoreDt.missCount += 1;
+					SpawnHitFeedbackText(textMiss, hitPos);
 					break;
 			}
 
@@ -208,6 +220,15 @@ namespace RythhmMagic
 
 			uiMain.SetScore(ScoreDt.score);
 			uiMain.SetCombo(ScoreDt.combo);
+		}
+
+		void SpawnHitFeedbackText(GameObject o, Vector2 pos)
+		{
+			var text = Instantiate(o);
+			text.transform.SetParent(feedbackParent, false);
+			text.transform.position = pos;
+			text.transform.localPosition = new Vector3(text.transform.localPosition.x, text.transform.localPosition.y, 0);
+			Destroy(text, 0.2f);
 		}
 
 		IEnumerator CompleteCorou()

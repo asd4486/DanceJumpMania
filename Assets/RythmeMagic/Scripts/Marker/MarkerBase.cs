@@ -92,7 +92,7 @@ namespace RythhmMagic
 				myCol.enabled = false;
 				markerRenderer.transform.DOScale(Vector3.zero, 0.1f);
 				Destroy(gameObject, 0.1f);
-				main.HitMarker(HitJuge.Miss);
+				main.HitMarker(HitJuge.Miss, transform.position);
 			}
 		}
 
@@ -108,10 +108,10 @@ namespace RythhmMagic
 				else
 					fxTouch.Play();
 
-				main.HitMarker(waitForHitTimer <= 0.1f ? HitJuge.Prefect : HitJuge.Good);
+				main.HitMarker(waitForHitTimer <= 0.1f ? HitJuge.Prefect : HitJuge.Good, transform.position);
 			}
 			else
-				main.HitMarker(HitJuge.Bad);
+				main.HitMarker(HitJuge.Bad , transform.position);
 
 			Destroy(gameObject, 0.2f);
 		}

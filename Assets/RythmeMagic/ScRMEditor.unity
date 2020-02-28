@@ -1527,7 +1527,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c6c878c536af4e41a2b2efcde9e14bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicSheet: {fileID: 11400000, guid: 88d0f24fb257b38419a40b384e850f76, type: 2}
+  musicSheet: {fileID: 11400000, guid: 069dc34ea8fcaa349b781bcedc475de8, type: 2}
   myAudio: {fileID: 987812302}
   btnMetronome: {fileID: 446885237}
   metronomeAudio: {fileID: 1121013537}
